@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Note">
+        <menu>
+            <item
+                android:id="@+id/nav_awaiting_payment"
+                android:title="全部" />
+            <item
+                android:id="@+id/nav_awaiting_shipment"
+                android:title="蒐藏" />
+        </menu>
+    </item>
+
+    <item android:title="類型">
+        <menu>
+            <item
+
+                android:id="@+id/nav_awaiting_payment2"
+                android:title="文章" />
+            <item
+                android:id="@+id/nav_awaiting_shipment2"
+                android:title="影片" />
+            <item
+                android:id="@+id/nav_awaiting_shipment3"
+                android:title="地標" />
+        </menu>
+    </item>
+    <item android:title="標籤">
+        <menu>
+            <item
+
+                android:id="@+id/nav_awaiting_payment55"
+                android:title="Happy" />
+            <item
+                android:id="@+id/nav_awaiting_shipment334"
+                android:title="Ya" />
+            <item
+                android:id="@+id/nav_awaiting_shipment342"
+                android:title="Yoyo" />
+        </menu>
+    </item>
+
+
+</menu>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navi"
+    app:startDestination="@id/noteFragment">
+
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.connie.noted.note.NoteFragment"
+        android:label="fragment_note"
+        tools:layout="@layout/fragment_note" />
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.connie.noted.board.BoardFragment"
+        android:label="fragment_board"
+        tools:layout="@layout/fragment_board" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.connie.noted.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <action
+        android:id="@+id/action_global_boardFragment"
+        app:destination="@id/boardFragment" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
+    <action
+        android:id="@+id/action_global_noteFragment"
+        app:destination="@id/noteFragment" />
+</navigation>
