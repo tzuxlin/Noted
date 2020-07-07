@@ -7,7 +7,4 @@ class DefaultNotedRepository(
     private val localDataSource: NotedDataSource
 ) : NotedRepository {
 
-    override suspend fun getNews(url: String): Note {
-        return remoteDataSource.getNews(url)
-    }
 }

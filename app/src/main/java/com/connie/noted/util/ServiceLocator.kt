@@ -2,6 +2,7 @@ package com.connie.noted.util
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import com.connie.noted.data.crawler.NoteCrawler
 import com.connie.noted.data.source.DefaultNotedRepository
 import com.connie.noted.data.source.NotedDataSource
 import com.connie.noted.data.source.NotedRepository
@@ -34,4 +35,5 @@ object ServiceLocator {
     private fun createLocalDataSource(context: Context): NotedDataSource {
         return NotedLocalDataSource(context)
     }
+
 }

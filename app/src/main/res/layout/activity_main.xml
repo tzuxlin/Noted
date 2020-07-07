@@ -37,32 +37,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:navigationIcon="@drawable/toolbar_menu">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/icon_drawer"-->
-<!--                        android:layout_width="24dp"-->
-<!--                        android:layout_height="24dp"-->
-<!--                        android:layout_marginStart="16dp"-->
-<!--                        android:src="@drawable/toolbar_menu"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
 
                     <ImageView
                         android:id="@+id/image_toolbar_logo"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/logo"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.appcompat.widget.Toolbar>
 

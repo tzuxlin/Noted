@@ -1,6 +1,7 @@
 package com.connie.noted
 
 import android.app.Application
+import com.connie.noted.data.crawler.NoteCrawler
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.util.ServiceLocator
 import kotlin.properties.Delegates
@@ -16,6 +17,7 @@ class NotedApplication : Application() {
     // Depends on the flavor,
     val notedRepository: NotedRepository
         get() = ServiceLocator.provideTasksRepository(this)
+
 
     companion object {
         var instance: NotedApplication by Delegates.notNull()
