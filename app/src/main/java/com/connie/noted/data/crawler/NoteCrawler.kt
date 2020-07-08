@@ -1,6 +1,5 @@
 package com.connie.noted.data.crawler
 
-import androidx.lifecycle.MutableLiveData
 import com.connie.noted.data.Note
 
 interface NoteCrawler {

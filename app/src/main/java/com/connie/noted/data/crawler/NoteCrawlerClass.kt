@@ -1,11 +1,6 @@
 package com.connie.noted.data.crawler
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.connie.noted.data.Note
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import kotlin.coroutines.resume

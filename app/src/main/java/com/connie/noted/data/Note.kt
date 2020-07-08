@@ -1,6 +1,8 @@
 package com.connie.noted.data
 
 data class Note (
+    var id: String = "",
+    var createdTime: Long = -1,
     var type: String = "",
     var contentSource: String = "",
     var title: String = "",

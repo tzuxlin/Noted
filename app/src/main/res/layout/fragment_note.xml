@@ -35,14 +35,17 @@
             android:layout_height="0dp"
             android:layout_columnWeight="1"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:listNote="@{viewModel.mockNote}"
             app:reverseLayout="false"
             app:spanCount="2"
+            app:listNote="@{viewModel.liveNotes}"
             app:layout_constraintTop_toBottomOf="@id/note_icon_change_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
+
+        <!--            app:listNote="@{viewModel.newNote}"-->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
