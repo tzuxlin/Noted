@@ -1,10 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profile.ProfileFragment"
-    android:background="@drawable/profile">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.profile.ProfileViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".profile.ProfileFragment">
 
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+
+            <View
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:background="@drawable/shape_round_solid"
+                android:backgroundTint="@color/olive_green"
+                app:layout_constraintBottom_toBottomOf="@id/profile_user_image"
+                app:layout_constraintEnd_toEndOf="@id/profile_user_image"
+                app:layout_constraintStart_toStartOf="@id/profile_user_image"
+                app:layout_constraintTop_toTopOf="@id/profile_user_image" />
+
+            <ImageView
+                android:id="@+id/profile_user_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:profileImageUrl="@{viewModel.user.image}"
+                tools:background="@drawable/icon_user" />
+
+
+            <TextView
+                android:id="@+id/profile_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:letterSpacing="0.1"
+                android:text="@{viewModel.user.name}"
+                android:textColor="@color/greyish_brown"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_user_image"
+                tools:text="Xuan Lin" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--        Bottom-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:tabIndicatorColor="@color/olive_green"
+                    app:tabSelectedTextColor="@color/olive_green"
+                    app:tabTextColor="@color/cccccc" />
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

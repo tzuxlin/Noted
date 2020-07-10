@@ -42,3 +42,19 @@ fun bindProductRecyclerView(recyclerView: RecyclerView, data: List<Note>?) {
     }
 }
 
+
+@BindingAdapter("profileImageUrl")
+fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context)
+            .load(imgUrl)
+            .apply(
+                RequestOptions()
+                    .circleCrop()
+//                    .placeholder(R.drawable.placeholder)
+//                    .error(R.drawable.ic_broken_image)
+            )
+            .into(imgView)
+    }
+}

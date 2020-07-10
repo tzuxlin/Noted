@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 
 import com.connie.noted.R
+import com.connie.noted.databinding.FragmentNoteBinding
+import com.connie.noted.databinding.FragmentProfileBinding
+import com.google.android.material.tabs.TabLayout
 
 class ProfileFragment : Fragment() {
 
@@ -18,13 +21,27 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+
+        val binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+
+
+
+        binding.viewpagerProfile.let {
+            binding.tabsProfile.setupWithViewPager(it)
+            it.adapter = ProfileAdapter(childFragmentManager)
+            it.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabsProfile))
+        }
+
+
+
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }
