@@ -46,23 +46,27 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val error: LiveData<String>
         get() = _error
 
+    val viewType = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
 
     init {
         getLiveNotes()
-//        goGo()
+        goGo()
     }
 
 
     private fun goGo() {
-        coroutineScopeIO.launch {
-            _newNote.postValue(toGetYoutube("https://youtu.be/NHyBeGmpMIY"))
-        }
-        coroutineScopeIO.launch {
-            _newNote.postValue(toGetMediumArticle("https://medium.com/@chichushaheen/web-scraping-in-kotlin-using-jsoup-8b14b9d1761c"))
-        }
-        coroutineScopeIO.launch {
-            _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/XUGaJF9B7c1LmM1z9"))
-        }
+//        coroutineScopeIO.launch {
+//            _newNote.postValue(toGetYoutube("https://youtu.be/ZbO2BZvFbm8"))
+//        }
+//        coroutineScopeIO.launch {
+//            _newNote.postValue(toGetMediumArticle("https://developer.android.com/kotlin"))
+//        }
+//        coroutineScopeIO.launch {
+//            _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/M9z8XAphWzEy7T2QA"))
+//        }
     }
 
 

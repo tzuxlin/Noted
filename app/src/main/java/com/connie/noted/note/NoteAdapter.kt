@@ -1,42 +1,84 @@
 package com.connie.noted.note
 
-import android.R
-import android.util.TypedValue
+import android.content.ClipData.Item
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.connie.noted.data.Note
-import com.connie.noted.databinding.ItemNoteBinding
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import com.connie.noted.databinding.ItemNoteGridBinding
+import com.connie.noted.databinding.ItemNoteLinearBinding
 
 
 /**
  * Created by Wayne Chen in Jul. 2019.
  *
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
- * [Product], including computing diffs between lists.
+ * [Note], including computing diffs between lists.
  */
-class NoteAdapter(private val viewModel: NoteViewModel) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(DiffCallback) {
+class NoteAdapter(private val viewModel: NoteViewModel) :
+    ListAdapter<Note, RecyclerView.ViewHolder>(DiffCallback) {
 
-    class NoteViewHolder(private var binding: ItemNoteBinding): RecyclerView.ViewHolder(binding.root) {
+    override fun getItemViewType(position: Int): Int {
+        return viewModel.viewType.value ?:0
+    }
+
+
+//    abstract class ViewHolder {
+//        abstract fun bind(model: Note, viewModel: NoteViewModel)
+//
+//        companion object {
+//            fun create(v: View?, viewType: Int): RecyclerView.ViewHolder {
+//                return when (viewType) {
+//
+//                    0 -> NoteGridViewHolder()
+//                    else -> NoteLinearViewHolder()
+//
+//                }
+//
+//            }
+//        }
+//    }
+
+
+    class NoteLinearViewHolder(private var binding: ItemNoteLinearBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(note: Note, viewModel: NoteViewModel) {
 
             binding.note = note
-            if (note.images.isNotEmpty()){
+
+            if (note.images.isNotEmpty()) {
                 binding.imageString = note.images[0]
             } else {
-                binding.imageString = "https://i.imgur.com/Iin605C.png"
+                binding.imageNote.visibility = View.GONE
             }
-//            binding.viewModel = viewModel
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+
+//          binding.viewModel = viewModel
             binding.executePendingBindings()
         }
     }
+
+
+    class NoteGridViewHolder(private var binding: ItemNoteGridBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(note: Note, viewModel: NoteViewModel) {
+
+            binding.note = note
+
+            if (note.images.isNotEmpty()) {
+                binding.imageString = note.images[0]
+            } else {
+                binding.imageNote.visibility = View.GONE
+            }
+//            binding.viewModel = viewModel
+            binding.executePendingBindings()
+        }
+    }
+
 
     /**
      * Allows the RecyclerView to determine which items have changed when the [List] of [Note]
@@ -55,16 +97,41 @@ class NoteAdapter(private val viewModel: NoteViewModel) : ListAdapter<Note, Note
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        return NoteViewHolder(ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+
+            0 -> {
+                NoteGridViewHolder(ItemNoteGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            }
+
+            else -> {
+                NoteLinearViewHolder(ItemNoteLinearBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            }
+
+        }
+
+
     }
 
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(getItem(position), viewModel)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        when (holder) {
+
+            is NoteGridViewHolder -> {
+                holder.bind(getItem(position), viewModel)
+            }
+
+            is NoteLinearViewHolder -> {
+                holder.bind(getItem(position), viewModel)
+            }
+        }
+
     }
+
+
 
 
 //    private fun setTag(tagList: MutableList<String>) {
