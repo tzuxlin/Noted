@@ -9,6 +9,9 @@
             name="note"
             type="com.connie.noted.data.Note" />
 
+        <variable
+            name="board"
+            type="com.connie.noted.data.Board" />
 
         <variable
             name="imageString"
@@ -19,7 +22,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_note"
+        android:id="@+id/layout_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"

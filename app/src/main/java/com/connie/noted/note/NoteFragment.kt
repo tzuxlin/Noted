@@ -34,7 +34,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
 
         viewModel.viewType.observe(viewLifecycleOwner, Observer {
-            
+
             when (it) {
 
                 0 -> {

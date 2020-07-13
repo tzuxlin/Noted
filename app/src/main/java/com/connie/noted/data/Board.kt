@@ -1,11 +1,12 @@
 package com.connie.noted.data
 
-data class Note (
-    var type: String = "",
-    var contentSource: String = "",
+
+data class Board (
+    var createdBy: String = "",
     var title: String = "",
     var images: MutableList<String> = mutableListOf(),
-    var summary: String? = null,
     var tags: MutableList<String>? = null,
-    var isLiked: Boolean = false
+    var isLiked: Boolean = false,
+    var isPublic: Boolean = false,
+    var notes: MutableList<Note> = mutableListOf()
 )
