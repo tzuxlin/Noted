@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.connie.noted.data.User
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.login.UserManager
 import com.connie.noted.util.DrawerToggleType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,13 +27,17 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
         value = DrawerToggleType.NORMAL
     }
 
-//
+
+    var liveUser = MutableLiveData<User>()
+
+    //
 //    // user: MainViewModel has User info to provide Drawer UI
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-//
+    private val _user = MutableLiveData<User>()
+
+    val user: LiveData<User>
+        get() = _user
+
+    //
 //    // products: Get products from database to provide count number to bottom badge of cart
 //    val products: LiveData<List<Product>> = notedRepository.getProductsInCart()
 //
@@ -73,11 +80,11 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 //    val isLoggedIn
 //        get() = UserManager.isLoggedIn
 //
-//    // status: The internal MutableLiveData that stores the status of the most recent request
-//    private val _status = MutableLiveData<LoadApiStatus>()
-//
-//    val status: LiveData<LoadApiStatus>
-//        get() = _status
+    // status: The internal MutableLiveData that stores the status of the most recent request
+    private val _status = MutableLiveData<LoadApiStatus>()
+
+    val status: LiveData<LoadApiStatus>
+        get() = _status
 //
 //    // error: The internal MutableLiveData that stores the error of the most recent request
 //    private val _error = MutableLiveData<String>()
@@ -85,20 +92,20 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 //    val error: LiveData<String>
 //        get() = _error
 //
-//    // Create a Coroutine scope using a job to be able to cancel when needed
-//    private var viewModelJob = Job()
-//
-//    // the Coroutine runs using the Main (UI) dispatcher
-//    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-//
-//    /**
-//     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
-//     * Retrofit service to stop.
-//     */
-//    override fun onCleared() {
-//        super.onCleared()
-//        viewModelJob.cancel()
-//    }
+    // Create a Coroutine scope using a job to be able to cancel when needed
+    private var viewModelJob = Job()
+
+    // the Coroutine runs using the Main (UI) dispatcher
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    /**
+     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
+     * Retrofit service to stop.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 //
 //    init {
 //        Logger.i("------------------------------------")
@@ -188,4 +195,27 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 //            }
 //        }
 //    }
+
+    fun checkLogin() {
+        if (UserManager.justLogin) {
+            UserManager.user.value?.let {
+                updateUser(it)
+            }
+        } else {
+            UserManager.userEmail?.let {
+                getUser()
+            }
+        }
+    }
+
+    private fun updateUser(user: User) {
+        coroutineScope.launch {
+            notedRepository.updateUser(user)
+        }
+
+    }
+
+    private fun getUser() {
+        UserManager.user = notedRepository.getLiveUser()
+    }
 }

@@ -1,16 +1,14 @@
 package com.connie.noted.profile
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-
-import com.connie.noted.R
-import com.connie.noted.databinding.FragmentNoteBinding
 import com.connie.noted.databinding.FragmentProfileBinding
+import com.connie.noted.login.UserManager
 import com.google.android.material.tabs.TabLayout
 
 class ProfileFragment : Fragment() {
@@ -31,6 +29,8 @@ class ProfileFragment : Fragment() {
 
 
 
+        Log.e("Connie", "Profile, User = ${UserManager.user.value}"
+        )
 
         binding.viewpagerProfile.let {
             binding.tabsProfile.setupWithViewPager(it)

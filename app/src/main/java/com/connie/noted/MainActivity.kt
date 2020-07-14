@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("Connie", "UserManager.user = ${UserManager.user.value}")
 
+        viewModel.checkLogin()
+
 
 
     }

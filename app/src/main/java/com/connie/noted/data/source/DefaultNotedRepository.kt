@@ -3,6 +3,7 @@ package com.connie.noted.data.source
 import androidx.lifecycle.MutableLiveData
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
+import com.connie.noted.data.User
 
 class DefaultNotedRepository(
     private val remoteDataSource: NotedDataSource,
@@ -15,6 +16,14 @@ class DefaultNotedRepository(
 
     override suspend fun likeNote(note: Note): Result<Boolean> {
         return remoteDataSource.likeNote(note)
+    }
+
+    override suspend fun updateUser(user: User): Result<Boolean> {
+        return remoteDataSource.updateUser(user)
+    }
+
+    override fun getLiveUser(): MutableLiveData<User> {
+        return remoteDataSource.getLiveUser()
     }
 
     override fun getLiveNotes(): MutableLiveData<List<Note>> {

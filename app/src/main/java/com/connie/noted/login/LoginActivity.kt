@@ -107,6 +107,8 @@ class LoginActivity : AppCompatActivity() {
                         UserManager.user.value?.email = result.user.email ?: ""
                         UserManager.user.value?.image = "https://graph.facebook.com/$userId/picture?height=500"
 
+                        UserManager.justLogin = true
+
 
                     }
 

@@ -13,14 +13,18 @@ object UserManager {
 
     private const val USER_DATA = "user_data"
     private const val USER_TOKEN = "user_token"
-    private const val USER_ID = "user_id"
+    private const val USER_EMAIL = "user_email"
 
-    private val _user = MutableLiveData<User>().apply {
+//    private val _user = MutableLiveData<User>().apply {
+//        value = User()
+//    }
+
+    var user = MutableLiveData<User>().apply{
         value = User()
     }
 
-    val user: LiveData<User>
-        get() = _user
+//    val user: LiveData<User>
+//        get() = _user
 
     var userToken: String? = null
         get() = NotedApplication.instance
@@ -46,18 +50,19 @@ object UserManager {
         }
 
 
+    var justLogin: Boolean = false
 
 
 
-    var userId: Int? = null
+    var userEmail: String? = null
         get() = NotedApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
-            .getInt(USER_ID, -1)
+            .getString(USER_EMAIL, "")
         set(value) {
             NotedApplication.instance
                 .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
                 .edit()
-                .putInt(USER_ID, value!!)
+                .putString(USER_EMAIL, value!!)
                 .apply()
             field = value
         }
@@ -73,8 +78,8 @@ object UserManager {
      */
     fun clear() {
         userToken = null
-        userId = null
-        _user.value = null
+        userEmail = null
+        user.value = null
     }
 
 

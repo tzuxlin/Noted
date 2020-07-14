@@ -1,11 +1,18 @@
 package com.connie.noted.data.source.remote
 
 import android.icu.util.Calendar
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
+import com.connie.noted.data.User
 import com.connie.noted.data.source.NotedDataSource
+import com.connie.noted.login.UserManager
+
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlin.coroutines.resume
@@ -69,6 +76,75 @@ object NotedRemoteDataSource : NotedDataSource {
                     }
                 }
         }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override suspend fun updateUser(user: User): Result<Boolean> =
+        suspendCoroutine { continuation ->
+
+            UserManager.userEmail = user.email
+
+            val users = FirebaseFirestore.getInstance().collection("users")
+            val document = user.email.let {
+                users.document(it)
+            }
+            users.whereEqualTo("email", user.email)
+                .get()
+                .addOnSuccessListener { result ->
+                    if (result.isEmpty) {
+                        document.set(user).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.i("Connie", "New User: $user")
+                                continuation.resume(Result.Success(true))
+                            } else {
+                                task.exception?.let {
+                                    Log.w(
+                                        "Connie",
+                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                    )
+                                    continuation.resume(Result.Error(it))
+                                    return@addOnCompleteListener
+                                }
+                                continuation.resume(
+                                    Result.Fail(
+                                        NotedApplication.instance.getString(
+                                            R.string.you_know_nothing
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        Log.d("Connie", "User already exist")
+                    }
+                }
+        }
+
+
+    override fun getLiveUser(): MutableLiveData<User> {
+        val liveData = MutableLiveData<User>()
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", UserManager.userEmail)
+            .addSnapshotListener { snapshot, exception ->
+                Log.i("Connie", "addSnapshotListener detect")
+                exception?.let {
+                    Log.w(
+                        "Connie",
+                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                    )
+                }
+                var user = User()
+                for (document in snapshot!!) {
+                    Log.d("Connie", document.id + " => " + document.data)
+                    val info = document.toObject(User::class.java)
+                    user = info
+                }
+                liveData.value = user
+            }
+        return liveData
+    }
+
 
     override suspend fun likeNote(note: Note): Result<Boolean> =
         suspendCoroutine { continuation ->
