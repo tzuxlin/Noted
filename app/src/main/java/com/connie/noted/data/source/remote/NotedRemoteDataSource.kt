@@ -39,6 +39,7 @@ object NotedRemoteDataSource : NotedDataSource {
         return liveData
     }
 
+
     override suspend fun createNote(note: Note): Result<Boolean> =
         suspendCoroutine { continuation ->
             val notes = FirebaseFirestore.getInstance().collection(PATH_NOTES)
@@ -67,6 +68,16 @@ object NotedRemoteDataSource : NotedDataSource {
                         continuation.resume(Result.Fail("Fail"))
                     }
                 }
+        }
+
+    override suspend fun likeNote(note: Note): Result<Boolean> =
+        suspendCoroutine { continuation ->
+
+            val notes = FirebaseFirestore.getInstance().collection(PATH_NOTES)
+            notes.document(note.id)
+                .update("liked", !note.isLiked)
+
+            continuation.resume(Result.Success(true))
         }
 
 }

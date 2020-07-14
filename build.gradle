@@ -8,7 +8,7 @@ buildscript {
         version_coroutine = "1.1.0"
         version_navigation = "2.3.0-alpha06"
         version_glide = "4.8.0"
-        version_fragment = "1.2.0-alpha01"
+        version_fragment = "1.2.0-alpha03"
         version_design_support = "28.0.0"
         version_paging = "2.1.0-rc01"
         room_version = "2.2.5"

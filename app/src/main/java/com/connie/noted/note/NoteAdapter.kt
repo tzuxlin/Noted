@@ -18,29 +18,14 @@ import com.connie.noted.databinding.ItemNoteLinearBinding
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * [Note], including computing diffs between lists.
  */
-class NoteAdapter(private val viewModel: NoteViewModel) :
+class NoteAdapter(private val viewModel: NoteViewModel
+//                  , private val onClickListener: OnClickListener
+) :
     ListAdapter<Note, RecyclerView.ViewHolder>(DiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return viewModel.viewType.value ?:0
     }
-
-
-//    abstract class ViewHolder {
-//        abstract fun bind(model: Note, viewModel: NoteViewModel)
-//
-//        companion object {
-//            fun create(v: View?, viewType: Int): RecyclerView.ViewHolder {
-//                return when (viewType) {
-//
-//                    0 -> NoteGridViewHolder()
-//                    else -> NoteLinearViewHolder()
-//
-//                }
-//
-//            }
-//        }
-//    }
 
 
     class NoteLinearViewHolder(private var binding: ItemNoteLinearBinding) :
@@ -50,6 +35,8 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
 
             binding.note = note
 
+//binding.iconNoteLiked.onClick
+
             if (note.images.isNotEmpty()) {
                 binding.imageString = note.images[0]
             } else {
@@ -57,6 +44,8 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
             }
 
 //          binding.viewModel = viewModel
+
+//            binding.iconNoteLiked.onClickListener
             binding.executePendingBindings()
         }
     }
@@ -118,20 +107,30 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        val note = getItem(position)
+
         when (holder) {
 
             is NoteGridViewHolder -> {
                 holder.bind(getItem(position), viewModel)
+//                holder.itemView.setOnClickListener {
+//                    onClickListener.onClick(note)
+//                }
             }
 
             is NoteLinearViewHolder -> {
                 holder.bind(getItem(position), viewModel)
+//                holder.itemView.setOnClickListener {
+//                    onClickListener.onClick(note)
+//                }
             }
         }
 
     }
 
-
+    class OnClickListener(val clickListener: (note: Note) -> Unit) {
+        fun onClick(note: Note) = clickListener(note)
+    }
 
 
 //    private fun setTag(tagList: MutableList<String>) {

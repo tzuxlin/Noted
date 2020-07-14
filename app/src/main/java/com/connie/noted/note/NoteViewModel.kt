@@ -86,7 +86,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     }
 
 
-    fun getLiveNotes() {
+    private fun getLiveNotes() {
         liveNotes = notedRepository.getLiveNotes()
     }
 

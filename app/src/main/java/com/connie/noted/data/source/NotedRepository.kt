@@ -8,6 +8,8 @@ interface NotedRepository {
 
     suspend fun createNote(note: Note): Result<Boolean>
 
+    suspend fun likeNote(note: Note): Result<Boolean>
+
     fun getLiveNotes(): MutableLiveData<List<Note>>
 
 

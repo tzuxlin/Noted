@@ -13,6 +13,10 @@ class DefaultNotedRepository(
         return remoteDataSource.createNote(note)
     }
 
+    override suspend fun likeNote(note: Note): Result<Boolean> {
+        return remoteDataSource.likeNote(note)
+    }
+
     override fun getLiveNotes(): MutableLiveData<List<Note>> {
         return remoteDataSource.getLiveNotes()
     }
