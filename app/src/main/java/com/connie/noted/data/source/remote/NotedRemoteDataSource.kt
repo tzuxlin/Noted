@@ -12,7 +12,6 @@ import com.connie.noted.data.Result
 import com.connie.noted.data.User
 import com.connie.noted.data.source.NotedDataSource
 import com.connie.noted.login.UserManager
-
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlin.coroutines.resume

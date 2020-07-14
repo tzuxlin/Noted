@@ -28,22 +28,7 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
     }
 
 
-    var liveUser = MutableLiveData<User>()
 
-    //
-//    // user: MainViewModel has User info to provide Drawer UI
-    private val _user = MutableLiveData<User>()
-
-    val user: LiveData<User>
-        get() = _user
-
-    //
-//    // products: Get products from database to provide count number to bottom badge of cart
-//    val products: LiveData<List<Product>> = notedRepository.getProductsInCart()
-//
-//    // countInCart: Count number for bottom badge
-//    val countInCart: LiveData<Int> = Transformations.map(products) { it.size }
-//
 //    // Record current fragment to support data binding
 //    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 //
@@ -79,19 +64,20 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 //    // check user login status
 //    val isLoggedIn
 //        get() = UserManager.isLoggedIn
-//
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-//
+
 //    // error: The internal MutableLiveData that stores the error of the most recent request
 //    private val _error = MutableLiveData<String>()
 //
 //    val error: LiveData<String>
 //        get() = _error
-//
+
+
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
@@ -106,23 +92,9 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
         super.onCleared()
         viewModelJob.cancel()
     }
-//
-//    init {
-//        Logger.i("------------------------------------")
-//        Logger.i("[${this::class.simpleName}]${this}")
-//        Logger.i("------------------------------------")
-//    }
-//
-//    fun setupUser(user: User) {
-//
-//        _user.value = user
-//        Logger.i("=============")
-//        Logger.i("| setupUser |")
-//        Logger.i("user=$user")
-//        Logger.i("MainViewModel=${this}")
-//        Logger.i("=============")
-//    }
-//
+
+
+
 //    fun checkUser() {
 //        if (user.value == null) {
 //            UserManager.userToken?.let {
@@ -130,71 +102,9 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 //            }
 //        }
 //    }
-//
-//    fun navigateToLoginSuccess(user: User) {
-//        _navigateToLoginSuccess.value = user
-//    }
-//
-//    fun onLoginSuccessNavigated() {
-//        _navigateToLoginSuccess.value = null
-//    }
-//
-//    fun navigateToProfileByBottomNav(user: User) {
-//        _navigateToProfileByBottomNav.value = user
-//    }
-//
-//    fun onProfileNavigated() {
-//        _navigateToProfileByBottomNav.value = null
-//    }
-//
-//    fun navigateToHomeByBottomNav() {
-//        _navigateToHomeByBottomNav.value = true
-//    }
-//
-//    fun onHomeNavigated() {
-//        _navigateToHomeByBottomNav.value = null
-//    }
-//
-//    /**
-//     * track [StylishRepository.getUserProfile]: -> [DefaultStylishRepository] : [StylishRepository] -> [StylishRemoteDataSource] : [StylishDataSource]
-//     * @param token: Stylish token
-//     */
-//    private fun getUserProfile(token: String) {
-//
-//        coroutineScope.launch {
-//
-//            _status.value = LoadApiStatus.LOADING
-//
-//            val result = notedRepository.getUserProfile(token)
-//
-//            _user.value = when (result) {
-//
-//                is Result.Success -> {
-//                    _error.value = null
-//                    _status.value = LoadApiStatus.DONE
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                    if (result.error.contains("Invalid Access Token", true)) {
-//                        UserManager.clear()
-//                    }
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = getString(R.string.you_know_nothing)
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-//        }
-//    }
+
+
+
 
     fun checkLogin() {
         if (UserManager.justLogin) {
