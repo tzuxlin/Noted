@@ -2,6 +2,7 @@ package com.connie.noted
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.login.UserManager
 import com.connie.noted.util.DrawerToggleType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         setupDrawer()
+
+        Log.d("Connie", "UserManager.user = ${UserManager.user.value}")
 
 
 

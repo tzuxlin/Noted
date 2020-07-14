@@ -98,5 +98,15 @@ dependencies {
     //Jsoup
     implementation("org.jsoup:jsoup:1.11.3")
 
+    //facebook
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    // Firebase核心
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    // Firebase Authentication (帳號驗證模組)
+    implementation 'com.google.firebase:firebase-auth:18.0.0'
+//    // Facebook軟體開發套件
+//    implementation 'com.facebook.android:facebook-android-sdk:4.40.0'
+
 
 }

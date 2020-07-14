@@ -9,6 +9,8 @@
             name="viewModel"
             type="com.connie.noted.profile.ProfileViewModel" />
 
+        <import type="com.connie.noted.login.UserManager"/>
+
     </data>
 
     <LinearLayout
@@ -43,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:profileImageUrl="@{viewModel.user.image}"
+                app:profileImageUrl="@{UserManager.INSTANCE.user.image}"
                 tools:background="@drawable/icon_user" />
 
 
@@ -53,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:letterSpacing="0.1"
-                android:text="@{viewModel.user.name}"
+                android:text="@{UserManager.INSTANCE.user.name}"
                 android:textColor="@color/greyish_brown"
                 android:textSize="20sp"
                 android:textStyle="bold"

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/baloo</item>
+        <item>@font/delius_unicase</item>
+        <item>@font/monofett</item>
         <item>@font/noto_sans</item>
     </array>
 </resources>
