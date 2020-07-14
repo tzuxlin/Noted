@@ -62,7 +62,7 @@
             android:layout_height="18dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
-            android:background='@{note.type == "Location" ? @drawable/icon_location : note.type == "Video" ? @drawable/icon_video : @drawable/icon_article}'
+            android:background='@{"Location".equals(note.type) ? @drawable/icon_location : "Video".equals(note.type) ? @drawable/icon_video : @drawable/icon_article}'
             android:backgroundTint="@color/greyish_brown"
             android:fontFamily="@font/noto_sans"
             android:letterSpacing="0.15"
