@@ -52,8 +52,6 @@ fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
             .apply(
                 RequestOptions()
                     .circleCrop()
-//                    .placeholder(R.drawable.placeholder)
-//                    .error(R.drawable.ic_broken_image)
             )
             .into(imgView)
     }
