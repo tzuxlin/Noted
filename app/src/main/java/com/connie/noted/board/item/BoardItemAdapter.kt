@@ -83,9 +83,10 @@ class BoardItemAdapter(
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
         val board = getItem(position)
 
-        board?.let {
-            holder.bind(it)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(board)
         }
+        holder.bind(board)
 
     }
 

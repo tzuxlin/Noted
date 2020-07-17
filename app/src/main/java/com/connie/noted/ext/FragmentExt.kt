@@ -24,6 +24,7 @@ fun Fragment.getVmFactory(note: Note): NoteViewModelFactory {
     return NoteViewModelFactory(repository, note)
 }
 
+
 fun Fragment.getVmFactory(boardType: BoardTypeFilter): BoardItemViewModelFactory {
     val repository = (requireContext().applicationContext as NotedApplication).notedRepository
     return BoardItemViewModelFactory(repository, boardType)

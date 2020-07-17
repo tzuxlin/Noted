@@ -83,6 +83,7 @@ class ProfileFragment : Fragment() {
             chip.textSize = 12f
 
 
+
             chip.setTextColor(Color.WHITE)
 
             val states = arrayOf(intArrayOf(-android.R.attr.state_checked))
@@ -91,6 +92,7 @@ class ProfileFragment : Fragment() {
             val chipColorsStateList = ColorStateList(states, chipColors)
 
             chip.chipBackgroundColor = chipColorsStateList
+            chip.closeIconTint = ColorStateList(states, intArrayOf(Color.WHITE))
 
 
 
@@ -103,9 +105,12 @@ class ProfileFragment : Fragment() {
                 chip.setOnCloseIconClickListener {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
+
+                    Log.e ("Connie", tagList.toString())
                 }
 
             }
+
 
 
             chipGroup.addView(chip)

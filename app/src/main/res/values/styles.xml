@@ -3,13 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/translucent</item>
+        <item name="colorPrimaryDark">@color/translucent</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="toolbar_style">
         <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="ProgressThemeDark" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/white</item>
     </style>
 
 </resources>

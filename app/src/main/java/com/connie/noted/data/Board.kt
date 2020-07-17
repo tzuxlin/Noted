@@ -1,6 +1,9 @@
 package com.connie.noted.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Board (
     var createdBy: String = "",
     var savedBy: MutableList<String?> = mutableListOf(),
@@ -10,4 +13,4 @@ data class Board (
     var isLiked: Boolean = false,
     var isPublic: Boolean = false,
     var notes: MutableList<String?> = mutableListOf()
-)
+): Parcelable

@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.FragmentNoteBinding
@@ -38,7 +40,16 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             when (it) {
 
                 0 -> {
-                    noteRecyclerView.adapter = NoteAdapter(viewModel)
+                    noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
+
+                        Log.i("Connie", "Note is clicked, $note")
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalNotePageFragment(
+                                note
+                            )
+                        )
+
+                    }, viewModel)
                     noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
 
                     viewModel.liveNotes.value = viewModel.liveNotes.value
@@ -46,7 +57,16 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 }
 
                 1 -> {
-                    noteRecyclerView.adapter = NoteAdapter(viewModel)
+                    noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
+
+                        Log.i("Connie", "Note is clicked, $note")
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalNotePageFragment(
+                                note
+                            )
+                        )
+
+                    }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
 

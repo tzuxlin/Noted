@@ -1,14 +1,18 @@
 package com.connie.noted.board.item
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 
 import com.connie.noted.R
@@ -21,7 +25,7 @@ import com.connie.noted.note.NoteAdapter
 import com.connie.noted.note.NoteViewModel
 import kotlinx.android.synthetic.main.fragment_board_item.*
 
-class BoardItemFragment(private val boardType: BoardTypeFilter): Fragment() {
+class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
     private val viewModel by viewModels<BoardItemViewModel> { getVmFactory(boardType) }
 
@@ -43,7 +47,17 @@ class BoardItemFragment(private val boardType: BoardTypeFilter): Fragment() {
             when (it) {
 
                 0 -> {
-                    boardRecyclerView.adapter = BoardItemAdapter(BoardItemAdapter.OnClickListener{}, viewModel)
+                    boardRecyclerView.adapter =
+                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
+
+                            Log.i("Connie", "Board is clicked, $board")
+                            findNavController().navigate(
+                                NaviDirections.actionGlobalBoardPageFragment(
+                                    board
+                                )
+                            )
+
+                        }, viewModel)
                     boardRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
 
                     viewModel.liveBoards.value = viewModel.liveBoards.value
@@ -51,7 +65,17 @@ class BoardItemFragment(private val boardType: BoardTypeFilter): Fragment() {
                 }
 
                 1 -> {
-                    boardRecyclerView.adapter = BoardItemAdapter(BoardItemAdapter.OnClickListener{}, viewModel)
+                    boardRecyclerView.adapter =
+                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
+
+                            Log.i("Connie", "Board is clicked, $board")
+                            findNavController().navigate(
+                                NaviDirections.actionGlobalBoardPageFragment(
+                                    board
+                                )
+                            )
+
+                        }, viewModel)
                     boardRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
 
@@ -62,6 +86,14 @@ class BoardItemFragment(private val boardType: BoardTypeFilter): Fragment() {
             }
 
         })
+
+        binding.boardAddButton.setOnClickListener {
+            Toast.makeText(
+                NotedApplication.instance.applicationContext,
+                "Hello",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         binding.boardIconChangeLayout.setOnClickListener {
 

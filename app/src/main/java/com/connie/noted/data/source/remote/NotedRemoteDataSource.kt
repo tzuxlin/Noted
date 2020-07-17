@@ -91,10 +91,19 @@ object NotedRemoteDataSource : NotedDataSource {
 
                                         val board = document.toObject(Board::class.java)
                                         list.add(board)
-                                        liveData.value = when (type) {
-                                            BoardTypeFilter.SAVED -> list.filter { it.savedBy.contains(email) }
-                                            BoardTypeFilter.MINE -> list.filter { it.createdBy == email }
-                                            else -> list
+
+
+                                    }
+
+                                    liveData.value = when (type) {
+                                        BoardTypeFilter.SAVED -> {
+                                            list.filter { it.savedBy.contains(email) }
+                                        }
+                                        BoardTypeFilter.MINE -> {
+                                            list.filter { it.createdBy == email }
+                                        }
+                                        else -> {
+                                            list
                                         }
 
                                     }

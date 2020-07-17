@@ -29,6 +29,7 @@ class NoteCrawlerClass : NoteCrawler {
         }
 
         note.type = "Location"
+        note.url = url
 
         continuation.resume(note)
 
@@ -62,6 +63,7 @@ class NoteCrawlerClass : NoteCrawler {
                 note.images.add(content)
             }
             note.type = "Article"
+            note.url = url
 
 
 
@@ -104,6 +106,7 @@ class NoteCrawlerClass : NoteCrawler {
         }
 
         note.type = "Video"
+        note.url = url
 
 
         continuation.resume(note)
