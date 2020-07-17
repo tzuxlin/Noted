@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.connie.noted.NotedApplication
 import com.connie.noted.R
+import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
@@ -47,10 +48,12 @@ object NotedRemoteDataSource : NotedDataSource {
         return liveData
     }
 
-    override fun getLiveBoards(): MutableLiveData<List<Board>> {
+    override fun getLiveBoards(type: BoardTypeFilter): MutableLiveData<List<Board>> {
         val liveData = MutableLiveData<List<Board>>()
 
         UserManager.userEmail?.let { email ->
+
+            val list = mutableListOf<Board>()
 
             FirebaseFirestore.getInstance()
                 .collection(PATH_BOARDS)
@@ -59,7 +62,6 @@ object NotedRemoteDataSource : NotedDataSource {
                 .addOnCompleteListener { task ->
 
                     if (task.isSuccessful) {
-                        val list = mutableListOf<Board>()
 
                         task.result?.let { documents ->
 
@@ -70,13 +72,43 @@ object NotedRemoteDataSource : NotedDataSource {
                                 list.add(board)
                             }
 
-                            liveData.value = list
-
                         }
 
                     }
+
+                    FirebaseFirestore.getInstance()
+                        .collection(PATH_BOARDS)
+                        .whereArrayContains("savedBy", email)
+                        .get()
+                        .addOnCompleteListener { task ->
+
+                            if (task.isSuccessful) {
+
+                                task.result?.let { documents ->
+
+                                    for (document in documents) {
+                                        Log.d("Connie", document.id + " => " + document.data)
+
+                                        val board = document.toObject(Board::class.java)
+                                        list.add(board)
+                                        liveData.value = when (type) {
+                                            BoardTypeFilter.SAVED -> list.filter { it.savedBy.contains(email) }
+                                            BoardTypeFilter.MINE -> list.filter { it.createdBy == email }
+                                            else -> list
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
                 }
         }
+
+
+
         return liveData
 
     }

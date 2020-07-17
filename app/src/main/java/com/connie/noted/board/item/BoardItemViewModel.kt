@@ -18,7 +18,7 @@ import kotlinx.coroutines.Job
  */
 class BoardItemViewModel(
     private val notedRepository: NotedRepository,
-    boardType: BoardTypeFilter // Handle the type for each catalog item
+    private val boardType: BoardTypeFilter // Handle the type for each catalog item
 ) : ViewModel() {
 
 
@@ -58,7 +58,7 @@ class BoardItemViewModel(
     }
 
     private fun toGetBoard(){
-        liveBoards = notedRepository.getLiveBoards()
+        liveBoards = notedRepository.getLiveBoards(boardType)
     }
 
 

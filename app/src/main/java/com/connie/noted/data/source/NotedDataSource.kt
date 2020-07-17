@@ -1,6 +1,7 @@
 package com.connie.noted.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
@@ -18,6 +19,6 @@ interface NotedDataSource {
 
     fun getLiveNotes(): MutableLiveData<List<Note>>
 
-    fun getLiveBoards():MutableLiveData<List<Board>>
+    fun getLiveBoards(type: BoardTypeFilter):MutableLiveData<List<Board>>
 
 }
