@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="note"
-            type="com.connie.noted.data.Note" />
-
-        <variable
             name="board"
             type="com.connie.noted.data.Board" />
 
@@ -37,48 +33,30 @@
 
 
         <ImageView
-            android:id="@+id/image_note"
+            android:id="@+id/image_board"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:background="@drawable/shape_top_radius"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:imageUrl="@{imageString}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_placeholder" />
 
-        <ImageView
-            android:id="@+id/icon_bg_note_source"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_round"
-            android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.15"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/image_note"
-            app:layout_constraintTop_toTopOf="@id/image_note" />
 
-        <ImageView
-            android:id="@+id/icon_note_source"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background='@{note.type == "Location" ? @drawable/icon_location : note.type == "Video" ? @drawable/icon_video : @drawable/icon_article}'
-            android:backgroundTint="@color/white"
+        <TextView
+            android:id="@+id/text_board_notes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="12sp"
+            android:textColor="@color/brownish_grey"
             android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.15"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/icon_bg_note_source"
-            app:layout_constraintEnd_toEndOf="@id/icon_bg_note_source"
-            app:layout_constraintStart_toStartOf="@id/icon_bg_note_source"
-            app:layout_constraintTop_toTopOf="@id/icon_bg_note_source" />
+            app:notesCount="@{board.notes.size()}"
+            app:layout_constraintTop_toBottomOf="@id/image_board"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <ImageView
             android:id="@+id/icon_bg_note_liked"
@@ -93,14 +71,14 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/image_note"
-            app:layout_constraintTop_toBottomOf="@id/icon_bg_note_source" />
+            app:layout_constraintEnd_toEndOf="@id/image_board"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/icon_note_liked"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background='@{note.liked ? @drawable/icon_like_true : @drawable/icon_like_false}'
+            android:background='@{board.isLiked ? @drawable/icon_like_true : @drawable/icon_like_false}'
             android:backgroundTint="@color/white"
             android:fontFamily="@font/noto_sans"
             android:letterSpacing="0.15"
@@ -113,21 +91,30 @@
             app:layout_constraintTop_toTopOf="@id/icon_bg_note_liked" />
 
 
+        <ImageView
+            android:id="@+id/icon_board"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/icon_clip_board"
+            app:layout_constraintTop_toBottomOf="@id/image_board"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <TextView
             android:id="@+id/text_note_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans"
             android:letterSpacing="0.07"
-            android:padding="8dp"
-            android:text="@{note.title}"
+            android:layout_margin="8dp"
+            android:text="@{board.title}"
             android:textAlignment="viewStart"
             android:textColor="@color/greyish_brown"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/layout_note_tag"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_note"
+            app:layout_constraintTop_toBottomOf="@+id/text_board_notes_count"
             tools:text="A simple way to work with Kotlin Coroutines in Android" />
 
 <!--                <androidx.recyclerview.widget.RecyclerView-->
@@ -146,24 +133,24 @@
 
 <!--                </androidx.recyclerview.widget.RecyclerView>-->
 
-        <LinearLayout
-            android:id="@+id/layout_note_tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_note_title">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/layout_note_tag"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/text_note_title">-->
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/note_tag_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+<!--            <com.google.android.material.chip.ChipGroup-->
+<!--                android:id="@+id/note_tag_group"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </LinearLayout>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

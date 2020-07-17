@@ -2,6 +2,7 @@ package com.connie.noted.data.source.local
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -27,6 +28,10 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
     }
 
     override fun getLiveNotes(): MutableLiveData<List<Note>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveBoards(): MutableLiveData<List<Board>> {
         TODO("Not yet implemented")
     }
 

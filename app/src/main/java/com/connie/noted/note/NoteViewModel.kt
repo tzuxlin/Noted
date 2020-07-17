@@ -59,13 +59,13 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     private fun goGo() {
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetYoutube("https://youtu.be/ZbO2BZvFbm8"))
+//            _newNote.postValue(toGetYoutube("https://youtu.be/DhmQG96uEJk"))
 //        }
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetMediumArticle("https://developer.android.com/kotlin"))
+//            _newNote.postValue(toGetMediumArticle("https://medium.com/@chuckyusouchen/ted-dessert-menu-3f3df405db04"))
 //        }
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/M9z8XAphWzEy7T2QA"))
+//            _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/v9QfoQYZRjd84NJj7"))
 //        }
     }
 

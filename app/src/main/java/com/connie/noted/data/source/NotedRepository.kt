@@ -1,6 +1,7 @@
 package com.connie.noted.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -15,8 +16,8 @@ interface NotedRepository {
 
     fun getLiveUser(): MutableLiveData<User>
 
-
     fun getLiveNotes(): MutableLiveData<List<Note>>
 
+    fun getLiveBoards():MutableLiveData<List<Board>>
 
 }

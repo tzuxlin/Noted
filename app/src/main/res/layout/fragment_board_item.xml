@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".board.item.BoardItemFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.board.item.BoardItemViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".note.NoteFragment"
+        android:background="#FFFFFF"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/board_icon_change_layout"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/greyish_brown"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/board_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            app:reverseLayout="false"
+            app:listBoard="@{viewModel.liveBoards}"
+            app:layout_constraintTop_toBottomOf="@id/board_icon_change_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

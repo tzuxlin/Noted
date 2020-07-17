@@ -13,6 +13,8 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.connie.noted.board.item.BoardItemAdapter
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.note.NoteAdapter
 
@@ -35,9 +37,17 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 }
 
 @BindingAdapter("listNote")
-fun bindProductRecyclerView(recyclerView: RecyclerView, data: List<Note>?) {
+fun bindNoteRecyclerView(recyclerView: RecyclerView, data: List<Note>?) {
     if (data != null) {
         val adapter = recyclerView.adapter as NoteAdapter
+        adapter.submitList(data)
+    }
+}
+
+@BindingAdapter("listBoard")
+fun bindBoardRecyclerView(recyclerView: RecyclerView, data: List<Board>?) {
+    if (data != null) {
+        val adapter = recyclerView.adapter as BoardItemAdapter
         adapter.submitList(data)
     }
 }
@@ -54,5 +64,12 @@ fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
                     .circleCrop()
             )
             .into(imgView)
+    }
+}
+
+@BindingAdapter("notesCount")
+fun bindBoardNotesCount(textView: TextView, size: Int?) {
+    size?.let{
+        textView.text = "$it notes"
     }
 }

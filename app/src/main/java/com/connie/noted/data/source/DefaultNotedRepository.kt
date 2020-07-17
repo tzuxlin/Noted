@@ -1,6 +1,7 @@
 package com.connie.noted.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -28,6 +29,10 @@ class DefaultNotedRepository(
 
     override fun getLiveNotes(): MutableLiveData<List<Note>> {
         return remoteDataSource.getLiveNotes()
+    }
+
+    override fun getLiveBoards(): MutableLiveData<List<Board>> {
+        return remoteDataSource.getLiveBoards()
     }
 
 
