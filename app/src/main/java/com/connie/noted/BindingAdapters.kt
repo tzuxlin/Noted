@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -22,17 +23,38 @@ import com.connie.noted.note.NoteAdapter
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
-        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context)
-            .load(imgUrl)
-            .apply(
-                RequestOptions()
-                    .transform(MultiTransformation(FitCenter(), RoundedCorners(10)))
+            val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+            Glide.with(imgView.context)
+                .load(imgUrl)
+                .apply(
+                    RequestOptions()
+                        .transform(MultiTransformation(FitCenter(), RoundedCorners(10)))
 //                    .fitCenter()
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_placeholder)
-            )
-            .into(imgView)
+                        .placeholder(R.drawable.ic_placeholder)
+                        .error(R.drawable.ic_placeholder)
+                )
+                .into(imgView)
+        }
+
+}
+
+
+@BindingAdapter("imageCollageUrl")
+fun bindImageCollage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        if (it.length > 2) {
+            val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+            Glide.with(imgView.context)
+                .load(imgUrl)
+                .apply(
+                    RequestOptions()
+                        .transform(MultiTransformation(CenterCrop(), RoundedCorners(10)))
+//                    .fitCenter()
+                        .placeholder(R.drawable.ic_placeholder)
+                        .error(R.drawable.ic_placeholder)
+                )
+                .into(imgView)
+        }
     }
 }
 
@@ -71,5 +93,13 @@ fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
 fun bindBoardNotesCount(textView: TextView, size: Int?) {
     size?.let{
         textView.text = "$it notes"
+    }
+}
+
+
+@BindingAdapter("boardMore")
+fun bindBoardMoreNotesCount(textView: TextView, size: Int?) {
+    size?.let{
+        textView.text = "${it-4}+"
     }
 }

@@ -13,14 +13,34 @@ import com.connie.noted.databinding.ItemBoardBinding
  * [Board], including computing diffs between lists.
  * @param onClickListener a lambda that takes the
  */
-class BoardItemAdapter(private val onClickListener: OnClickListener, val viewModel: BoardItemViewModel ) :
-        ListAdapter<Board, BoardItemAdapter.BoardViewHolder>(DiffCallback) {
+class BoardItemAdapter(
+    private val onClickListener: OnClickListener,
+    val viewModel: BoardItemViewModel
+) :
+    ListAdapter<Board, BoardItemAdapter.BoardViewHolder>(DiffCallback) {
 
-    class BoardViewHolder(private var binding: ItemBoardBinding):
-            RecyclerView.ViewHolder(binding.root) {
+    class BoardViewHolder(private var binding: ItemBoardBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(board: Board) {
             binding.board = board
-            binding.imageString = board.images[0]
+//            binding.imageString = board.images[0]
+
+            binding.imagesList = ArrayList<String>()
+
+            val i = board.images
+
+            when (i.size) {
+                0 -> binding.imagesList = arrayListOf("", "", "", "", "")
+                1 -> binding.imagesList = arrayListOf(i[0], "", "", "", "")
+                2 -> binding.imagesList = arrayListOf(i[0], i[1], "", "", "")
+                3 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], "", "")
+                4 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], "")
+                5 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], i[4])
+                else -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], i[4])
+
+            }
+
+
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -44,9 +64,17 @@ class BoardItemAdapter(private val onClickListener: OnClickListener, val viewMod
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): BoardViewHolder {
-        return BoardViewHolder(ItemBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BoardViewHolder {
+        return BoardViewHolder(
+            ItemBoardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     /**
@@ -69,4 +97,5 @@ class BoardItemAdapter(private val onClickListener: OnClickListener, val viewMod
     class OnClickListener(val clickListener: (board: Board) -> Unit) {
         fun onClick(board: Board) = clickListener(board)
     }
+
 }
