@@ -8,12 +8,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         setupDrawer()
+        setupNavController()
 
         Log.d("Connie", "UserManager.user = ${UserManager.user.value}")
 
@@ -69,6 +73,24 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
+
+    /**
+     * Set up [NavController.addOnDestinationChangedListener] to record the current fragment, it better than another design
+     * which is change the [CurrentFragmentType] enum value by [MainViewModel] at [onCreateView]
+     */
+    private fun setupNavController() {
+        findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                R.id.noteFragment -> CurrentFragmentType.NOTE
+                R.id.boardFragment -> CurrentFragmentType.BOARD
+//                R.id.exploreFragment -> CurrentFragmentType.EXPLORE
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
+//                R.id.boardPageFragment -> CurrentFragmentType.BOARDDETAIL
+//                R.id.notePageFragment -> CurrentFragmentType.NOTEDETAIL
+                else -> viewModel.currentFragmentType.value
+            }
+        }
+    }
 
 
     /**

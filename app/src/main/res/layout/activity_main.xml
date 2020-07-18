@@ -9,6 +9,9 @@
             name="viewModel"
             type="com.connie.noted.MainViewModel" />
 
+        <import type="com.connie.noted.util.CurrentFragmentType"/>
+        <import type="android.view.View"/>
+
     </data>
 
 
@@ -22,15 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MainActivity">
-
-            <!--        <include layout="@layout/toolbar" />-->
-
-
+            
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/toolbar_style"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,21 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/noto_sans"
+                    android:letterSpacing="0.15"
+                    android:text="@{viewModel.currentFragmentType.value}"
+                    android:textColor="@color/black_3f3a3a"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTE ? View.VISIBLE : View.VISIBLE}"
+                    tools:text="Noted!"
+                    tools:visibility="visible" />
 
 
             </androidx.appcompat.widget.Toolbar>

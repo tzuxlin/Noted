@@ -8,6 +8,7 @@ import com.connie.noted.data.User
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +30,8 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 
 
 
-//    // Record current fragment to support data binding
-//    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
+    // Record current fragment to support data binding
+    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 //
 //    // According to current fragment to change different drawer toggle
 //    val currentDrawerToggleType: LiveData<DrawerToggleType> = Transformations.map(currentFragmentType) {
