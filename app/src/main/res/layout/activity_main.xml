@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MainActivity">
-            
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/toolbar_style"
@@ -60,7 +60,6 @@
                     android:textColor="@color/black_3f3a3a"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTE ? View.VISIBLE : View.VISIBLE}"
                     tools:text="Noted!"
                     tools:visibility="visible" />
 

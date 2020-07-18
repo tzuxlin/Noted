@@ -53,19 +53,24 @@ class MainActivity : AppCompatActivity() {
 
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_noteFragment -> {
 
+            when (item.itemId) {
+
+                R.id.navigation_noteFragment -> {
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalNoteFragment())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_boardFragment -> {
-
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalBoardFragment())
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_profileFragment -> {
 
+                R.id.navigation_exploreFragment -> {
+                    findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalExploreFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.navigation_profileFragment -> {
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalProfileFragment())
                     return@OnNavigationItemSelectedListener true
                 }
@@ -83,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.noteFragment -> CurrentFragmentType.NOTE
                 R.id.boardFragment -> CurrentFragmentType.BOARD
-//                R.id.exploreFragment -> CurrentFragmentType.EXPLORE
+                R.id.exploreFragment -> CurrentFragmentType.EXPLORE
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
 //                R.id.boardPageFragment -> CurrentFragmentType.BOARDDETAIL
 //                R.id.notePageFragment -> CurrentFragmentType.NOTEDETAIL

@@ -62,4 +62,9 @@
             android:name="boardKey"
             app:argType="com.connie.noted.data.Board" />
     </action>
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.connie.noted.explore.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" /><action android:id="@+id/action_global_exploreFragment" app:destination="@id/exploreFragment"/>
 </navigation>
