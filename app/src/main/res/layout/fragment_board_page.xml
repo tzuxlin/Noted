@@ -1,13 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".boardpage.BoardPageFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.boardpage.BoardPageViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        tools:context=".boardpage.BoardPageFragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/board_page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.15"
+            android:text="@{viewModel.board.title}"
+            android:textColor="@color/black_3f3a3a"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="我都唸作ＣＯＳＴＣＯ" />
+
+        <TextView
+            android:id="@+id/board_page_creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:textSize="13sp"
+            android:letterSpacing="0.1"
+            app:createdBy="@{viewModel.board.creatorName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/board_page_title"
+            tools:text="由 村民Ｂ 新增" />
+
+        <ImageView
+            android:id="@+id/board_page_public"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="8dp"
+            android:background="@{viewModel.board.public ? @drawable/icon_public : @drawable/icon_private}"
+            android:backgroundTint="@color/brownish_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/board_page_creator"
+            tools:background="@drawable/icon_public" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/board_page_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            app:reverseLayout="false"
+            android:layout_margin="16dp"
+            app:listNote="@{viewModel.liveNotes}"
+            app:layout_constraintTop_toBottomOf="@id/board_page_public"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

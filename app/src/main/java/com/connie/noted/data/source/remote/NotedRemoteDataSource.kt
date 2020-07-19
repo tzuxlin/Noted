@@ -122,6 +122,43 @@ object NotedRemoteDataSource : NotedDataSource {
 
     }
 
+    override fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>> {
+        val liveData = MutableLiveData<List<Note>>()
+        val list = mutableListOf<Note>()
+
+        for (note in noteIdList) {
+
+
+            FirebaseFirestore.getInstance()
+                .collection(PATH_NOTES)
+                .whereEqualTo("id", note)
+                .get()
+                .addOnCompleteListener { task ->
+
+                    if (task.isSuccessful) {
+
+                        task.result?.let { documents ->
+
+                            for (document in documents) {
+                                Log.d("Connie", document.id + " => " + document.data)
+
+                                val note = document.toObject(Note::class.java)
+                                list.add(note)
+                            }
+
+                        }
+
+                    }
+
+                    liveData.value = list
+                }
+
+        }
+
+        return liveData
+
+    }
+
 
 //    override fun getLiveNotesFromBoards(): MutableLiveData<List<Board>> {
 //        val liveData = MutableLiveData<List<Board>>()

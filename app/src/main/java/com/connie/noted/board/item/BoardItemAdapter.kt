@@ -22,10 +22,9 @@ class BoardItemAdapter(
     class BoardViewHolder(private var binding: ItemBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(board: Board) {
-            binding.board = board
-//            binding.imageString = board.images[0]
 
-            binding.imagesList = ArrayList<String>()
+            binding.board = board
+//            binding.imagesList = ArrayList<String>()
 
             val i = board.images
 
@@ -35,7 +34,6 @@ class BoardItemAdapter(
                 2 -> binding.imagesList = arrayListOf(i[0], i[1], "", "", "")
                 3 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], "", "")
                 4 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], "")
-                5 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], i[4])
                 else -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], i[4])
 
             }

@@ -36,5 +36,9 @@ class DefaultNotedRepository(
         return remoteDataSource.getLiveBoards(type)
     }
 
+    override fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>> {
+        return remoteDataSource.getBoardLiveNotes(noteIdList)
+    }
+
 
 }
