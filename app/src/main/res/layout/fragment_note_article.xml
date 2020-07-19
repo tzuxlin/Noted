@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.connie.noted.notepage.NotePageViewModel" />
+            type="com.connie.noted.notepage.article.ArticleViewModel" />
 
         <variable
             name="imageString"
@@ -112,8 +112,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.07"
-                android:lineSpacingExtra="4dp"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
                 android:text="@{viewModel.note.title}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/greyish_brown"

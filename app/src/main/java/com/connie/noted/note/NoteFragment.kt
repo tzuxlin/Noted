@@ -41,11 +41,24 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
 
                         Log.i("Connie", "Note is clicked, $note")
-                        findNavController().navigate(
-                            NaviDirections.actionGlobalNotePageFragment(
-                                note
+
+                        when (note.type) {
+                            "Youtube" -> findNavController().navigate(
+                                NaviDirections.actionGlobalVideoFragment(
+                                    note
+                                )
                             )
-                        )
+                            "Location" -> findNavController().navigate(
+                                NaviDirections.actionGlobalLocationFragment(
+                                    note
+                                )
+                            )
+                            else -> findNavController().navigate(
+                                NaviDirections.actionGlobalArticleFragment(
+                                    note
+                                )
+                            )
+                        }
 
                     }, viewModel)
                     noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
@@ -58,11 +71,24 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
 
                         Log.i("Connie", "Note is clicked, $note")
-                        findNavController().navigate(
-                            NaviDirections.actionGlobalNotePageFragment(
-                                note
+
+                        when (note.type) {
+                            "Youtube" -> findNavController().navigate(
+                                NaviDirections.actionGlobalVideoFragment(
+                                    note
+                                )
                             )
-                        )
+                            "Location" -> findNavController().navigate(
+                                NaviDirections.actionGlobalLocationFragment(
+                                    note
+                                )
+                            )
+                            else -> findNavController().navigate(
+                                NaviDirections.actionGlobalArticleFragment(
+                                    note
+                                )
+                            )
+                        }
 
                     }, viewModel)
                     noteRecyclerView.layoutManager =

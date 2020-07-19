@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.connie.noted.boardpage.BoardPageViewModel
 import com.connie.noted.data.Board
-import com.connie.noted.data.Note
 import com.connie.noted.data.source.NotedRepository
-import com.connie.noted.note.NoteViewModel
-import com.connie.noted.notepage.NotePageViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -25,7 +22,6 @@ class BoardViewModelFactory constructor(
             when {
                 isAssignableFrom(BoardPageViewModel::class.java) ->
                     BoardPageViewModel(notedRepository, board)
-
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

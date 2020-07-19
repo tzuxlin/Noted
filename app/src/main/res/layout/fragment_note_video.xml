@@ -5,9 +5,10 @@
 
     <data>
 
+
         <variable
             name="viewModel"
-            type="com.connie.noted.notepage.NotePageViewModel" />
+            type="com.connie.noted.notepage.video.VideoViewModel" />
 
         <variable
             name="imageString"
@@ -33,19 +34,28 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageView
+
+
+<!--            <ImageView-->
+<!--                android:id="@+id/image_note"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/shape_top_radius"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                app:imageUrl="@{viewModel.note.images.get(0)}"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                tools:layout_height="100dp"-->
+<!--                tools:src="@drawable/ic_placeholder" />-->
+
+            <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/image_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_top_radius"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.note.images.get(0)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_height="100dp"
-                tools:src="@drawable/ic_placeholder" />
-
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/icon_bg_note_liked"
@@ -70,7 +80,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_note"
-                tools:background="@drawable/icon_article" />
+                tools:background="@drawable/icon_video" />
 
             <TextView
                 android:id="@+id/text_note_source"
@@ -86,7 +96,7 @@
                 app:layout_constraintStart_toEndOf="@+id/icon_note_source"
                 app:layout_constraintTop_toTopOf="@id/icon_note_source"
                 app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
-                tools:text="Medium" />
+                tools:text="YouTube" />
 
 
 
@@ -112,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.07"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
                 android:text="@{viewModel.note.title}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/greyish_brown"
@@ -121,7 +132,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/icon_note_source"
-                tools:text="Forget RxJava: Kotlin Coroutines are all you need. Part 1/2" />
+                tools:text="房東的貓 - 【春風十里】MV 我說所有的酒都不如你" />
 
             <TextView
                 android:id="@+id/text_note_summary"
@@ -129,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.07"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
                 android:text="@{viewModel.note.summary}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/brownish_grey"
@@ -138,8 +150,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_note_title"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="Hi! RxJava is an amazing technology which gave us completely different developer experience on Android apps several years ago, permitting to drop infinite AsyncTasks, Loaders and other tools…" />
-
+                tools:text="#房東的貓 #春風十里 #鹿先森"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

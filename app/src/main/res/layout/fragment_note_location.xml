@@ -5,9 +5,10 @@
 
     <data>
 
+
         <variable
             name="viewModel"
-            type="com.connie.noted.notepage.NotePageViewModel" />
+            type="com.connie.noted.notepage.location.LocationViewModel" />
 
         <variable
             name="imageString"
@@ -70,7 +71,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_note"
-                tools:background="@drawable/icon_article" />
+                tools:background="@drawable/icon_location" />
 
             <TextView
                 android:id="@+id/text_note_source"
@@ -86,7 +87,7 @@
                 app:layout_constraintStart_toEndOf="@+id/icon_note_source"
                 app:layout_constraintTop_toTopOf="@id/icon_note_source"
                 app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
-                tools:text="Medium" />
+                tools:text="Google 地圖" />
 
 
 
@@ -112,7 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.07"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
                 android:text="@{viewModel.note.title}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/greyish_brown"
@@ -121,7 +123,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/icon_note_source"
-                tools:text="Forget RxJava: Kotlin Coroutines are all you need. Part 1/2" />
+                tools:text="烤蘋果派的方法" />
 
             <TextView
                 android:id="@+id/text_note_summary"
@@ -129,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.07"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
                 android:text="@{viewModel.note.summary}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/brownish_grey"
@@ -138,7 +141,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_note_title"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="Hi! RxJava is an amazing technology which gave us completely different developer experience on Android apps several years ago, permitting to drop infinite AsyncTasks, Loaders and other tools…" />
+                tools:text="★★★★☆ · 甜品店 · 仁愛路三段80號3樓" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

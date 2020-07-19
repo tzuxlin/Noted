@@ -37,3 +37,4 @@ fun Fragment.getVmFactory(board: Board): BoardViewModelFactory {
     val repository = (requireContext().applicationContext as NotedApplication).notedRepository
     return BoardViewModelFactory(repository, board)
 }
+
