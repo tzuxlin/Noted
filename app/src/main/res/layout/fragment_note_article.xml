@@ -15,17 +15,22 @@
 
     </data>
 
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
+            android:paddingBottom="48dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,9 +42,8 @@
                 android:id="@+id/image_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_top_radius"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.note.images.get(0)}"
+                app:imageNoRoundUrl="@{viewModel.note.images.get(0)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,8 +53,8 @@
 
             <ImageView
                 android:id="@+id/icon_bg_note_liked"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/shape_round"
                 android:backgroundTint="@color/translucent_40"
                 app:layout_constraintBottom_toBottomOf="@+id/icon_note_liked"
@@ -62,7 +66,8 @@
                 android:id="@+id/icon_note_source"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="36dp"
                 android:background='@{"Location".equals(viewModel.note.type) ? @drawable/icon_location : "Video".equals(viewModel.note.type) ? @drawable/icon_video : @drawable/icon_article}'
                 android:backgroundTint="@color/greyish_brown"
                 android:fontFamily="@font/noto_sans"
@@ -93,8 +98,8 @@
 
             <ImageView
                 android:id="@+id/icon_note_liked"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="16dp"
                 android:background='@{viewModel.note.liked ? @drawable/icon_like_true : @drawable/icon_like_false}'
                 android:backgroundTint="@color/white"
@@ -102,6 +107,7 @@
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.15"
                 android:textStyle="bold"
+                tools:background="@drawable/icon_like_true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -111,9 +117,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.1"
-                android:lineSpacingExtra="8dp"
+                android:lineSpacingExtra="14dp"
                 android:text="@{viewModel.note.title}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/greyish_brown"
@@ -129,6 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:paddingVertical="10dp"
                 android:fontFamily="@font/droid_sans"
                 android:letterSpacing="0.1"
                 android:lineSpacingExtra="8dp"
@@ -146,4 +155,39 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button_detail_add"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:letterSpacing="0.15"
+            android:background="@color/olive_green"
+            android:onClick="@{() -> viewModel.startUrlIntent()}"
+            android:text="查看完整內容"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

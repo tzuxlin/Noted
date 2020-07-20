@@ -29,14 +29,6 @@
     <action
         android:id="@+id/action_global_noteFragment"
         app:destination="@id/noteFragment" />
-    <fragment
-        android:id="@+id/notePageFragment"
-        android:name="com.connie.noted.notepage.NotePageFragment"
-        android:label="NotePageFragment">
-        <argument
-            android:name="noteKey"
-            app:argType="com.connie.noted.data.Note" />
-    </fragment>
 
     <fragment
         android:id="@+id/boardPageFragment"
@@ -47,13 +39,6 @@
             android:name="boardKey"
             app:argType="com.connie.noted.data.Board" />
     </fragment>
-    <action
-        android:id="@+id/action_global_notePageFragment"
-        app:destination="@id/notePageFragment">
-        <argument
-            android:name="noteKey"
-            app:argType="com.connie.noted.data.Note" />
-    </action>
 
     <action
         android:id="@+id/action_global_boardPageFragment"

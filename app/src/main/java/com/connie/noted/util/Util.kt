@@ -3,6 +3,7 @@ package com.connie.noted.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import com.connie.noted.MainActivity
 import com.connie.noted.NotedApplication
 
 /**
@@ -28,5 +29,9 @@ object Util {
 
     fun getColor(resourceId: Int): Int {
         return NotedApplication.instance.getColor(resourceId)
+    }
+
+    fun getWindowWidth(): Int{
+        return NotedApplication.instance.resources.displayMetrics.widthPixels
     }
 }
