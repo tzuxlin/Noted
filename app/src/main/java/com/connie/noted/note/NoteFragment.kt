@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.connie.noted.NaviDirections
+import com.connie.noted.MainActivity
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.FragmentNoteBinding
@@ -40,27 +39,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 0 -> {
                     noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
 
-                        Log.i("Connie", "Note is clicked, $note")
-
-                        when (note.type) {
-                            "Youtube" -> findNavController().navigate(
-                                NaviDirections.actionGlobalVideoFragment(
-                                    note
-                                )
-                            )
-                            "Location" -> findNavController().navigate(
-                                NaviDirections.actionGlobalLocationFragment(
-                                    note
-                                )
-                            )
-                            else -> findNavController().navigate(
-                                NaviDirections.actionGlobalArticleFragment(
-                                    note
-                                )
-                            )
-                        }
+                        (activity as MainActivity).navigateToNote(note)
 
                     }, viewModel)
+
                     noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
 
                     viewModel.liveNotes.value = viewModel.liveNotes.value
@@ -70,25 +52,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 1 -> {
                     noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { note ->
 
-                        Log.i("Connie", "Note is clicked, $note")
-
-                        when (note.type) {
-                            "Youtube" -> findNavController().navigate(
-                                NaviDirections.actionGlobalVideoFragment(
-                                    note
-                                )
-                            )
-                            "Location" -> findNavController().navigate(
-                                NaviDirections.actionGlobalLocationFragment(
-                                    note
-                                )
-                            )
-                            else -> findNavController().navigate(
-                                NaviDirections.actionGlobalArticleFragment(
-                                    note
-                                )
-                            )
-                        }
+                        (activity as MainActivity).navigateToNote(note)
 
                     }, viewModel)
                     noteRecyclerView.layoutManager =
@@ -105,9 +69,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         viewModel.newNote.observe(viewLifecycleOwner, Observer {
             it?.let {
-                Log.d("Connie", "newNote = $it")
 
+                Log.d("Connie", "newNote = $it")
                 viewModel.create(it)
+
             }
         })
 
@@ -115,10 +80,11 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         viewModel.liveNotes.observe(viewLifecycleOwner, Observer {
 
             it?.let {
+
                 Log.d("Connie", "liveNotes = $it")
                 (noteRecyclerView.adapter as NoteAdapter).submitList(it)
-            }
 
+            }
         })
 
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.connie.noted.MainActivity
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.databinding.FragmentBoardPageBinding
@@ -38,12 +39,7 @@ class BoardPageFragment : Fragment() {
 
         recyclerView.adapter = BoardNotesAdapter(BoardNotesAdapter.OnClickListener { note ->
 
-            Log.i("Connie", "Note is clicked, $note")
-            findNavController().navigate(
-                NaviDirections.actionGlobalNotePageFragment(
-                    note
-                )
-            )
+            (activity as MainActivity).navigateToNote(note)
 
         }, viewModel)
         recyclerView.layoutManager =

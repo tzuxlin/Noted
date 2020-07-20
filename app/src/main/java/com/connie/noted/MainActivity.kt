@@ -2,6 +2,7 @@ package com.connie.noted
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
@@ -11,8 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.connie.noted.data.Note
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
@@ -90,8 +93,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.boardFragment -> CurrentFragmentType.BOARD
                 R.id.exploreFragment -> CurrentFragmentType.EXPLORE
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
-//                R.id.boardPageFragment -> CurrentFragmentType.BOARDDETAIL
-//                R.id.notePageFragment -> CurrentFragmentType.NOTEDETAIL
+                R.id.boardPageFragment -> CurrentFragmentType.BOARDDETAIL
+                R.id.videoFragment, R.id.locationFragment, R.id.articleFragment -> CurrentFragmentType.NOTEDETAIL
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -151,6 +154,34 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+
+    /**
+     * Setup for NoteFragment and BoardPageFragment for navigating to certain Note page.
+     */
+    fun navigateToNote(note: Note){
+
+        Log.i("Connie", "Main activity: Note is clicked, $note")
+
+        when (note.type) {
+            "Youtube" -> findNavController(R.id.myNavHostFragment).navigate(
+                NaviDirections.actionGlobalVideoFragment(
+                    note
+                )
+            )
+            "Location" -> findNavController(R.id.myNavHostFragment).navigate(
+                NaviDirections.actionGlobalLocationFragment(
+                    note
+                )
+            )
+            else -> findNavController(R.id.myNavHostFragment).navigate(
+                NaviDirections.actionGlobalArticleFragment(
+                    note
+                )
+            )
+        }
+
     }
 
 
