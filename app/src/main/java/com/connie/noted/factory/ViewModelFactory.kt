@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.connie.noted.MainViewModel
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.explore.ExploreViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -21,8 +22,12 @@ class ViewModelFactory constructor(
                 isAssignableFrom(MainViewModel::class.java) ->
                     MainViewModel(notedRepository)
 
+                isAssignableFrom(ExploreViewModel::class.java) ->
+                    ExploreViewModel(notedRepository)
+
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-            }
-        } as T
+
+            } as T
+        }
 }

@@ -3,6 +3,7 @@ package com.connie.noted.note
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.crawler.NoteCrawlerClass
@@ -51,6 +52,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     }
 
 
+
     init {
         getLiveNotes()
         goGo()
@@ -58,15 +60,18 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     private fun goGo() {
+        if (!NotedApplication.isGoGo) {
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetYoutube("https://youtu.be/DhmQG96uEJk"))
+//            _newNote.postValue(toGetYoutube(""))
 //        }
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetMediumArticle("https://medium.com/@chuckyusouchen/ted-dessert-menu-3f3df405db04"))
+//            _newNote.postValue(toGetMediumArticle("https://medium.com/appworks-school/java-8-for-android-lambda-expressions-a4ef6fb2d61"))
 //        }
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/v9QfoQYZRjd84NJj7"))
+//            _newNote.postValue(toGetGoogleLocation(""))
 //        }
+            NotedApplication.isGoGo = true
+        }
     }
 
 

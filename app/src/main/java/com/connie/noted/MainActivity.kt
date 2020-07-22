@@ -165,16 +165,16 @@ class MainActivity : AppCompatActivity() {
         Log.i("Connie", "Main activity: Note is clicked, $note")
 
         when (note.type) {
-            "Youtube" -> findNavController(R.id.myNavHostFragment).navigate(
-                NaviDirections.actionGlobalVideoFragment(
-                    note
-                )
-            )
-            "Location" -> findNavController(R.id.myNavHostFragment).navigate(
-                NaviDirections.actionGlobalLocationFragment(
-                    note
-                )
-            )
+//            "Youtube" -> findNavController(R.id.myNavHostFragment).navigate(
+//                NaviDirections.actionGlobalVideoFragment(
+//                    note
+//                )
+//            )
+//            "Location" -> findNavController(R.id.myNavHostFragment).navigate(
+//                NaviDirections.actionGlobalLocationFragment(
+//                    note
+//                )
+//            )
             else -> findNavController(R.id.myNavHostFragment).navigate(
                 NaviDirections.actionGlobalArticleFragment(
                     note

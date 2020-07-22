@@ -6,23 +6,23 @@
     <item
         android:id="@+id/navigation_noteFragment"
         android:icon="@drawable/icon_note"
-        android:title="" />
+        android:title="Note" />
 
     <item
         android:id="@+id/navigation_boardFragment"
         android:icon="@drawable/icon_board"
-        android:title="" />
+        android:title="Board" />
 
     <item
         android:id="@+id/navigation_exploreFragment"
         android:icon="@drawable/icon_public"
-        android:title="" />
+        android:title="Explore" />
 
 
     <item
         android:id="@+id/navigation_profileFragment"
         android:icon="@drawable/icon_profile"
-        android:title="" />
+        android:title="Profile" />
 
 
 </menu>

@@ -14,7 +14,9 @@ class BoardPageViewModel(private val notedRepository: NotedRepository, val board
 
     var liveNotes = MutableLiveData<List<Note>>()
 
-    init {getLiveNotes()}
+    init {
+        getLiveNotes()
+    }
 
     private fun getLiveNotes() {
         liveNotes = notedRepository.getBoardLiveNotes(boardKey.notes)

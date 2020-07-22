@@ -106,7 +106,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/navdrawer_menu" />
+            app:menu="@menu/navdrawer_menu"
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/icon_color_selector"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

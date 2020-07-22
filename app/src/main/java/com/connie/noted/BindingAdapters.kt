@@ -25,6 +25,7 @@ import com.connie.noted.board.item.BoardItemAdapter
 import com.connie.noted.boardpage.BoardNotesAdapter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
+import com.connie.noted.explore.ExplorePopularAdapter
 import com.connie.noted.note.NoteAdapter
 import com.connie.noted.util.Util.getWindowWidth
 
@@ -160,8 +161,14 @@ fun bindNoteRecyclerView(recyclerView: RecyclerView, data: List<Note>?) {
 fun bindBoardRecyclerView(recyclerView: RecyclerView, data: List<Board>?) {
     if (data != null) {
         recyclerView.adapter?.let { adapter ->
-            val adapter = adapter as BoardItemAdapter
-            adapter.submitList(data)
+
+            val adapter = when (adapter) {
+                is BoardItemAdapter -> adapter
+                is ExplorePopularAdapter -> adapter
+                else -> null
+            }
+
+            adapter?.submitList(data)
         }
     }
 }
@@ -185,6 +192,13 @@ fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
 fun bindBoardNotesCount(textView: TextView, size: Int?) {
     size?.let {
         textView.text = "$it notes"
+    }
+}
+
+@BindingAdapter("savedCount")
+fun bindBoardNotesSavedCount(textView: TextView, size: Int?) {
+    size?.let {
+        textView.text = "$it saved"
     }
 }
 

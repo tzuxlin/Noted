@@ -21,6 +21,8 @@ interface NotedDataSource {
 
     fun getLiveBoards(type: BoardTypeFilter):MutableLiveData<List<Board>>
 
+    fun getLiveGlobalBoards(condition: String):MutableLiveData<List<Board>>
+
     fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>>
 
 

@@ -34,19 +34,25 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageView
-                android:id="@+id/image_note"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_top_radius"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.note.images.get(0)}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_height="100dp"
-                tools:src="@drawable/ic_placeholder" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/image_note"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@drawable/shape_top_radius"-->
+            <!--                android:scaleType="centerCrop"-->
+            <!--                app:imageUrl="@{viewModel.note.images.get(0)}"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                tools:layout_height="100dp"-->
+            <!--                tools:src="@drawable/ic_placeholder" />-->
 
+
+            <include
+                android:id="@id/image_note"
+                layout="@layout/fragment_maps"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
             <ImageView
                 android:id="@+id/icon_bg_note_liked"
@@ -84,12 +90,10 @@
                 android:textAlignment="viewStart"
                 android:textColor="@color/brownish_grey"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
                 app:layout_constraintStart_toEndOf="@+id/icon_note_source"
                 app:layout_constraintTop_toTopOf="@id/icon_note_source"
-                app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
                 tools:text="Google 地圖" />
-
-
 
 
             <ImageView
@@ -137,10 +141,10 @@
                 android:textAlignment="viewStart"
                 android:textColor="@color/brownish_grey"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_note_title"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="★★★★☆ · 甜品店 · 仁愛路三段80號3樓" />
 
 

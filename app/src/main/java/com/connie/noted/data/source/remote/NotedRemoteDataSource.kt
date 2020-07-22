@@ -48,6 +48,55 @@ object NotedRemoteDataSource : NotedDataSource {
         return liveData
     }
 
+    override fun getLiveGlobalBoards(condition: String): MutableLiveData<List<Board>> {
+
+        val liveData = MutableLiveData<List<Board>>()
+
+        UserManager.userEmail?.let { email ->
+
+            val list = mutableListOf<Board>()
+
+
+            when (condition) {
+
+                "popular" -> {
+                    FirebaseFirestore.getInstance()
+                        .collection(PATH_BOARDS)
+                        .whereEqualTo("public", true)
+                        .get()
+                        .addOnCompleteListener { task ->
+
+                            if (task.isSuccessful) {
+
+                                task.result?.let { documents ->
+
+                                    for (document in documents) {
+                                        Log.d("Connie", document.id + " => " + document.data)
+
+                                        val board = document.toObject(Board::class.java)
+                                        list.add(board)
+                                    }
+
+                                    list.sortByDescending {
+                                        it.savedBy.size
+                                    }
+                                    liveData.value = list
+
+                                }
+                            }
+                        }
+                }
+
+                else -> {
+                }
+
+            }
+
+        }
+        return liveData
+
+    }
+
     override fun getLiveBoards(type: BoardTypeFilter): MutableLiveData<List<Board>> {
         val liveData = MutableLiveData<List<Board>>()
 

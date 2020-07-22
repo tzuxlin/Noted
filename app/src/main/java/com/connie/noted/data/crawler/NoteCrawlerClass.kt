@@ -14,6 +14,7 @@ class NoteCrawlerClass : NoteCrawler {
 
         note.contentSource = doc.title()
 
+        println(doc.body())
         val metaTags: Elements = doc.getElementsByTag("meta")
 
         for (metaTag in metaTags) {
