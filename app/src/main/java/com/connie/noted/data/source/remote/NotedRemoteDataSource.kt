@@ -26,8 +26,8 @@ object NotedRemoteDataSource : NotedDataSource {
     private const val PATH_BOARDS = "boards"
     private const val KEY_CREATED_TIME = "createdTime"
 
-    override fun getLiveNotes(): MutableLiveData<List<Note>> {
-        val liveData = MutableLiveData<List<Note>>()
+    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
+        val liveData = MutableLiveData<MutableList<Note>>()
 
         FirebaseFirestore.getInstance()
             .collection(PATH_NOTES)

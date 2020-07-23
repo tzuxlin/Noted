@@ -9,13 +9,22 @@
             name="note"
             type="com.connie.noted.data.Note" />
 
+        <import type="android.view.View"/>
 
         <variable
             name="imageString"
             type="String" />
 
+        <variable
+            name="viewModel"
+            type="com.connie.noted.note.NoteViewModel" />
+
+
     </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_note"
@@ -166,6 +175,70 @@
         <!--                android:layout_height="wrap_content" />-->
         <!--        </LinearLayout>-->
 
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_long_click"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_radius"
+        android:backgroundTint='@{note.isSelected ? @color/olive_green_transparent_90 : @color/olive_green_transparent}'
+        android:elevation="5dp"
+        android:visibility='@{viewModel.isEditMode ? View.VISIBLE : View.GONE}'
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/icon_long_click_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/icon_delete"
+            android:backgroundTint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon_long_click_add"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background='@{note.isSelected ? @drawable/icon_add_to_board_active : @drawable/icon_add_to_board_inactive}'
+            android:backgroundTint="@color/white"
+            android:layout_marginBottom="36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/icon_add_to_board_active"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{note.isSelected ? "已選擇" : "加入分類版"}'
+            android:textSize="14sp"
+            android:letterSpacing="0.1"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="已選擇"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -59,7 +59,7 @@
         android:id="@+id/videoFragment"
         android:name="com.connie.noted.notepage.video.VideoFragment"
         android:label="fragment_video"
-        tools:layout="@layout/fragment_note_video" >
+        tools:layout="@layout/fragment_note_video">
         <argument
             android:name="noteKey"
             app:argType="com.connie.noted.data.Note" />
@@ -68,7 +68,7 @@
         android:id="@+id/locationFragment"
         android:name="com.connie.noted.notepage.location.LocationFragment"
         android:label="fragment_location"
-        tools:layout="@layout/fragment_note_location" >
+        tools:layout="@layout/fragment_note_location">
         <argument
             android:name="noteKey"
             app:argType="com.connie.noted.data.Note" />
@@ -77,7 +77,7 @@
         android:id="@+id/articleFragment"
         android:name="com.connie.noted.notepage.article.ArticleFragment"
         android:label="fragment_article"
-        tools:layout="@layout/fragment_note_article" >
+        tools:layout="@layout/fragment_note_article">
         <argument
             android:name="noteKey"
             app:argType="com.connie.noted.data.Note" />
@@ -103,4 +103,11 @@
             android:name="noteKey"
             app:argType="com.connie.noted.data.Note" />
     </action>
+    <dialog
+        android:id="@+id/add2boardDialog"
+        android:name="com.connie.noted.add2board.Add2boardDialog"
+        android:label="Add2boardDialog" />
+    <action
+        android:id="@+id/action_global_add2boardDialog"
+        app:destination="@id/add2boardDialog" />
 </navigation>

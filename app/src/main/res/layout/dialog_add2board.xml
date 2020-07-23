@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.add2board.Add2boardViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}"
+        tools:background="@color/brownish_grey">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_add2cart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_top_radius"
+            android:onClick="@{() -> viewModel.nothing()}"
+            app:layout_constraintBottom_toTopOf="@id/layout_add2cart_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <EditText
+                android:id="@+id/edit_add2board_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@{viewModel.invalidInput != null? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
+                android:hint="輸入分類版標題"
+                android:letterSpacing="0.15"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@={viewModel.board.title}"
+                android:textColor="@color/black_3f3a3a"
+                android:textColorHint="@{viewModel.invalidInput != null ? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/button_add2cart_close"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/switch_add2board_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:switchPadding="8dp"
+                android:text="公開分類版"
+                android:textColor="@color/brownish_grey"
+                android:textSize="13sp"
+                android:theme="@style/Switch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_add2board_title" />
+
+            <ImageView
+                android:id="@+id/icon_add2board_public_help"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/icon_help"
+                android:backgroundTint="@color/gray_999999"
+                app:layout_constraintBottom_toBottomOf="@+id/switch_add2board_public"
+                app:layout_constraintStart_toEndOf="@+id/switch_add2board_public"
+                app:layout_constraintTop_toTopOf="@+id/switch_add2board_public" />
+
+
+            <TextView
+                android:id="@+id/text_add2board_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:maxLines="1"
+                android:textColor="@color/gray_999999"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch_add2board_public"
+                tools:text="任何人均能查看並收藏您的分類版。"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/view_add2board_top_separation"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="24dp"
+                android:background="@color/gray_cccccc"
+                app:layout_constraintBottom_toTopOf="@id/view_add2board_add_note"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_add2board_help" />
+
+
+            <!--            -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/view_add2board_add_note"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/white"
+                android:elevation="5dp"
+                app:layout_constraintBottom_toTopOf="@id/note_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_add2board_top_separation" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/note_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_add2board_add_note"
+                app:listNote="@{viewModel.liveNotes}"
+                app:reverseLayout="false"
+                tools:layout_height="50dp" />
+
+
+            <!--            -->
+
+
+            <ImageButton
+                android:id="@+id/button_add2cart_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/close"
+                android:onClick="@{() -> viewModel.leave()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_add2cart_bottom"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.nothing()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <View
+                android:id="@+id/view_add2cart_bottom_separation"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray_cccccc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_add2cart"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/olive_green"
+                android:clickable="true"
+                android:letterSpacing="0.15"
+                android:onClick="@{() -> viewModel.uploadBoard()}"
+                android:text="新增至分類版"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/shape_radius"
+                tools:backgroundTint="@color/olive_green" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

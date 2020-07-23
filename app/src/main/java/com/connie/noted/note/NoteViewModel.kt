@@ -1,7 +1,9 @@
 package com.connie.noted.note
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
@@ -28,7 +30,11 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val newNote: LiveData<Note>
         get() = _newNote
 
-    var liveNotes = MutableLiveData<List<Note>>()
+
+
+    var notes = MutableLiveData<MutableList<Note>>()
+
+    var noteToAdd: List<Note> = listOf()
 
     private val _leave = MutableLiveData<Boolean>()
 
@@ -51,6 +57,9 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         value = 0
     }
 
+    val isEditMode = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
 
     init {
@@ -92,7 +101,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     private fun getLiveNotes() {
-        liveNotes = notedRepository.getLiveNotes()
+        notes = notedRepository.getLiveNotes()
     }
 
     fun create(note: Note) {
@@ -127,6 +136,8 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
+
+
 
 //    val mockNote: List<Note> =
 //        listOf(

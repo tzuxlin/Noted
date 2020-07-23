@@ -42,16 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/board_add_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/icon_add"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 <!--        <com.connie.noted.util.DragFloatActionLayout-->
 <!--            android:id="@+id/board_drag_layout"-->

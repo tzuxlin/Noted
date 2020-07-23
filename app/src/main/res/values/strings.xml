@@ -12,8 +12,18 @@
     <string name="you_know_nothing">You know nothing</string>
 
 
-    <string name="note">Note</string>
-    <string name="board">Board</string>
-    <string name="explore">Explore</string>
-    <string name="profile">Profile</string>
+    <string name="note">筆記</string>
+    <string name="board">分類板</string>
+    <string name="explore">探索</string>
+    <string name="profile">個人</string>
+
+
+
+    <string name="all">全部</string>
+    <string name="mine">我的</string>
+    <string name="saved">已儲存</string>
+
+
+    <string name="the_most_popular">熱門</string>
+
 </resources>

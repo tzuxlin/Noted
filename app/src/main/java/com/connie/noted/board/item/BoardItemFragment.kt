@@ -87,13 +87,6 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         })
 
-        binding.boardAddButton.setOnClickListener {
-            Toast.makeText(
-                NotedApplication.instance.applicationContext,
-                "Hello",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
 
         binding.boardIconChangeLayout.setOnClickListener {
 

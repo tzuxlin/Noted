@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/translucent</item>
         <item name="colorPrimaryDark">@color/olive_green</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/olive_green</item>
     </style>
 
     <style name="toolbar_style">
@@ -14,6 +14,26 @@
 
     <style name="ProgressThemeDark" parent="Widget.AppCompat.ProgressBar">
         <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="Add2BoardDialog">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+        <item name="android:windowBackground">@color/translucent_40</item>
+        <item name="android:animation">@null</item>
+    </style>
+
+
+    <style name="Switch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/olive_green</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#f1f1f1
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/cccccc</item>
     </style>
 
 </resources>

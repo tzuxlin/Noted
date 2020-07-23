@@ -54,5 +54,9 @@
     <color name="radio_button">#8a000000</color>
     <color name="f5f5f5">#f5f5f5</color>
     <color name="olive_green">#657153</color>
+    <color name="olive_green_transparent">#66657153</color>
+    <color name="olive_green_transparent_90">#E6657153</color>
+
+
 
 </resources>

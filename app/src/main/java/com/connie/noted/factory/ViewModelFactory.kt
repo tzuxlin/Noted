@@ -3,6 +3,7 @@ package com.connie.noted.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.connie.noted.MainViewModel
+import com.connie.noted.add2board.Add2boardViewModel
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.explore.ExploreViewModel
 
@@ -24,6 +25,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(ExploreViewModel::class.java) ->
                     ExploreViewModel(notedRepository)
+
+                isAssignableFrom(Add2boardViewModel::class.java) ->
+                    Add2boardViewModel(notedRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

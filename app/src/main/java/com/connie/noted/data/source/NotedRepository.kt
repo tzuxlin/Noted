@@ -17,7 +17,7 @@ interface NotedRepository {
 
     fun getLiveUser(): MutableLiveData<User>
 
-    fun getLiveNotes(): MutableLiveData<List<Note>>
+    fun getLiveNotes(): MutableLiveData<MutableList<Note>>
 
     fun getLiveBoards(type: BoardTypeFilter):MutableLiveData<List<Board>>
 

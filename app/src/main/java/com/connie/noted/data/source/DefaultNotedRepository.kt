@@ -28,7 +28,7 @@ class DefaultNotedRepository(
         return remoteDataSource.getLiveUser()
     }
 
-    override fun getLiveNotes(): MutableLiveData<List<Note>> {
+    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
         return remoteDataSource.getLiveNotes()
     }
 

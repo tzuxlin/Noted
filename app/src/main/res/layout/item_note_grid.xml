@@ -14,135 +14,203 @@
             name="imageString"
             type="String" />
 
+        <variable
+            name="viewModel"
+            type="com.connie.noted.note.NoteViewModel" />
+
+        <import type="android.view.View" />
+
     </data>
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/shape_radius"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-
-        <ImageView
-            android:id="@+id/image_note"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_top_radius"
-            android:scaleType="fitCenter"
-            app:imageUrl="@{imageString}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_placeholder" />
-
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/shape_round"
-            android:backgroundTint="@color/translucent_40"
-            app:layout_constraintTop_toTopOf="@+id/icon_note_liked"
-            app:layout_constraintEnd_toEndOf="@+id/icon_note_liked"
-            app:layout_constraintStart_toStartOf="@+id/icon_note_liked"
-            app:layout_constraintBottom_toBottomOf="@+id/icon_note_liked"/>
-
-        <ImageView
-            android:id="@+id/icon_note_source"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:background='@{"Location".equals(note.type) ? @drawable/icon_location : "Video".equals(note.type) ? @drawable/icon_video : @drawable/icon_article}'
-            android:backgroundTint="@color/greyish_brown"
-            android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.15"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_note" />
-
-
-
-
-        <ImageView
-            android:id="@+id/icon_note_liked"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:background='@{note.liked ? @drawable/icon_like_true : @drawable/icon_like_false}'
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.15"
-            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_radius"
             android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/text_note_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.07"
-            android:padding="8dp"
-            android:text="@{note.title}"
-            android:textAlignment="viewStart"
-            android:textColor="@color/greyish_brown"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/layout_note_tag"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/icon_note_source"
-            tools:text="A simple way to work with Kotlin Coroutines in Android" />
-
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/recycler_note_tag"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="16dp"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:layout_marginEnd="16dp"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/text_note_title">-->
-
-<!--                </androidx.recyclerview.widget.RecyclerView>-->
-
-        <LinearLayout
-            android:id="@+id/layout_note_tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_note_title">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_width="200dp">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/note_tag_group"
+
+            <ImageView
+                android:id="@+id/image_note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_top_radius"
+                android:scaleType="fitCenter"
+                app:imageUrl="@{imageString}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_height="100dp"
+                tools:src="@drawable/ic_placeholder" />
 
 
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/shape_round"
+                android:backgroundTint="@color/translucent_40"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_note_liked"
+                app:layout_constraintEnd_toEndOf="@+id/icon_note_liked"
+                app:layout_constraintStart_toStartOf="@+id/icon_note_liked"
+                app:layout_constraintTop_toTopOf="@+id/icon_note_liked" />
+
+            <ImageView
+                android:id="@+id/icon_note_source"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background='@{"Location".equals(note.type) ? @drawable/icon_location : "Video".equals(note.type) ? @drawable/icon_video : @drawable/icon_article}'
+                android:backgroundTint="@color/greyish_brown"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_note" />
+
+
+            <ImageView
+                android:id="@+id/icon_note_liked"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background='@{note.liked ? @drawable/icon_like_true : @drawable/icon_like_false}'
+                android:backgroundTint="@color/white"
+                android:elevation="5dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/text_note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.07"
+                android:padding="8dp"
+                android:text="@{note.title}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/greyish_brown"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/layout_note_tag"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/icon_note_source"
+                tools:text="A simple way to work with Kotlin Coroutines in Android" />
+
+            <!--                <androidx.recyclerview.widget.RecyclerView-->
+            <!--                    android:id="@+id/recycler_note_tag"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="16dp"-->
+            <!--                    android:layout_marginTop="8dp"-->
+            <!--                    android:layout_marginEnd="16dp"-->
+            <!--                    android:orientation="horizontal"-->
+            <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@id/text_note_title">-->
+
+            <!--                </androidx.recyclerview.widget.RecyclerView>-->
+
+            <LinearLayout
+                android:id="@+id/layout_note_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_note_title">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/note_tag_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_long_click"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/shape_radius"
+            android:backgroundTint='@{note.isSelected ? @color/olive_green_transparent_90 : @color/olive_green_transparent}'
+            android:elevation="5dp"
+            android:visibility='@{viewModel.isEditMode ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="@id/layout_note"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/layout_note"
+            tools:layout_width="200dp">
+
+            <ImageView
+                android:id="@+id/icon_long_click_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/icon_delete"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icon_long_click_add"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background='@{note.isSelected ? @drawable/icon_add_to_board_active : @drawable/icon_add_to_board_inactive}'
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/icon_add_to_board_active"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{note.isSelected ? "已選擇" : "加入分類版"}'
+                android:textSize="14sp"
+                android:letterSpacing="0.1"
+                android:fontFamily="@font/noto_sans"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="已選擇"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

@@ -28,7 +28,7 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveNotes(): MutableLiveData<List<Note>> {
+    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
         TODO("Not yet implemented")
     }
 

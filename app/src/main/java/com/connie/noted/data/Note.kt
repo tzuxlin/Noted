@@ -1,6 +1,7 @@
 package com.connie.noted.data
 
 import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -14,5 +15,11 @@ data class Note (
     var images: MutableList<String> = mutableListOf(),
     var summary: String? = null,
     var tags: MutableList<String>? = null,
-    var isLiked: Boolean = false
-): Parcelable
+    var isLiked: Boolean = false,
+    var isSelected: Boolean = false
+
+): Parcelable {
+
+
+
+}
