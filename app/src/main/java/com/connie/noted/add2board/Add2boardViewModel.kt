@@ -1,19 +1,15 @@
 package com.connie.noted.add2board
 
-import android.graphics.Rect
 import android.util.Log
-import android.view.View
-import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.connie.noted.NotedApplication
-import com.connie.noted.R
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
+import com.connie.noted.data.Result
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.login.UserManager
 import kotlinx.coroutines.*
 
 /**
@@ -40,7 +36,12 @@ class Add2boardViewModel(
     var liveNotes = MutableLiveData<List<Note>>()
 
 
+    var title = MutableLiveData<String>()
+    var isPublic = false
 
+    private val _toUploadBoard = MutableLiveData<Boolean>()
+    val toUploadBoard: LiveData<Boolean>
+        get() = _toUploadBoard
 
     // Handle navigation to Added Success
     private val _navigateToAddedSuccess = MutableLiveData<Board>()
@@ -60,13 +61,23 @@ class Add2boardViewModel(
     val leave: LiveData<Boolean>
         get() = _leave
 
+    // status: The internal MutableLiveData that stores the status of the most recent request
+    private val _status = MutableLiveData<LoadApiStatus>()
+
+    val status: LiveData<LoadApiStatus>
+        get() = _status
+
+    // error: The internal MutableLiveData that stores the error of the most recent request
+    private val _error = MutableLiveData<String>()
+
+    val error: LiveData<String>
+        get() = _error
+
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-
 
 
     /**
@@ -79,30 +90,65 @@ class Add2boardViewModel(
     }
 
 
-    /**
-     * track [StylishRepository.getUserProfile]: -> [DefaultStylishRepository] : [StylishRepository] -> [StylishLocalDataSource] : [StylishDataSource]
-     */
+    fun checkData() {
+        _toUploadBoard.value = true
+    }
+
     fun uploadBoard() {
-//        product.value?.let {
-//            coroutineScope.launch {
-//                selectedVariant.value?.apply {
-//                    it.selectedVariant = this
-//                    it.amount = amount.value
-//                    if (stylishRepository.isProductInCart(
-//                            it.id,
-//                            it.selectedVariant.colorCode,
-//                            it.selectedVariant.size
-//                        )
-//                    ) {
-//
-//                        _navigateToAddedFail.value = it
-//                    } else {
-//                        stylishRepository.insertProductInCart(it)
-//                        _navigateToAddedSuccess.value = it
-//                    }
-//                }
-//            }
-//        }
+
+        val noteWithImages = liveNotes.value?.let { notes ->
+            notes.filter { note ->
+                note.images.isNotEmpty()
+            }.map {
+                it.images[0]
+            }
+        }?.toMutableList<String?>()
+
+        val noteWithId = liveNotes.value?.map { note ->
+            note.id
+        }?.toMutableList<String?>()
+
+
+        val board = Board(
+            createdBy = UserManager.user.value?.email ?: "",
+            creatorName = UserManager.user.value?.name ?: "",
+            title = title.value ?: "",
+            images = noteWithImages ?: mutableListOf(),
+            isPublic = isPublic,
+            notes = noteWithId ?: mutableListOf()
+        )
+
+        toUploadBoard(board)
+
+
+    }
+
+    private fun toUploadBoard(board: Board) {
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            when (val result = notedRepository.createBoard(board)) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    leave()
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = "You know nothing"
+//                        NotedApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
     }
 
     fun onAddedSuccessNavigated() {
@@ -127,8 +173,6 @@ class Add2boardViewModel(
     }
 
     fun nothing() {}
-
-
 
 
 }

@@ -5,6 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Board (
+    var id: String = "",
+    var createdTime: Long = -1,
     var createdBy: String = "",
     var creatorName: String = "",
     var savedBy: MutableList<String?> = mutableListOf(),

@@ -106,8 +106,19 @@
     <dialog
         android:id="@+id/add2boardDialog"
         android:name="com.connie.noted.add2board.Add2boardDialog"
-        android:label="Add2boardDialog" />
+        android:label="Add2boardDialog" >
+
+
+        <argument
+            android:name="notesKey"
+            app:argType="com.connie.noted.data.Note[]" />
+    </dialog>
     <action
         android:id="@+id/action_global_add2boardDialog"
-        app:destination="@id/add2boardDialog" />
+        app:destination="@id/add2boardDialog">
+
+        <argument
+            android:name="notesKey"
+            app:argType="com.connie.noted.data.Note[]" />
+    </action>
 </navigation>

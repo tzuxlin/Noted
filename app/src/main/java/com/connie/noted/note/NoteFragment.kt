@@ -45,7 +45,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                         }, viewModel)
 
                     noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
-                    noteRecyclerView.isAnimating.not()
+//                    noteRecyclerView.isAnimating.not()
 
                     viewModel.notes.value = viewModel.notes.value
 
@@ -57,7 +57,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
-                    noteRecyclerView.isAnimating.not()
+//                    noteRecyclerView.isAnimating.not()
 
 
                     viewModel.notes.value = viewModel.notes.value
@@ -98,6 +98,12 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
             it?.let {
                 Log.e("Connie", "Note Fragment, isEditMode: $it")
+                if (!it) {
+                    viewModel.notes.value?.forEach { note ->
+                        note.isSelected = false
+                        (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
+                    }
+                }
             }
 
         })
@@ -114,7 +120,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         binding.noteAdd2boardButton.setOnClickListener {
 
-            findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog())
+            findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(viewModel.noteToAdd.toTypedArray()))
         }
 
 

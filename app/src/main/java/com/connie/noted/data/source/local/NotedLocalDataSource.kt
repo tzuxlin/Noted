@@ -16,6 +16,10 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun createBoard(board: Board): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun likeNote(note: Note): Result<Boolean> {
         TODO("Not yet implemented")
     }

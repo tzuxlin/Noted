@@ -12,6 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.connie.noted.NotedApplication
 import com.connie.noted.R
 import com.connie.noted.databinding.DialogAdd2boardBinding
 import com.connie.noted.ext.getVmFactory
@@ -30,7 +32,7 @@ class Add2boardDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Add2BoardDialog)
+        setStyle(STYLE_NO_FRAME, R.style.Add2BoardDialog)
     }
 
     override fun onCreateView(
@@ -38,6 +40,8 @@ class Add2boardDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        viewModel.liveNotes.value = Add2boardDialogArgs.fromBundle(requireArguments()).notesKey.toList()
 
         binding = DialogAdd2boardBinding.inflate(inflater, container, false)
         binding.layoutAdd2cart.startAnimation(
@@ -49,6 +53,33 @@ class Add2boardDialog : DialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        binding.iconAdd2boardPublicHelp.setOnClickListener {
+            binding.textAdd2boardHelp.visibility = View.VISIBLE
+        }
+
+
+
+        val noteRecyclerView = binding.noteRecyclerView
+
+
+        noteRecyclerView.adapter = Add2boardAdapter()
+
+        viewModel.toUploadBoard.observe(viewLifecycleOwner, Observer {
+            val isPublicSwitch = binding.switchAdd2boardPublic
+
+            viewModel.isPublic = isPublicSwitch.isChecked
+            viewModel.uploadBoard()
+
+        })
+
+        viewModel.liveNotes.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                (noteRecyclerView.adapter as Add2boardAdapter).submitList(it)
+            }
+        })
+
+
 //        binding.buttonAdd2cartClose.setTouchDelegate()
 //        binding.recyclerAdd2cartColorSelector.adapter = Add2cartColorAdapter(viewModel)
 //

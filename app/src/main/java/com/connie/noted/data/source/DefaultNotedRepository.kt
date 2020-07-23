@@ -16,6 +16,10 @@ class DefaultNotedRepository(
         return remoteDataSource.createNote(note)
     }
 
+    override suspend fun createBoard(board: Board): Result<Boolean> {
+        return remoteDataSource.createBoard(board)
+    }
+
     override suspend fun likeNote(note: Note): Result<Boolean> {
         return remoteDataSource.likeNote(note)
     }

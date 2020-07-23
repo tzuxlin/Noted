@@ -11,6 +11,8 @@ interface NotedRepository {
 
     suspend fun createNote(note: Note): Result<Boolean>
 
+    suspend fun createBoard(board: Board): Result<Boolean>
+
     suspend fun likeNote(note: Note): Result<Boolean>
 
     suspend fun updateUser(user: User): Result<Boolean>

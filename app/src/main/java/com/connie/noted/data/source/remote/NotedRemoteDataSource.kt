@@ -276,6 +276,35 @@ object NotedRemoteDataSource : NotedDataSource {
                 }
         }
 
+    override suspend fun createBoard(board: Board): Result<Boolean>  =
+        suspendCoroutine { continuation ->
+            val boards = FirebaseFirestore.getInstance().collection(PATH_BOARDS)
+            val document = boards.document()
+
+            board.id = document.id
+            board.createdTime = Calendar.getInstance().timeInMillis
+
+            document
+                .set(board)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Connie", "$board")
+
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+                            Log.w(
+                                "Connie",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail("Fail"))
+                    }
+                }
+        }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override suspend fun updateUser(user: User): Result<Boolean> =
