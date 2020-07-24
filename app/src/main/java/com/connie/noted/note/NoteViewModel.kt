@@ -8,15 +8,17 @@ import androidx.lifecycle.ViewModel
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
+import com.connie.noted.data.User
 import com.connie.noted.data.crawler.NoteCrawlerClass
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.login.UserManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class NoteViewModel(private val notedRepository: NotedRepository, private val note: Note) :
+class NoteViewModel(private val notedRepository: NotedRepository, private val note: Note?) :
     ViewModel() {
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -30,6 +32,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val newNote: LiveData<Note>
         get() = _newNote
 
+    val userIsReady = MutableLiveData<Boolean>()
 
 
     var notes = MutableLiveData<MutableList<Note>>()
@@ -63,15 +66,16 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     init {
-        getLiveNotes()
         goGo()
+//        checkLogin()
+        getLiveNotes()
     }
 
 
     private fun goGo() {
         if (!NotedApplication.isGoGo) {
 //        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetYoutube(""))
+//            _newNote.postValue(toGetYoutube("https://www.youtube.com/watch?v=bJ61ijAVT4w"))
 //        }
 //        coroutineScopeIO.launch {
 //            _newNote.postValue(toGetMediumArticle("https://medium.com/appworks-school/java-8-for-android-lambda-expressions-a4ef6fb2d61"))
@@ -100,7 +104,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     }
 
 
-    private fun getLiveNotes() {
+    fun getLiveNotes() {
         notes = notedRepository.getLiveNotes()
     }
 
@@ -136,7 +140,6 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
-
 
 
 //    val mockNote: List<Note> =
@@ -202,5 +205,29 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 //            )
 //        )
 
+
+    fun checkLogin() {
+        if (UserManager.justLogin) {
+            UserManager.user.value?.let {
+                updateUser(it)
+            }
+        } else {
+            UserManager.userEmail?.let {
+                getUser()
+            }
+        }
+    }
+
+    private fun updateUser(user: User) {
+        coroutineScopeMain.launch {
+            notedRepository.updateUser(user)
+        }
+
+    }
+
+    private fun getUser() {
+        UserManager.user = notedRepository.getLiveUser()
+        userIsReady.value = true
+    }
 
 }

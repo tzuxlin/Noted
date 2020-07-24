@@ -34,6 +34,16 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         val noteRecyclerView = binding.noteRecyclerView
 
 
+
+        viewModel.checkLogin()
+
+        viewModel.userIsReady.observe(viewLifecycleOwner, Observer {
+            if (it){
+                viewModel.getLiveNotes()
+            }
+        })
+
+
         viewModel.viewType.observe(viewLifecycleOwner, Observer {
 
             when (it) {
@@ -86,7 +96,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 Log.d("Connie", "liveNotes = $it")
                 (noteRecyclerView.adapter as NoteAdapter).submitList(it)
 
-                viewModel.noteToAdd = it.filter {  note ->
+                viewModel.noteToAdd = it.filter { note ->
                     note.isSelected
                 }
                 Log.d("Connie", viewModel.noteToAdd.size.toString())
@@ -124,8 +134,14 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         }
 
 
+
+
         return binding.root
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getLiveNotes()
+    }
 }

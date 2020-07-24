@@ -20,13 +20,14 @@ import kotlinx.coroutines.launch
  *
  * The [ViewModel] that is attached to the [MainActivity].
  */
-class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() {
+class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 
 
     // According to current fragment to change different drawer toggle
     val currentDrawerToggleType = MutableLiveData<DrawerToggleType>().apply {
         value = DrawerToggleType.NORMAL
     }
+
 
 
 
@@ -107,26 +108,5 @@ class MainViewModel(private val notedRepository: NotedRepository) : ViewModel() 
 
 
 
-    fun checkLogin() {
-        if (UserManager.justLogin) {
-            UserManager.user.value?.let {
-                updateUser(it)
-            }
-        } else {
-            UserManager.userEmail?.let {
-                getUser()
-            }
-        }
-    }
 
-    private fun updateUser(user: User) {
-        coroutineScope.launch {
-            notedRepository.updateUser(user)
-        }
-
-    }
-
-    private fun getUser() {
-        UserManager.user = notedRepository.getLiveUser()
-    }
 }

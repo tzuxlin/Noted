@@ -29,22 +29,30 @@ object NotedRemoteDataSource : NotedDataSource {
     override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
         val liveData = MutableLiveData<MutableList<Note>>()
 
-        FirebaseFirestore.getInstance()
-            .collection(PATH_NOTES)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val list = mutableListOf<Note>()
-                    for (document in task.result!!) {
-                        Log.d("Connie", document.id + " => " + document.data)
+        Log.e("Connie", "email ${UserManager.user.value?.email}")
 
-                        val note = document.toObject(Note::class.java)
-                        list.add(note)
+//        UserManager.user.value?.email?.let { email ->
+
+
+            FirebaseFirestore.getInstance()
+                .collection(PATH_NOTES)
+                .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val list = mutableListOf<Note>()
+                        for (document in task.result!!) {
+                            Log.d("Connie", document.id + " => " + document.data)
+
+                            val note = document.toObject(Note::class.java)
+//                            if (note.createdBy == email){
+                                list.add(note)
+//                            }
                     }
-                    liveData.value = list
+                        liveData.value = list
+                    }
                 }
-            }
+//        }
         return liveData
     }
 
@@ -252,6 +260,7 @@ object NotedRemoteDataSource : NotedDataSource {
             val document = notes.document()
 
             note.id = document.id
+            note.createdBy = UserManager.user.value?.email
             note.createdTime = Calendar.getInstance().timeInMillis
 
             document
@@ -276,7 +285,7 @@ object NotedRemoteDataSource : NotedDataSource {
                 }
         }
 
-    override suspend fun createBoard(board: Board): Result<Boolean>  =
+    override suspend fun createBoard(board: Board): Result<Boolean> =
         suspendCoroutine { continuation ->
             val boards = FirebaseFirestore.getInstance().collection(PATH_BOARDS)
             val document = boards.document()

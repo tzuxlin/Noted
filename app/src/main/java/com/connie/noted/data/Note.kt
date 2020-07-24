@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
 data class Note (
     var id: String = "",
     var url: String = "",
+    var createdBy: String? = "",
     var createdTime: Long = -1,
     var type: String = "",
     var contentSource: String = "",

@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -19,6 +20,7 @@ import com.connie.noted.data.Note
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
+import com.connie.noted.note.NoteViewModel
 import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,13 +28,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel> { getVmFactory() }
-
-
     private lateinit var binding: ActivityMainBinding
-
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +43,10 @@ class MainActivity : AppCompatActivity() {
         setupDrawer()
         setupNavController()
 
-        Log.d("Connie", "UserManager.user = ${UserManager.user.value}")
+        Log.d("Connie", "on Create UserManager.user = ${UserManager.user.value}")
 
-        viewModel.checkLogin()
+
+
 
 
 
@@ -160,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Setup for NoteFragment and BoardPageFragment for navigating to certain Note page.
      */
-    fun navigateToNote(note: Note){
+    fun navigateToNote(note: Note) {
 
         Log.i("Connie", "Main activity: Note is clicked, $note")
 
@@ -183,7 +182,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
 
 }
