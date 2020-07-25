@@ -1,5 +1,6 @@
 package com.connie.noted.note
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,10 +52,21 @@ class NoteAdapter(
 
         private val lifecycleRegistry = LifecycleRegistry(this)
 
-        init { lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED }
-        fun onAttach() { lifecycleRegistry.currentState = Lifecycle.State.STARTED }
-        fun onDetach() { lifecycleRegistry.currentState = Lifecycle.State.CREATED }
-        override fun getLifecycle(): Lifecycle { return lifecycleRegistry }
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun onAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun onDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
 
     }
 
@@ -79,10 +91,21 @@ class NoteAdapter(
 
         private val lifecycleRegistry = LifecycleRegistry(this)
 
-        init { lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED }
-        fun onAttach() { lifecycleRegistry.currentState = Lifecycle.State.STARTED }
-        fun onDetach() { lifecycleRegistry.currentState = Lifecycle.State.CREATED }
-        override fun getLifecycle(): Lifecycle { return lifecycleRegistry }
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun onAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun onDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
     }
 
 
@@ -241,18 +264,36 @@ class NoteAdapter(
 
     private fun noteSelected(note: Note) {
 
-        var newList = mutableListOf<Note>()
-        viewModel.notes.value?.let {
-            for (i in it.indices) {
+        viewModel.notes.value?.let { notes ->
 
-                newList = it
+            val list = mutableListOf<Note>()
+            for (i in notes.indices) {
 
-                if (newList[i].id == note.id) {
-                    newList[i].isSelected = !it[i].isSelected
+                if (notes[i].id == note.id) {
+                    notes[i].isSelected = !notes[i].isSelected
+                    Log.e(
+                        "Connie",
+                        "Adapter: ${notes[i].title} isSelected = ${notes[i].isSelected}"
+                    )
+
+                    viewModel.notes.value = notes
+
+                    viewModel.notes.value?.let {
+                    Log.e(
+                        "Connie",
+                        "Adapter: ${it[i].title} isSelected = ${it[i].isSelected} (viewModel)"
+                    )
+                    }
+
+                    viewModel.noteToAdd = notes.filter { note ->
+                        note.isSelected
+                    }
+                    Log.d("Connie", viewModel.noteToAdd.size.toString())
                 }
+
+
             }
         }
-
-        viewModel.notes.value = newList
     }
 }
+

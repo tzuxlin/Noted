@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/translucent</item>
         <item name="colorPrimaryDark">@color/olive_green</item>
         <item name="colorAccent">@color/olive_green</item>
+        <item name="customChipThin">@style/chip_thin</item>
     </style>
 
     <style name="toolbar_style">
@@ -36,6 +37,26 @@
 
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/cccccc</item>
+    </style>
+
+    <style name="chip_thin_shape" parent="">
+        <item name="cornerSize">12dp</item>
+
+    </style>
+    <style name="chip_thin_text" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">11sp</item>
+
+    </style>
+
+    <style name="chip_thin" parent="@style/Widget.MaterialComponents.Chip.Action">
+        <item name="chipMinHeight">18dp</item>
+        <item name="chipMinTouchTargetSize">24dp</item>
+        <item name="chipIconSize">13dp</item>
+        <item name="closeIconSize">13dp</item>
+        <item name="textStartPadding">4dp</item>
+        <item name="textEndPadding">4dp</item>
+        <item name="android:textAppearance">@style/chip_thin_text</item>
+        <item name="shapeAppearanceOverlay">@style/chip_thin_shape</item>
     </style>
 
 </resources>

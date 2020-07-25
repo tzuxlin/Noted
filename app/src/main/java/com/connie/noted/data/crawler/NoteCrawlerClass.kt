@@ -1,5 +1,6 @@
 package com.connie.noted.data.crawler
 
+import android.util.Log
 import com.connie.noted.data.Note
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -8,7 +9,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class NoteCrawlerClass : NoteCrawler {
     override suspend fun getGoogleLocation(url: String): Note  = suspendCoroutine { continuation ->
-
+        
         val note = Note()
         val doc = Jsoup.connect(url).get()
 
@@ -85,8 +86,10 @@ class NoteCrawlerClass : NoteCrawler {
 
         for (metaTag in metaTags) {
 
+
             val content = metaTag.attr("content")
 
+            println(metaTag.attributes())
 
             if (metaTag.attr("itemprop") == "name") {
                 note.title = content

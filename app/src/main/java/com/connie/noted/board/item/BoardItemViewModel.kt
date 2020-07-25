@@ -1,5 +1,6 @@
 package com.connie.noted.board.item
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +23,9 @@ class BoardItemViewModel(
 ) : ViewModel() {
 
 
+    val hasNewTag = MutableLiveData<Boolean>()
 
+    val filterTags: MutableList<String?> = mutableListOf()
 
     // Handle navigation to detail
     private val _navigateToDetail = MutableLiveData<Board>()
@@ -57,16 +60,24 @@ class BoardItemViewModel(
         toGetBoard()
     }
 
-    private fun toGetBoard(){
+    private fun toGetBoard() {
         liveBoards = notedRepository.getLiveBoards(boardType)
     }
 
+    fun tagClicked(tag: String) {
 
-    fun navigateToDetail(board: Board) {
-        _navigateToDetail.value = board
-    }
+        hasNewTag.value = true
 
-    fun onDetailNavigated() {
-        _navigateToDetail.value = null
+
+        if (filterTags.contains(tag)) {
+            filterTags.remove(tag)
+        } else {
+            filterTags.add(tag)
+        }
+
+
+        Log.w("Connie", "viewModel, tagClicked, ${filterTags}")
+
+
     }
 }

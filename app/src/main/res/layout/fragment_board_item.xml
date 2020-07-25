@@ -9,6 +9,8 @@
             name="viewModel"
             type="com.connie.noted.board.item.BoardItemViewModel" />
 
+        <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +20,18 @@
         android:background="#FFFFFF"
         android:paddingStart="8dp"
         android:paddingEnd="8dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/group_board_tag"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            style="@style/Widget.MaterialComponents.ChipGroup"
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/board_icon_change_layout"
@@ -36,7 +50,7 @@
             android:layout_columnWeight="1"
             app:reverseLayout="false"
             app:listBoard="@{viewModel.liveBoards}"
-            app:layout_constraintTop_toBottomOf="@id/board_icon_change_layout"
+            app:layout_constraintTop_toBottomOf="@id/group_board_tag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

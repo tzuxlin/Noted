@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.connie.noted.MainActivity
+import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
@@ -21,6 +23,8 @@ import com.connie.noted.ext.getVmFactory
 class NoteFragment(private val note: Note = Note()) : Fragment() {
 
     private val viewModel by viewModels<NoteViewModel> { getVmFactory(note) }
+
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +37,24 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         val noteRecyclerView = binding.noteRecyclerView
 
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
+        mainViewModel.urlString.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val url = it
+
+                Log.e("ConnieCrawler", "mainViewModel observed from NoteFragment, $it")
+                mainViewModel.urlString.value = null
+                Log.e("ConnieCrawler", "mainViewModel.urlString = ${mainViewModel.urlString.value} (expected: null)")
+
+                viewModel.goGo(url)
+            }
+        })
 
         viewModel.checkLogin()
 
         viewModel.userIsReady.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 viewModel.getLiveNotes()
             }
         })
@@ -67,8 +83,6 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
-//                    noteRecyclerView.isAnimating.not()
-
 
                     viewModel.notes.value = viewModel.notes.value
 
@@ -82,7 +96,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         viewModel.newNote.observe(viewLifecycleOwner, Observer {
             it?.let {
 
-                Log.d("Connie", "newNote = $it")
+                Log.w("Connie", "newNote = $it")
                 viewModel.create(it)
 
             }
@@ -94,12 +108,8 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             it?.let {
 
                 Log.d("Connie", "liveNotes = $it")
-                (noteRecyclerView.adapter as NoteAdapter).submitList(it)
-
-                viewModel.noteToAdd = it.filter { note ->
-                    note.isSelected
-                }
-                Log.d("Connie", viewModel.noteToAdd.size.toString())
+                (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
+                viewModel.notes.value = viewModel.notes.value
 
             }
         })
@@ -144,4 +154,9 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         super.onResume()
         viewModel.getLiveNotes()
     }
+
+//    fun hello(url: String) {
+//        Log.e("ConnieCrawler", url)
+//        viewModel.goGo(url)
+//    }
 }

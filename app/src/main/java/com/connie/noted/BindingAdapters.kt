@@ -26,27 +26,28 @@ import com.connie.noted.boardpage.BoardNotesAdapter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.explore.ExplorePopularAdapter
+import com.connie.noted.login.UserManager
 import com.connie.noted.note.NoteAdapter
 import com.connie.noted.util.Util.getWindowWidth
 
 
 @BindingAdapter("imageNoRoundUrl")
- fun bindNoRoundImage(imgView: ImageView, imgUrl: String?) {
-            imgUrl?.let {
-                val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
-                Glide.with(imgView.context)
-                    .load(imgUrl)
-                    .apply(
-                        RequestOptions()
-                            .transform(MultiTransformation(FitCenter()))
+fun bindNoRoundImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context)
+            .load(imgUrl)
+            .apply(
+                RequestOptions()
+                    .transform(MultiTransformation(FitCenter()))
 //                    .fitCenter()
-                            .placeholder(R.drawable.ic_placeholder)
-                            .error(R.drawable.ic_placeholder)
-                    )
-                    .into(imgView)
-            }
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_placeholder)
+            )
+            .into(imgView)
+    }
 
-        }
+}
 
 
 //@BindingAdapter("imageNoRoundUrl")
@@ -213,7 +214,9 @@ fun bindBoardMoreNotesCount(textView: TextView, size: Int?) {
 @BindingAdapter("createdBy")
 fun bindBoardCreatedBy(textView: TextView, name: String?) {
     name?.let {
+
         textView.text = "由 $it 新增"
+
     }
 }
 

@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -15,20 +14,17 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 
-import com.connie.noted.R
 import com.connie.noted.board.BoardTypeFilter
-import com.connie.noted.databinding.FragmentBoardBinding
 import com.connie.noted.databinding.FragmentBoardItemBinding
-import com.connie.noted.databinding.ItemBoardBinding
 import com.connie.noted.ext.getVmFactory
-import com.connie.noted.note.NoteAdapter
-import com.connie.noted.note.NoteViewModel
-import kotlinx.android.synthetic.main.fragment_board_item.*
+import com.connie.noted.util.Util.setUpThinTags
+import com.google.android.material.chip.ChipGroup
 
 class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
     private val viewModel by viewModels<BoardItemViewModel> { getVmFactory(boardType) }
 
+    lateinit var chipGroup: ChipGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,6 +83,8 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         })
 
+        chipGroup = binding.groupBoardTag
+
 
         binding.boardIconChangeLayout.setOnClickListener {
 
@@ -97,10 +95,17 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         }
 
+        viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
+
+            Log.e("Connie", "Hello World!")
+            setUpThinTags(viewModel.filterTags, chipGroup)
+
+        })
 
 
         return binding.root
     }
+
 
 
 }

@@ -1,29 +1,30 @@
 package com.connie.noted
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
-import com.connie.noted.note.NoteViewModel
+import com.connie.noted.note.NoteFragment
 import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+//    private lateinit var noteFragment: NoteFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,6 +159,46 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun onSharedIntent() {
+
+//        val noteFragment = supportFragmentManager.findFragmentById(R.id.noteFragment) as NoteFragment
+
+
+
+        val receivedIntent = intent
+        val receivedAction = receivedIntent.action
+        val receivedType = receivedIntent.type
+        if (receivedAction == Intent.ACTION_SEND) {
+
+            // check mime type
+            if (receivedType!!.startsWith("text/")) {
+                val receivedText = receivedIntent
+                    .getStringExtra(Intent.EXTRA_TEXT)
+
+                receivedText?.let {
+                    Log.e("ConnieCrawler", "receivedText = $it")
+
+                    viewModel.urlString.value = it
+
+                }
+
+            } else if (receivedType.startsWith("image/")) {
+
+                val receiveUri: Uri = receivedIntent
+                    .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+                Log.e("ConnieCrawler", "receiveUri = $receiveUri")
+
+            }
+        } else if (receivedAction == Intent.ACTION_MAIN) {
+
+            Log.e("ConnieCrawler", "onSharedIntent: nothing shared")
+
+        } else  {
+            Log.e("ConnieCrawler", "onShareIntent: else situation")
+        }
+    }
+
+
     /**
      * Setup for NoteFragment and BoardPageFragment for navigating to certain Note page.
      */
@@ -183,5 +226,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        onSharedIntent()
 
+    }
 }

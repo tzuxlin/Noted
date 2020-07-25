@@ -28,12 +28,14 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     private val coroutineScopeMain = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val coroutineScopeIO = CoroutineScope(viewModelJob + Dispatchers.IO)
 
+    // newNote value is assigned from crawler result
     private val _newNote = MutableLiveData<Note>()
     val newNote: LiveData<Note>
         get() = _newNote
 
     val userIsReady = MutableLiveData<Boolean>()
 
+    var test = MutableLiveData<Boolean>()
 
     var notes = MutableLiveData<MutableList<Note>>()
 
@@ -66,25 +68,58 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     init {
-        goGo()
+//        goGo()
 //        checkLogin()
         getLiveNotes()
+//        test()
+    }
+
+    fun test(){
+        coroutineScopeIO.launch {
+                        _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/sMACcJzUx72aZwZE9"))
+                    }
     }
 
 
-    private fun goGo() {
-        if (!NotedApplication.isGoGo) {
-//        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetYoutube("https://www.youtube.com/watch?v=bJ61ijAVT4w"))
+    fun goGo(url: String) {
+//        if (!NotedApplication.isGoGo) {
+
+            when {
+
+//                url.contains("http:", true) -> {
+//                    Log.e("ConnieCrawler", "Gogo, split")
+//                    val splitUrl = url.split("//")
+//                    goGo("https://${splitUrl[1]}")
+//                }
+
+                url.contains("//youtu", true) -> {
+                    Log.e("ConnieCrawler", "Gogo, youtube: $url")
+                    coroutineScopeIO.launch {
+                        _newNote.postValue(toGetYoutube(url))
+                    }
+                }
+                url.contains("//g.", true) ||
+                url.contains("//goo", true) -> {
+
+                    val data = url.lines()
+
+//                    val url = data[3]
+                    Log.e("Connie", "0 = ${data[0]}, 1 = ${data[1]}, 2 = ${data[2]}, 3 = ${data[3]}, 4 = ${data[4]}")
+
+
+                    coroutineScopeIO.launch {
+                        _newNote.postValue(toGetGoogleLocation(data[4]))
+                    }
+                }
+                else -> {
+                    coroutineScopeIO.launch {
+                        Log.e("ConnieCrawler", "Gogo, article: $url")
+                        _newNote.postValue(toGetMediumArticle(url))
+                    }
+                }
+            }
+//            NotedApplication.isGoGo = true
 //        }
-//        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetMediumArticle("https://medium.com/appworks-school/java-8-for-android-lambda-expressions-a4ef6fb2d61"))
-//        }
-//        coroutineScopeIO.launch {
-//            _newNote.postValue(toGetGoogleLocation(""))
-//        }
-            NotedApplication.isGoGo = true
-        }
     }
 
 
@@ -119,6 +154,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
                     leave(true)
+                    getLiveNotes()
                 }
                 is Result.Fail -> {
                     _error.value = result.error
@@ -140,71 +176,6 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     fun leave(needRefresh: Boolean = false) {
         _leave.value = needRefresh
     }
-
-
-//    val mockNote: List<Note> =
-//        listOf(
-//            Note(
-//                "Article",
-//                "Medium",
-//                "A simple way to work with Kotlin Coroutines in Android",
-//                mutableListOf(
-//                    "https://miro.medium.com/max/1400/1*X_pycRAcXOh176Fals07wg.jpeg",
-//                    "https://miro.medium.com/max/1400/1*bVOsGqOWVmcqCfwZRm4yDg.jpeg"
-//                ),
-//                "Do you feel curious about Kotlin’s coroutines? Have you heard about this before? Do you want to start working with them within your Android project? Well, I’m gonna try to write a simple example in…",
-//                mutableListOf("Kotlin", "Coroutines", "Android"),
-//                true
-//            ),
-//            Note(
-//                "Location",
-//                "Google Maps",
-//                "Googleplex",
-//                mutableListOf("https://lh5.googleusercontent.com/p/AF1QipPrMWQ5TsMMgKAB6w2dvH624FJ0agQWncjFI68X=w256-h256-k-no-p"),
-//                "★★★★☆ · Corporate campus · 1600 Amphitheatre Pkwy",
-//                mutableListOf("work"),
-//                false
-//            ),
-//            Note(
-//                "Article",
-//                "Medium",
-//                "RxJava VS. Coroutines In Two Use Cases",
-//                mutableListOf(
-//                    "https://miro.medium.com/max/2000/0*aN1Xq8hVYBLZW35-"
-//                ),
-//                "RxJava has been a lifesaver for me for a long time. With all the functionalities it provides, my Android programming mindset has greatly shifted to a more reactive way...",
-//                mutableListOf("RxJava", "Coroutines", "Android"),
-//                false
-//            ),
-//            Note(
-//                "Video",
-//                "YouTube",
-//                "千千，妳不是比目魚！是龍虎石斑魚頭火鍋！｜Fred吃上癮｜feat.千千進食中",
-//                mutableListOf("https://i.ytimg.com/vi/NHyBeGmpMIY/maxresdefault.jpg"),
-//                "自從John離開家門到千千那去之後，我的思念從來沒有一刻停過。 每當我在節目中提起John，都會讓我感到撕心裂肺的痛楚。 我的聲音在笑，淚在飆。電話那頭的你可知道？ 在這最痛苦的時候，好在有 #富鴻網 #智慧農業 和新竹縣政府與經濟部工業局「普及智慧城鄉生活應用計畫」補助。 讓我可以利用這次機會與千千再見一面，而...",
-//                mutableListOf("廚佛"),
-//                true
-//            ),
-//            Note(
-//                "Article",
-//                "Medium",
-//                "Web Scraping in Kotlin using Jsoup",
-//                mutableListOf(),
-//                "Jsoup is a powerul library to perform web scraping in android. Well the intention to write this post is inspired from the tough times that I had while trying to perform this task...",
-//                mutableListOf("Kotlin", "Jsoup"),
-//                false
-//            ),
-//            Note(
-//                "Article",
-//                "Medium",
-//                "MVVM on Android with the Architecture Components + Koin",
-//                mutableListOf("https://miro.medium.com/max/1400/1*_DMvajfGcKQoIOWpLysa1Q.png"),
-//                "MVVM facilitates a separation of development of the graphical user interface be it via a markup language or GUI code from the development of the business logic or back-end logic...",
-//                mutableListOf("MVVM", "Android", "Koin"),
-//                false
-//            )
-//        )
-
 
     fun checkLogin() {
         if (UserManager.justLogin) {

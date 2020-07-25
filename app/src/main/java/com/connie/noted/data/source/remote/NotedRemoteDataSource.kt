@@ -26,35 +26,58 @@ object NotedRemoteDataSource : NotedDataSource {
     private const val PATH_BOARDS = "boards"
     private const val KEY_CREATED_TIME = "createdTime"
 
+
     override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
         val liveData = MutableLiveData<MutableList<Note>>()
 
-        Log.e("Connie", "email ${UserManager.user.value?.email}")
+        FirebaseFirestore.getInstance()
+            .collection(PATH_NOTES)
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, exception ->
 
-//        UserManager.user.value?.email?.let { email ->
+                Log.i("ConnieFirebaseGetLiveNote", "Notes changed, addSnapshotListener detect")
 
-
-            FirebaseFirestore.getInstance()
-                .collection(PATH_NOTES)
-                .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val list = mutableListOf<Note>()
-                        for (document in task.result!!) {
-                            Log.d("Connie", document.id + " => " + document.data)
-
-                            val note = document.toObject(Note::class.java)
-//                            if (note.createdBy == email){
-                                list.add(note)
-//                            }
-                    }
-                        liveData.value = list
-                    }
+                exception?.let {
+                    Log.w("ConnieFirebaseGetLiveNote", "Error getting documents. ${it.message}")
                 }
-//        }
+
+                val list = mutableListOf<Note>()
+                for (document in snapshot!!) {
+                    Log.v(
+                        "ConnieFirebaseGetLiveNote",
+                        document.id + " => " + document.data["title"] + ", " + document.data["url"]
+                    )
+
+                    val note = document.toObject(Note::class.java)
+                    list.add(note)
+                }
+                liveData.value = list
+            }
+
         return liveData
     }
+
+//    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
+//        val liveData = MutableLiveData<MutableList<Note>>()
+//
+//            FirebaseFirestore.getInstance()
+//                .collection(PATH_NOTES)
+//                .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        val list = mutableListOf<Note>()
+//                        for (document in task.result!!) {
+//                            Log.d("Connie", document.id + " => " + document.data)
+//
+//                            val note = document.toObject(Note::class.java)
+//                                list.add(note)
+//                    }
+//                        liveData.value = list
+//                    }
+//                }
+//        return liveData
+//    }
 
     override fun getLiveGlobalBoards(condition: String): MutableLiveData<List<Board>> {
 
@@ -79,7 +102,10 @@ object NotedRemoteDataSource : NotedDataSource {
                                 task.result?.let { documents ->
 
                                     for (document in documents) {
-                                        Log.d("Connie", document.id + " => " + document.data)
+                                        Log.d(
+                                            "ConnieFirebaseGetLiveBoards",
+                                            document.id + " => " + document.data
+                                        )
 
                                         val board = document.toObject(Board::class.java)
                                         list.add(board)
@@ -123,7 +149,10 @@ object NotedRemoteDataSource : NotedDataSource {
                         task.result?.let { documents ->
 
                             for (document in documents) {
-                                Log.d("Connie", document.id + " => " + document.data)
+                                Log.d(
+                                    "Connie",
+                                    document.id + " => " + document.data["title"]
+                                )
 
                                 val board = document.toObject(Board::class.java)
                                 list.add(board)
@@ -144,7 +173,10 @@ object NotedRemoteDataSource : NotedDataSource {
                                 task.result?.let { documents ->
 
                                     for (document in documents) {
-                                        Log.d("Connie", document.id + " => " + document.data)
+                                        Log.d(
+                                            "Connie",
+                                            document.id + " => " + document.data["title"]
+                                        )
 
                                         val board = document.toObject(Board::class.java)
                                         list.add(board)
@@ -154,13 +186,13 @@ object NotedRemoteDataSource : NotedDataSource {
 
                                     liveData.value = when (type) {
                                         BoardTypeFilter.SAVED -> {
-                                            list.filter { it.savedBy.contains(email) }
+                                            list.filter { it.savedBy.contains(email) }.sortedByDescending { it.createdTime }
                                         }
                                         BoardTypeFilter.MINE -> {
-                                            list.filter { it.createdBy == email }
+                                            list.filter { it.createdBy == email }.sortedByDescending { it.createdTime }
                                         }
                                         else -> {
-                                            list
+                                            list.sortedByDescending { it.createdTime }
                                         }
 
                                     }
@@ -197,7 +229,7 @@ object NotedRemoteDataSource : NotedDataSource {
                         task.result?.let { documents ->
 
                             for (document in documents) {
-                                Log.d("Connie", document.id + " => " + document.data)
+                                Log.v("Connie", document.id + " => " + document.data)
 
                                 val note = document.toObject(Note::class.java)
                                 list.add(note)
@@ -259,28 +291,39 @@ object NotedRemoteDataSource : NotedDataSource {
             val notes = FirebaseFirestore.getInstance().collection(PATH_NOTES)
             val document = notes.document()
 
-            note.id = document.id
-            note.createdBy = UserManager.user.value?.email
-            note.createdTime = Calendar.getInstance().timeInMillis
 
-            document
-                .set(note)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("Connie", "$note")
-
-                        continuation.resume(Result.Success(true))
+            notes
+                .whereEqualTo("createdBy", note.createdBy)
+                .whereEqualTo("url", note.url)
+                .get()
+                .addOnSuccessListener {
+                    if (!it.isEmpty) {
+                        continuation.resume(Result.Fail("Same note in database"))
                     } else {
-                        task.exception?.let {
-                            Log.w(
-                                "Connie",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
+                        note.id = document.id
+                        note.createdBy = UserManager.user.value?.email
+                        note.createdTime = Calendar.getInstance().timeInMillis
 
-                            continuation.resume(Result.Error(it))
-                            return@addOnCompleteListener
-                        }
-                        continuation.resume(Result.Fail("Fail"))
+                        document
+                            .set(note)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("Connie", "$note")
+
+                                    continuation.resume(Result.Success(true))
+                                } else {
+                                    task.exception?.let {
+                                        Log.w(
+                                            "Connie",
+                                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                        )
+
+                                        continuation.resume(Result.Error(it))
+                                        return@addOnCompleteListener
+                                    }
+                                    continuation.resume(Result.Fail("Fail"))
+                                }
+                            }
                     }
                 }
         }

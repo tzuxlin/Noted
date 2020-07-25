@@ -28,7 +28,7 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         value = DrawerToggleType.NORMAL
     }
 
-
+    val urlString = MutableLiveData<String>()
 
 
     // Record current fragment to support data binding
