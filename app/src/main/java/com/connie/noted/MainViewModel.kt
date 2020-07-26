@@ -2,19 +2,15 @@ package com.connie.noted
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.connie.noted.data.User
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
-import com.connie.noted.login.UserManager
 import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 /**
  * Created by Wayne Chen in Jul. 2019.

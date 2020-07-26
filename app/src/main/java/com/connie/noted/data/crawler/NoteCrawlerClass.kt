@@ -9,7 +9,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class NoteCrawlerClass : NoteCrawler {
     override suspend fun getGoogleLocation(url: String): Note  = suspendCoroutine { continuation ->
-        
+
         val note = Note()
         val doc = Jsoup.connect(url).get()
 

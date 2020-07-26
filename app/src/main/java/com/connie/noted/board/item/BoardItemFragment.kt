@@ -15,12 +15,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
-import com.connie.noted.board.BoardAdapter
-
 import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.databinding.FragmentBoardItemBinding
 import com.connie.noted.ext.getVmFactory
-import com.connie.noted.note.NoteAdapter
 import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.Util.setUpThinTags
 import com.google.android.material.chip.ChipGroup
@@ -134,22 +131,19 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
             when (type) {
 
-                CurrentFilterType.ALL -> {
-                    viewModel.liveBoards.value = viewModel.liveBoards.value
-                }
-
                 CurrentFilterType.LIKED -> {
                     boardAdapter.submitList(viewModel.liveBoards.value?.filter { board ->
                         board.isLiked
                     })
                 }
 
+                else -> {
+                    viewModel.liveBoards.value = viewModel.liveBoards.value
+                }
 
             }
         }
     }
-
-
 
 
 }
