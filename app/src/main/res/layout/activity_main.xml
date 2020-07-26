@@ -9,8 +9,9 @@
             name="viewModel"
             type="com.connie.noted.MainViewModel" />
 
-        <import type="com.connie.noted.util.CurrentFragmentType"/>
-        <import type="android.view.View"/>
+        <import type="com.connie.noted.util.CurrentFragmentType" />
+
+        <import type="android.view.View" />
 
     </data>
 
@@ -26,29 +27,50 @@
             android:layout_height="match_parent"
             tools:context=".MainActivity">
 
-            <androidx.appcompat.widget.Toolbar
+            <!--            <androidx.appcompat.widget.Toolbar-->
+            <!--                android:id="@+id/toolbar"-->
+            <!--                style="@style/toolbar_style"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="60dp"-->
+            <!--                android:background="@android:color/white"-->
+            <!--                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL || viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:navigationIcon="@drawable/toolbar_menu">-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbar"
                 style="@style/toolbar_style"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@android:color/white"
-                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL || viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}"
+                android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL ? View.GONE : View.VISIBLE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/toolbar_menu">
+                app:layout_constraintTop_toTopOf="parent">
 
+                <ImageView
+                    android:id="@+id/icon_nav_drawer"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/toolbar_menu"
+                    android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}'
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/image_toolbar_logo"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/logo"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/icon_back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/toolbar_back"
+                    android:visibility='@{viewModel.currentFragmentType != CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}'
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone" />
 
                 <TextView
                     android:id="@+id/text_toolbar_title"
@@ -61,11 +83,28 @@
                     android:textColor="@color/black_3f3a3a"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Noted!"
                     tools:visibility="visible" />
 
+                <ImageView
+                    android:id="@+id/icon_2change_view_type"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="16dp"
+                    android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"
+                    android:backgroundTint="@color/olive_green"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@drawable/icon_view_linear" />
 
-            </androidx.appcompat.widget.Toolbar>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!--            </androidx.appcompat.widget.Toolbar>-->
 
 
             <fragment
@@ -89,12 +128,12 @@
                 android:layout_marginEnd="0dp"
                 android:background="@android:color/white"
                 android:backgroundTint="@android:color/black"
+                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL || viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}"
                 app:itemIconSize="32dp"
                 app:itemIconTint="@color/icon_color_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL || viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}"
                 app:menu="@menu/navigation" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,13 +141,16 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/drawerNavView"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:background="@drawable/shape_radius"
             android:fitsSystemWindows="true"
-            app:menu="@menu/navdrawer_menu"
+            app:itemIconSize="18dp"
+            app:itemIconTint="@color/greyish_brown"
+            app:itemTextColor="@color/greyish_brown"
             app:labelVisibilityMode="labeled"
-            app:itemIconTint="@color/icon_color_selector"/>
+            app:menu="@menu/navdrawer_menu" />
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

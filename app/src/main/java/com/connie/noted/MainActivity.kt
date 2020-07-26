@@ -5,10 +5,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.core.view.GravityCompat.*
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -20,20 +25,18 @@ import com.connie.noted.data.Note
 import com.connie.noted.databinding.ActivityMainBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
-import com.connie.noted.note.NoteFragment
+import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
-import com.connie.noted.util.DrawerToggleType
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
-
-//    private lateinit var noteFragment: NoteFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,14 +46,27 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        binding.icon2changeViewType.setOnClickListener {
+
+            when (viewModel.viewType.value) {
+                0 -> viewModel.viewType.value = 1
+                1 -> viewModel.viewType.value = 0
+            }
+
+        }
+
+        binding.iconBack.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigateUp()
+        }
+
+        binding.iconNavDrawer.setOnClickListener {
+            binding.drawerLayout.openDrawer(START)
+        }
+
         setupDrawer()
         setupNavController()
 
         Log.d("Connie", "on Create UserManager.user = ${UserManager.user.value}")
-
-
-
-
 
 
     }
@@ -79,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalProfileFragment())
                     return@OnNavigationItemSelectedListener true
                 }
+
 
             }
             false
@@ -110,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
         // set up toolbar
         val navController = this.findNavController(R.id.myNavHostFragment)
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = null
 
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
@@ -118,51 +135,52 @@ class MainActivity : AppCompatActivity() {
 
         binding.drawerLayout.fitsSystemWindows = true
         binding.drawerLayout.clipToPadding = false
-
-        actionBarDrawerToggle = object : ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            binding.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        ) {
-            override fun onDrawerOpened(drawerView: View) {
-                super.onDrawerOpened(drawerView)
-
-            }
-        }.apply {
-            binding.drawerLayout.addDrawerListener(this)
-            syncState()
-        }
+        binding.drawerNavView.setNavigationItemSelectedListener(this)
 
 
-        // Observe current drawer toggle to set the navigation icon and behavior
-        viewModel.currentDrawerToggleType.observe(this, Observer { type ->
+//        actionBarDrawerToggle = object : ActionBarDrawerToggle(
+//            this,
+//            binding.drawerLayout,
+////            binding.toolbar,
+//            R.string.navigation_drawer_open,
+//            R.string.navigation_drawer_close
+//        ) {
+//            override fun onDrawerOpened(drawerView: View) {
+//                super.onDrawerOpened(drawerView)
+//
+//            }
+//        }.apply {
+//            binding.drawerLayout.addDrawerListener(this)
+//            syncState()
+//        }
 
-            actionBarDrawerToggle?.isDrawerIndicatorEnabled = type.indicatorEnabled
-            supportActionBar?.setDisplayHomeAsUpEnabled(!type.indicatorEnabled)
-            binding.toolbar.setNavigationIcon(
-                when (type) {
-                    DrawerToggleType.BACK -> R.drawable.toolbar_back
-                    else -> R.drawable.toolbar_menu
-                }
-            )
 
-            actionBarDrawerToggle?.setToolbarNavigationClickListener {
-                when (type) {
-                    DrawerToggleType.BACK -> onBackPressed()
-                    else -> {
-                    }
-                }
-            }
-        })
+//        // Observe current drawer toggle to set the navigation icon and behavior
+//        viewModel.currentDrawerToggleType.observe(this, Observer { type ->
+//
+//            actionBarDrawerToggle?.isDrawerIndicatorEnabled = type.indicatorEnabled
+//            supportActionBar?.setDisplayHomeAsUpEnabled(!type.indicatorEnabled)
+//            binding.toolbar.setNavigationIcon(
+//                when (type) {
+//                    DrawerToggleType.BACK -> R.drawable.toolbar_back
+//                    else -> R.drawable.toolbar_menu
+//                }
+//            )
+//
+//            actionBarDrawerToggle?.setToolbarNavigationClickListener {
+//                when (type) {
+//                    DrawerToggleType.BACK -> onBackPressed()
+//                    else -> {
+//                    }
+//                }
+//            }
+//        })
     }
 
 
     private fun onSharedIntent() {
 
 //        val noteFragment = supportFragmentManager.findFragmentById(R.id.noteFragment) as NoteFragment
-
 
 
         val receivedIntent = intent
@@ -193,7 +211,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.e("ConnieCrawler", "onSharedIntent: nothing shared")
 
-        } else  {
+        } else {
             Log.e("ConnieCrawler", "onShareIntent: else situation")
         }
     }
@@ -231,4 +249,31 @@ class MainActivity : AppCompatActivity() {
         onSharedIntent()
 
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        viewModel.currentFilterType.value = when (item.itemId) {
+
+            R.id.drawer_liked -> {
+                CurrentFilterType.LIKED
+            }
+            R.id.drawer_article -> {
+                CurrentFilterType.ARTICLE
+            }
+            R.id.drawer_video -> {
+                CurrentFilterType.VIDEO
+            }
+            R.id.drawer_location -> {
+                CurrentFilterType.LOCATION
+            }
+            else -> {
+                CurrentFilterType.ALL
+            }
+        }
+
+        binding.drawerLayout.closeDrawer(START)
+
+        return true
+    }
 }
+

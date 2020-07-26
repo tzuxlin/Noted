@@ -19,12 +19,13 @@ import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.FragmentNoteBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.util.CurrentFilterType
 
 class NoteFragment(private val note: Note = Note()) : Fragment() {
 
     private val viewModel by viewModels<NoteViewModel> { getVmFactory(note) }
-
     private lateinit var mainViewModel: MainViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +46,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
                 Log.e("ConnieCrawler", "mainViewModel observed from NoteFragment, $it")
                 mainViewModel.urlString.value = null
-                Log.e("ConnieCrawler", "mainViewModel.urlString = ${mainViewModel.urlString.value} (expected: null)")
+                Log.e(
+                    "ConnieCrawler",
+                    "mainViewModel.urlString = ${mainViewModel.urlString.value} (expected: null)"
+                )
 
                 viewModel.goGo(url)
             }
@@ -59,39 +63,52 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             }
         })
 
+        mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
 
-        viewModel.viewType.observe(viewLifecycleOwner, Observer {
+            it?.let { type ->
+                checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+            }
+
+        })
+
+
+        mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
 
             when (it) {
 
                 0 -> {
+                    viewModel.viewType.value = it
+
                     noteRecyclerView.adapter =
                         NoteAdapter(NoteAdapter.OnClickListener {
                             (activity as MainActivity).navigateToNote(note)
                         }, viewModel)
 
                     noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
-//                    noteRecyclerView.isAnimating.not()
 
-                    viewModel.notes.value = viewModel.notes.value
+                    mainViewModel.currentFilterType.value?.let { type ->
+                        checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+                    }
 
                 }
 
                 1 -> {
+                    viewModel.viewType.value = it
+
                     noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener {
                         (activity as MainActivity).navigateToNote(note)
                     }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
 
-                    viewModel.notes.value = viewModel.notes.value
-
+                    mainViewModel.currentFilterType.value?.let { type ->
+                        checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+                    }
                 }
 
             }
 
         })
-
 
         viewModel.newNote.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -139,11 +156,8 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         }
 
         binding.noteAdd2boardButton.setOnClickListener {
-
             findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(viewModel.noteToAdd.toTypedArray()))
         }
-
-
 
 
         return binding.root
@@ -155,8 +169,45 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         viewModel.getLiveNotes()
     }
 
-//    fun hello(url: String) {
-//        Log.e("ConnieCrawler", url)
-//        viewModel.goGo(url)
-//    }
+    private fun checkFilterType(filterType: CurrentFilterType, noteAdapter: NoteAdapter) {
+
+        filterType.let { type ->
+
+            when (type) {
+
+                CurrentFilterType.ALL -> {
+                    viewModel.notes.value = viewModel.notes.value
+                }
+
+                CurrentFilterType.LIKED -> {
+                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                        note.isLiked
+                    })
+                }
+
+                CurrentFilterType.ARTICLE -> {
+                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                        note.type == CurrentFilterType.ARTICLE.type
+                    })
+                    Log.i("Connie", CurrentFilterType.ARTICLE.type)
+                }
+
+                CurrentFilterType.LOCATION -> {
+                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                        note.type == CurrentFilterType.LOCATION.type
+                    })
+                    Log.i("Connie", CurrentFilterType.LOCATION.type)
+                }
+
+                CurrentFilterType.VIDEO -> {
+                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                        note.type == CurrentFilterType.VIDEO.type
+                    })
+                    Log.i("Connie", CurrentFilterType.VIDEO.type)
+                }
+
+            }
+        }
+    }
+
 }

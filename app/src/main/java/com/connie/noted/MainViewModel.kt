@@ -8,6 +8,7 @@ import com.connie.noted.data.User
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,11 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 
     val urlString = MutableLiveData<String>()
 
+    val viewType = MutableLiveData<Int>().apply {
+        value = 0
+    }
+
+    val currentFilterType = MutableLiveData<CurrentFilterType>()
 
     // Record current fragment to support data binding
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()
@@ -96,7 +102,6 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
     }
 
 
-
 //    fun checkUser() {
 //        if (user.value == null) {
 //            UserManager.userToken?.let {
@@ -104,9 +109,6 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 //            }
 //        }
 //    }
-
-
-
 
 
 }
