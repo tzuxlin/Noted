@@ -55,7 +55,7 @@
                     android:layout_height="24dp"
                     android:layout_margin="16dp"
                     android:background="@drawable/toolbar_menu"
-                    android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}'
+                    android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL || viewModel.currentFragmentType == CurrentFragmentType.EXPLORE || viewModel.currentFragmentType == CurrentFragmentType.PROFILE ? View.GONE : View.VISIBLE}'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -97,9 +97,21 @@
                     android:layout_margin="16dp"
                     android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"
                     android:backgroundTint="@color/olive_green"
+                    android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.EXPLORE || viewModel.currentFragmentType == CurrentFragmentType.PROFILE ? View.GONE : View.VISIBLE }'
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:background="@drawable/icon_view_linear" />
+
+                <ImageView
+                    android:id="@+id/icon_explore_search"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/icon_search"
+                    android:backgroundTint="@color/greyish_brown"
+                    android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.EXPLORE ? View.VISIBLE : View.GONE }'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

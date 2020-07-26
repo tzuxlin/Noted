@@ -66,7 +66,9 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
 
             it?.let { type ->
-                checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+                noteRecyclerView.adapter?.let { adapter ->
+                    checkFilterType(type, adapter as NoteAdapter)
+                }
             }
 
         })

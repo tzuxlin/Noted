@@ -5,15 +5,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.core.view.GravityCompat.*
 import androidx.core.view.get
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -67,6 +65,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupNavController()
 
         Log.d("Connie", "on Create UserManager.user = ${UserManager.user.value}")
+
+        viewModel.currentFragmentType.observe(this, Observer {
+
+            val menu = binding.drawerNavView.menu
+
+            when (it) {
+
+                CurrentFragmentType.BOARD -> {
+
+                    for (i in 0..3) {
+
+                        val menuItem = menu.getItem(i)
+                        if (menuItem.itemId == R.id.drawer_article || menuItem.itemId == R.id.drawer_location || menuItem.itemId == R.id.drawer_video) {
+                            menuItem.isVisible = false
+                        }
+                    }
+
+                }
+
+                CurrentFragmentType.NOTE -> {
+
+                    for (i in 0..3) {
+
+                        val menuItem = menu.getItem(i)
+                        if (menuItem.itemId == R.id.drawer_article || menuItem.itemId == R.id.drawer_location || menuItem.itemId == R.id.drawer_video) {
+                            menuItem.isVisible = true
+                        }
+                    }
+                }
+
+                else -> {
+                }
+
+            }
+        })
 
 
     }
@@ -138,43 +171,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerNavView.setNavigationItemSelectedListener(this)
 
 
-//        actionBarDrawerToggle = object : ActionBarDrawerToggle(
-//            this,
-//            binding.drawerLayout,
-////            binding.toolbar,
-//            R.string.navigation_drawer_open,
-//            R.string.navigation_drawer_close
-//        ) {
-//            override fun onDrawerOpened(drawerView: View) {
-//                super.onDrawerOpened(drawerView)
-//
-//            }
-//        }.apply {
-//            binding.drawerLayout.addDrawerListener(this)
-//            syncState()
-//        }
-
-
-//        // Observe current drawer toggle to set the navigation icon and behavior
-//        viewModel.currentDrawerToggleType.observe(this, Observer { type ->
-//
-//            actionBarDrawerToggle?.isDrawerIndicatorEnabled = type.indicatorEnabled
-//            supportActionBar?.setDisplayHomeAsUpEnabled(!type.indicatorEnabled)
-//            binding.toolbar.setNavigationIcon(
-//                when (type) {
-//                    DrawerToggleType.BACK -> R.drawable.toolbar_back
-//                    else -> R.drawable.toolbar_menu
-//                }
-//            )
-//
-//            actionBarDrawerToggle?.setToolbarNavigationClickListener {
-//                when (type) {
-//                    DrawerToggleType.BACK -> onBackPressed()
-//                    else -> {
-//                    }
-//                }
-//            }
-//        })
     }
 
 
