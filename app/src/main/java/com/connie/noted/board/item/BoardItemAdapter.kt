@@ -3,15 +3,12 @@ package com.connie.noted.board.item
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.connie.noted.data.Board
-import com.connie.noted.databinding.*
-import com.connie.noted.note.NoteAdapter
+import com.connie.noted.databinding.ItemBoardGridBinding
+import com.connie.noted.databinding.ItemBoardLinearBinding
 import com.connie.noted.util.Util.setUpThinTags
 
 /**

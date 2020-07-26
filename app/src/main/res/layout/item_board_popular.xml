@@ -5,6 +5,9 @@
 
     <data>
 
+        <import type="java.util.ArrayList" />
+        <import type="android.view.View"/>
+
         <variable
             name="board"
             type="com.connie.noted.data.Board" />
@@ -13,13 +16,9 @@
             name="imageString"
             type="String" />
 
-        <import type="java.util.ArrayList" />
-        <import type="android.view.View"/>
-
         <variable
             name="imagesList"
             type="ArrayList&lt;String&gt;" />
-
 
     </data>
 

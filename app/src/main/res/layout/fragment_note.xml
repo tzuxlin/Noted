@@ -27,6 +27,7 @@
             android:backgroundTint="@color/greyish_brown"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"/>
 
         <androidx.recyclerview.widget.RecyclerView

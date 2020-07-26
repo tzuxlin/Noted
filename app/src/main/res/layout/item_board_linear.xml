@@ -15,6 +15,7 @@
 
         <import type="java.util.ArrayList" />
         <import type="android.view.View"/>
+        <import type="com.connie.noted.login.UserManager"/>
 
         <variable
             name="imagesList"
@@ -152,11 +153,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:fontFamily="@font/noto_sans"
-            android:textColor="@color/brownish_grey"
+            android:textColor="@color/gray_999999"
             android:textSize="12sp"
+            android:letterSpacing="0.1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_image_collage_board"
-            app:notesCount="@{board.notes.size()}" />
+            app:notesCount="@{board.notes.size()}"
+            tools:text="4 個筆記"/>
 
 
         <ImageView
@@ -177,8 +180,8 @@
 
         <ImageView
             android:id="@+id/icon_note_liked"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:background='@{board.isLiked ? @drawable/icon_like_true : @drawable/icon_like_false}'
             android:backgroundTint="@color/white"
             android:fontFamily="@font/noto_sans"
@@ -201,58 +204,70 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_image_collage_board" />
 
+
+        <ImageView
+            android:id="@+id/icon_board_public"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:background="@{board.public ? @drawable/icon_public : @drawable/icon_private}"
+            android:backgroundTint="@color/gray_999999"
+            app:layout_constraintStart_toEndOf="@id/icon_board"
+            app:layout_constraintTop_toTopOf="@id/icon_board"
+            app:layout_constraintBottom_toBottomOf="@id/icon_board"
+            tools:background="@drawable/icon_public" />
+
+        <TextView
+            android:id="@+id/icon_board_creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:textSize="12sp"
+            android:textColor="@color/gray_999999"
+            android:letterSpacing="0.1"
+            app:createdBy="@{board.creatorName}"
+            app:layout_constraintStart_toEndOf="@id/icon_board_public"
+            app:layout_constraintTop_toTopOf="@id/icon_board"
+            app:layout_constraintBottom_toBottomOf="@id/icon_board"
+            tools:text="由 村民Ｂ 新增" />
+
+
+
         <TextView
             android:id="@+id/text_note_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:fontFamily="@font/noto_sans"
-            android:letterSpacing="0.07"
+            android:letterSpacing="0.1"
             android:text="@{board.title}"
             android:textAlignment="viewStart"
             android:textColor="@color/greyish_brown"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_board_notes_count"
             tools:text="A simple way to work with Kotlin Coroutines in Android" />
 
-        <!--                <androidx.recyclerview.widget.RecyclerView-->
-        <!--                    android:id="@+id/recycler_note_tag"-->
-        <!--                    android:layout_width="0dp"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginStart="16dp"-->
-        <!--                    android:layout_marginTop="8dp"-->
-        <!--                    android:layout_marginEnd="16dp"-->
-        <!--                    android:orientation="horizontal"-->
-        <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintTop_toBottomOf="@id/text_note_title">-->
+        <LinearLayout
+            android:id="@+id/layout_note_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_note_title">
 
-        <!--                </androidx.recyclerview.widget.RecyclerView>-->
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/layout_note_tag"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="8dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/text_note_title">-->
-
-        <!--            <com.google.android.material.chip.ChipGroup-->
-        <!--                android:id="@+id/note_tag_group"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content" />-->
-        <!--        </LinearLayout>-->
-
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/note_tag_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Theme.MaterialComponents.Light"/>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

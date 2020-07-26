@@ -192,14 +192,14 @@ fun bindProfileImage(imgView: ImageView, imgUrl: String?) {
 @BindingAdapter("notesCount")
 fun bindBoardNotesCount(textView: TextView, size: Int?) {
     size?.let {
-        textView.text = "$it notes"
+        textView.text = "$it 個筆記"
     }
 }
 
 @BindingAdapter("savedCount")
 fun bindBoardNotesSavedCount(textView: TextView, size: Int?) {
     size?.let {
-        textView.text = "$it saved"
+        textView.text = "$it 個收藏"
     }
 }
 
