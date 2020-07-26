@@ -8,21 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
+import com.connie.noted.board.BoardAdapter
 
 import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.databinding.FragmentBoardItemBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.note.NoteAdapter
+import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.Util.setUpThinTags
 import com.google.android.material.chip.ChipGroup
 
 class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
     private val viewModel by viewModels<BoardItemViewModel> { getVmFactory(boardType) }
+    private lateinit var mainViewModel: MainViewModel
+
 
     lateinit var chipGroup: ChipGroup
 
@@ -35,14 +42,27 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
         val boardRecyclerView = binding.boardRecyclerView
 
+        mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
 
-        viewModel.viewType.observe(viewLifecycleOwner, Observer {
+            it?.let { type ->
+                boardRecyclerView.adapter?.let { adapter ->
+                    checkFilterType(type, adapter as BoardItemAdapter)
+                }
+            }
+
+        })
+
+        mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
 
             when (it) {
 
                 0 -> {
+                    viewModel.viewType.value = it
+
                     boardRecyclerView.adapter =
                         BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
 
@@ -61,6 +81,8 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
                 }
 
                 1 -> {
+                    viewModel.viewType.value = it
+
                     boardRecyclerView.adapter =
                         BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
 
@@ -105,6 +127,28 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         return binding.root
     }
+
+    private fun checkFilterType(filterType: CurrentFilterType, boardAdapter: BoardItemAdapter) {
+
+        filterType.let { type ->
+
+            when (type) {
+
+                CurrentFilterType.ALL -> {
+                    viewModel.liveBoards.value = viewModel.liveBoards.value
+                }
+
+                CurrentFilterType.LIKED -> {
+                    boardAdapter.submitList(viewModel.liveBoards.value?.filter { board ->
+                        board.isLiked
+                    })
+                }
+
+
+            }
+        }
+    }
+
 
 
 
