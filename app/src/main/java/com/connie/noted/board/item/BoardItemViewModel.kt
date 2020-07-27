@@ -11,6 +11,7 @@ import com.connie.noted.data.source.NotedRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -79,5 +80,16 @@ class BoardItemViewModel(
         Log.w("Connie", "viewModel, tagClicked, ${filterTags}")
 
 
+    }
+
+    fun likeButtonClicked(board: Board){
+        Log.e("Connie", board.toString())
+        updateIsLiked(board)
+    }
+
+    private fun updateIsLiked(board: Board){
+        coroutineScope.launch {
+            notedRepository.likeBoard(board)
+        }
     }
 }

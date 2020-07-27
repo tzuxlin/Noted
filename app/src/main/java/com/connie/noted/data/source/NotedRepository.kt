@@ -15,6 +15,8 @@ interface NotedRepository {
 
     suspend fun likeNote(note: Note): Result<Boolean>
 
+    suspend fun likeBoard(board: Board): Result<Boolean>
+
     suspend fun updateUser(user: User): Result<Boolean>
 
     fun getLiveUser(): MutableLiveData<User>

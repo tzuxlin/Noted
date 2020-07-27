@@ -47,6 +47,10 @@ class NoteAdapter(
                 binding.imageNote.visibility = View.GONE
             }
 
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(note)
+            }
+
             binding.executePendingBindings()
         }
 
@@ -84,6 +88,10 @@ class NoteAdapter(
                 binding.imageString = note.images[0]
             } else {
                 binding.imageNote.visibility = View.GONE
+            }
+
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(note)
             }
 
             binding.executePendingBindings()

@@ -24,6 +24,9 @@ class DefaultNotedRepository(
         return remoteDataSource.likeNote(note)
     }
 
+    override suspend fun likeBoard(board: Board): Result<Boolean> {
+        return remoteDataSource.likeBoard(board)
+    }
     override suspend fun updateUser(user: User): Result<Boolean> {
         return remoteDataSource.updateUser(user)
     }

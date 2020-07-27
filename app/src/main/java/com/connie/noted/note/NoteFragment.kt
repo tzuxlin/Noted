@@ -76,6 +76,11 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
 
+            Log.e(
+                "Connie",
+                "Note Fragment, observe viewType: $it, mainCurrentFilterType: ${mainViewModel.currentFilterType.value}"
+            )
+
             when (it) {
 
                 0 -> {
@@ -86,11 +91,16 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                             (activity as MainActivity).navigateToNote(note)
                         }, viewModel)
 
-                    noteRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
+                    val layoutManager = StaggeredGridLayoutManager(2, 1)
+                    layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
 
-                    mainViewModel.currentFilterType.value?.let { type ->
-                        checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
-                    }
+
+                    noteRecyclerView.layoutManager = layoutManager
+
+                    Log.e("Connie", mainViewModel.currentFilterType.value.toString())
+
+                    val type = mainViewModel.currentFilterType.value ?: CurrentFilterType.ALL
+                    checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
 
                 }
 
@@ -103,9 +113,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
 
-                    mainViewModel.currentFilterType.value?.let { type ->
-                        checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
-                    }
+                    Log.e("Connie", mainViewModel.currentFilterType.value.toString())
+
+                    val type = mainViewModel.currentFilterType.value ?: CurrentFilterType.ALL
+                    checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
                 }
 
             }
@@ -173,39 +184,45 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
     private fun checkFilterType(filterType: CurrentFilterType, noteAdapter: NoteAdapter) {
 
-        filterType.let { type ->
+        Log.e("Connie", "Note, checkFilterType with type: ${filterType.type}")
 
-            when (type) {
+        val notes = viewModel.notes.value
+
+        notes?.let { notes ->
+
+            when (filterType) {
 
                 CurrentFilterType.ALL -> {
-                    viewModel.notes.value = viewModel.notes.value
+                    noteAdapter.submitList(notes)
+                    Log.i("Connie", "Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.LIKED -> {
-                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                    noteAdapter.submitList(notes.filter { note ->
                         note.isLiked
                     })
+                    Log.i("Connie", "Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.ARTICLE -> {
-                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                    noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.ARTICLE.type
                     })
-                    Log.i("Connie", CurrentFilterType.ARTICLE.type)
+                    Log.i("Connie", "Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.LOCATION -> {
-                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                    noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.LOCATION.type
                     })
-                    Log.i("Connie", CurrentFilterType.LOCATION.type)
+                    Log.i("Connie", "Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.VIDEO -> {
-                    noteAdapter.submitList(viewModel.notes.value?.filter { note ->
+                    noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.VIDEO.type
                     })
-                    Log.i("Connie", CurrentFilterType.VIDEO.type)
+                    Log.i("Connie", "Note, checkFilterType with type: ${filterType.type}")
                 }
 
             }

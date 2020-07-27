@@ -57,28 +57,6 @@ object NotedRemoteDataSource : NotedDataSource {
         return liveData
     }
 
-//    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
-//        val liveData = MutableLiveData<MutableList<Note>>()
-//
-//            FirebaseFirestore.getInstance()
-//                .collection(PATH_NOTES)
-//                .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
-//                .get()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        val list = mutableListOf<Note>()
-//                        for (document in task.result!!) {
-//                            Log.d("Connie", document.id + " => " + document.data)
-//
-//                            val note = document.toObject(Note::class.java)
-//                                list.add(note)
-//                    }
-//                        liveData.value = list
-//                    }
-//                }
-//        return liveData
-//    }
-
     override fun getLiveGlobalBoards(condition: String): MutableLiveData<List<Board>> {
 
         val liveData = MutableLiveData<List<Board>>()
@@ -429,9 +407,29 @@ object NotedRemoteDataSource : NotedDataSource {
     override suspend fun likeNote(note: Note): Result<Boolean> =
         suspendCoroutine { continuation ->
 
+            Log.e("Connie", "Hello!")
+
+
+            val value = !note.isLiked
+
             val notes = FirebaseFirestore.getInstance().collection(PATH_NOTES)
             notes.document(note.id)
-                .update("liked", !note.isLiked)
+                .update("liked", value)
+
+            continuation.resume(Result.Success(true))
+        }
+
+    override suspend fun likeBoard(board: Board): Result<Boolean> =
+        suspendCoroutine { continuation ->
+
+            Log.e("Connie", "Hello!")
+
+
+            val value = !board.isLiked
+
+            val notes = FirebaseFirestore.getInstance().collection(PATH_BOARDS)
+            notes.document(board.id)
+                .update("liked", value)
 
             continuation.resume(Result.Success(true))
         }

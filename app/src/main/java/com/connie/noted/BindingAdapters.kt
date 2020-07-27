@@ -2,33 +2,24 @@
 
 package com.connie.noted
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.with
-import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.connie.noted.board.item.BoardItemAdapter
 import com.connie.noted.boardpage.BoardNotesAdapter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.explore.ExplorePopularAdapter
-import com.connie.noted.login.UserManager
 import com.connie.noted.note.NoteAdapter
-import com.connie.noted.util.Util.getWindowWidth
 
 
 @BindingAdapter("imageNoRoundUrl")
@@ -105,13 +96,12 @@ fun bindNoRoundImage(imgView: ImageView, imgUrl: String?) {
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
-        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context)
+
+        with(imgView.context)
             .load(imgUrl)
             .apply(
                 RequestOptions()
                     .transform(MultiTransformation(FitCenter(), RoundedCorners(10)))
-//                    .fitCenter()
                     .placeholder(R.drawable.ic_placeholder)
                     .error(R.drawable.ic_placeholder)
             )
@@ -131,7 +121,6 @@ fun bindImageCollage(imgView: ImageView, imgUrl: String?) {
                 .apply(
                     RequestOptions()
                         .transform(MultiTransformation(CenterCrop(), RoundedCorners(10)))
-//                    .fitCenter()
                         .placeholder(R.drawable.ic_placeholder)
                         .error(R.drawable.ic_placeholder)
                 )

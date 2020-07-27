@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.connie.noted.NotedApplication
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -59,7 +60,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         get() = _error
 
     val viewType = MutableLiveData<Int>().apply {
-        value = 0
+        value = 1
     }
 
     val isEditMode = MutableLiveData<Boolean>().apply {
@@ -201,4 +202,15 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         userIsReady.value = true
     }
 
+
+    fun likeButtonClicked(note: Note){
+        Log.e("Connie", note.toString())
+        updateIsLiked(note)
+    }
+
+    private fun updateIsLiked(note: Note){
+        coroutineScopeMain.launch {
+            notedRepository.likeNote(note)
+        }
+    }
 }

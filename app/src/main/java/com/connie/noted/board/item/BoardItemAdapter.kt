@@ -45,6 +45,10 @@ class BoardItemAdapter(
 
             }
 
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(board)
+            }
+
             // Binding chipGroup
 
             if (!board.tags.isNullOrEmpty()) {
@@ -84,6 +88,10 @@ class BoardItemAdapter(
                 3 -> arrayListOf(i[0], i[1], i[2], "", "")
                 4 -> arrayListOf(i[0], i[1], i[2], i[3], "")
                 else -> arrayListOf(i[0], i[1], i[2], i[3], i[4])
+            }
+
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(board)
             }
 
             // Binding chipGroup

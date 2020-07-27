@@ -31,7 +31,9 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         value = 0
     }
 
-    val currentFilterType = MutableLiveData<CurrentFilterType>()
+    val currentFilterType = MutableLiveData<CurrentFilterType>().apply {
+        value = CurrentFilterType.ALL
+    }
 
     // Record current fragment to support data binding
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()

@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat.*
+import androidx.core.view.iterator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -138,6 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
     private fun setupNavController() {
         findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.noteFragment -> CurrentFragmentType.NOTE
                 R.id.boardFragment -> CurrentFragmentType.BOARD
@@ -147,6 +149,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.videoFragment, R.id.locationFragment, R.id.articleFragment -> CurrentFragmentType.NOTEDETAIL
                 else -> viewModel.currentFragmentType.value
             }
+            viewModel.currentFilterType.value = CurrentFilterType.ALL
+
         }
     }
 
