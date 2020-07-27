@@ -204,7 +204,7 @@ fun bindBoardMoreNotesCount(textView: TextView, size: Int?) {
 fun bindBoardCreatedBy(textView: TextView, name: String?) {
     name?.let {
 
-        textView.text = "由 $it 新增"
+        textView.text = it
 
     }
 }
