@@ -110,10 +110,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId) {
 
                 R.id.navigation_noteFragment -> {
+                    viewModel.currentFilterType.value = CurrentFilterType.ALL
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalNoteFragment())
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_boardFragment -> {
+                    viewModel.currentFilterType.value = CurrentFilterType.ALL
                     findNavController(R.id.myNavHostFragment).navigate(NaviDirections.actionGlobalBoardFragment())
                     return@OnNavigationItemSelectedListener true
                 }
@@ -149,7 +151,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.videoFragment, R.id.locationFragment, R.id.articleFragment -> CurrentFragmentType.NOTEDETAIL
                 else -> viewModel.currentFragmentType.value
             }
-            viewModel.currentFilterType.value = CurrentFilterType.ALL
 
         }
     }

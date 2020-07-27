@@ -177,6 +177,7 @@ class NoteAdapter(
                 holder.itemView.setOnClickListener {
 
                     if (viewModel.isEditMode.value == false) {
+                        Log.e("Connie", "Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     } else {
                         noteSelected(note)
@@ -199,6 +200,7 @@ class NoteAdapter(
                 holder.itemView.setOnClickListener {
 
                     if (viewModel.isEditMode.value == false) {
+                        Log.e("Connie", "Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     } else {
                         noteSelected(note)

@@ -87,8 +87,8 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                     viewModel.viewType.value = it
 
                     noteRecyclerView.adapter =
-                        NoteAdapter(NoteAdapter.OnClickListener {
-                            (activity as MainActivity).navigateToNote(note)
+                        NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
+                            (activity as MainActivity).navigateToNote(clickedNote)
                         }, viewModel)
 
                     val layoutManager = StaggeredGridLayoutManager(2, 1)
@@ -107,8 +107,8 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 1 -> {
                     viewModel.viewType.value = it
 
-                    noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener {
-                        (activity as MainActivity).navigateToNote(note)
+                    noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
+                        (activity as MainActivity).navigateToNote(clickedNote)
                     }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
@@ -137,9 +137,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
             it?.let {
 
+                (noteRecyclerView.adapter as NoteAdapter).submitList(it)
                 Log.d("Connie", "liveNotes = $it")
-                (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
-                viewModel.notes.value = viewModel.notes.value
+//                viewModel.notes.value = viewModel.notes.value
+//                (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
 
             }
         })
@@ -175,11 +176,6 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         return binding.root
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getLiveNotes()
     }
 
     private fun checkFilterType(filterType: CurrentFilterType, noteAdapter: NoteAdapter) {

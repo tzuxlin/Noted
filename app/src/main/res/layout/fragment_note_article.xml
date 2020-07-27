@@ -108,7 +108,7 @@
                     android:id="@+id/icon_note_source"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="36dp"
                     android:background='@{"Location".equals(viewModel.note.type) ? @drawable/icon_location : "Video".equals(viewModel.note.type) ? @drawable/icon_video : @drawable/icon_article}'
                     android:backgroundTint="@color/brownish_grey"
@@ -121,7 +121,7 @@
 
                 <TextView
                     android:id="@+id/text_note_source"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:fontFamily="@font/noto_sans"
@@ -131,6 +131,7 @@
                     android:textColor="@color/brownish_grey"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/icon_note_source"
                     app:layout_constraintTop_toTopOf="@id/icon_note_source"
                     tools:text="Medium" />
@@ -161,6 +162,7 @@
                     android:letterSpacing="0.15"
                     android:lineSpacingExtra="14dp"
                     android:paddingTop="16dp"
+                    android:paddingHorizontal="8dp"
                     android:paddingBottom="8dp"
                     android:text="@{viewModel.note.title}"
                     android:textAlignment="viewStart"
@@ -181,6 +183,7 @@
                     android:letterSpacing="0.1"
                     android:lineSpacingExtra="8dp"
                     android:paddingVertical="10dp"
+                    android:paddingHorizontal="8dp"
                     android:text="@{viewModel.note.summary}"
                     android:textAlignment="viewStart"
                     android:textColor="@color/brownish_grey"
