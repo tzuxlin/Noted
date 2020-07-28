@@ -110,13 +110,12 @@ class LoginActivity : AppCompatActivity() {
                     task.result?.let { result ->
                         moveMainPage(result.user)
 
+                        val userId = result.additionalUserInfo?.profile?.getValue("id")
 
-                        val userId = result.additionalUserInfo.profile.getValue("id")
 
-
-                        UserManager.user.value?.name = result.user.displayName ?: ""
-                        UserManager.user.value?.id = result.user.uid
-                        UserManager.user.value?.email = result.user.email ?: ""
+                        UserManager.user.value?.name = result.user?.displayName ?: ""
+                        UserManager.user.value?.id = result.user!!.uid
+                        UserManager.user.value?.email = result.user?.email ?: ""
                         UserManager.user.value?.image = "https://graph.facebook.com/$userId/picture?height=500"
 
                         UserManager.justLogin = true

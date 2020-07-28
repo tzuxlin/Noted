@@ -107,9 +107,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 1 -> {
                     viewModel.viewType.value = it
 
-                    noteRecyclerView.adapter = NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
-                        (activity as MainActivity).navigateToNote(clickedNote)
-                    }, viewModel)
+                    noteRecyclerView.adapter =
+                        NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
+                            (activity as MainActivity).navigateToNote(clickedNote)
+                        }, viewModel)
                     noteRecyclerView.layoutManager =
                         LinearLayoutManager(NotedApplication.instance.applicationContext)
 
@@ -170,9 +171,10 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         }
 
         binding.noteAdd2boardButton.setOnClickListener {
-            viewModel.noteToAdd.value?.let{
-            findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(it.toTypedArray()))
-        }}
+            viewModel.noteToAdd.value?.let {
+                findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(it.toTypedArray()))
+            }
+        }
 
 
         return binding.root
