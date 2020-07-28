@@ -99,6 +99,8 @@
                     android:layout_height="24dp"
                     android:background="@drawable/icon_add"
                     android:backgroundTint="@color/olive_green"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/group_profile_tag" />

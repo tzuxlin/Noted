@@ -61,16 +61,25 @@
 
     </style>
 
+
   <style name="BottomNavigationView">
         <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView.Active</item>
         <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigationView.Inactive</item>
         <item name="fontFamily">@font/noto_sans</item>
     </style>
 
+    <style name="TabsLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
     <!-- blank styles for better code readability-->
     <style name="TextAppearance"/>
     <style name="TextAppearance.BottomNavigationView"/>
+
 
     <!-- inactive tab icon style -->
     <style name="TextAppearance.BottomNavigationView.Inactive">

@@ -8,7 +8,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class NoteCrawlerClass : NoteCrawler {
-    override suspend fun getGoogleLocation(url: String): Note  = suspendCoroutine { continuation ->
+    override suspend fun getGoogleLocation(url: String): Note = suspendCoroutine { continuation ->
 
         val note = Note()
         val doc = Jsoup.connect(url).get()
@@ -38,7 +38,7 @@ class NoteCrawlerClass : NoteCrawler {
     }
 
 
-    override suspend fun getMediumArticle(url: String): Note  = suspendCoroutine { continuation ->
+    override suspend fun getMediumArticle(url: String): Note = suspendCoroutine { continuation ->
 
         val note = Note()
         val doc = Jsoup.connect(url).get()
@@ -68,7 +68,6 @@ class NoteCrawlerClass : NoteCrawler {
             note.url = url
 
 
-
         }
 
         continuation.resume(note)
@@ -80,7 +79,8 @@ class NoteCrawlerClass : NoteCrawler {
         val note = Note()
         val doc = Jsoup.connect(url).get()
 
-        note.contentSource = doc.title()
+//        note.contentSource = doc.title()
+        note.contentSource = "YouTube"
 
         val metaTags: Elements = doc.getElementsByTag("meta")
 
@@ -103,8 +103,8 @@ class NoteCrawlerClass : NoteCrawler {
         }
 
         val links = doc.getElementsByTag("link")
-        for (link in links){
-            if (link.attr("itemprop") == "thumbnailUrl"){
+        for (link in links) {
+            if (link.attr("itemprop") == "thumbnailUrl") {
                 note.images.add(link.attr("href"))
             }
         }

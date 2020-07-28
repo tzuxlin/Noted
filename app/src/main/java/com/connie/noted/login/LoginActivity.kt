@@ -83,16 +83,6 @@ class LoginActivity : AppCompatActivity() {
 
                     Log.e("Connie", "Facebook Error: $error")
 
-                    moveMainPageWithMockData()
-
-
-                    UserManager.user.value?.name = "Xuan Lin"
-                    UserManager.user.value?.id = "3686017864745810"
-                    UserManager.user.value?.email = "annul7tin@gmail.com"
-                    UserManager.user.value?.image = "https://graph.facebook.com/3686017864745810/picture?height=500"
-
-                    UserManager.justLogin = true
-
                 }
 
             })
@@ -192,9 +182,5 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-    }
-    private fun moveMainPageWithMockData() {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
     }
 }
