@@ -220,6 +220,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_board_notes_count"
+            app:layout_constraintBottom_toTopOf="@+id/layout_note_tag"
             tools:text="A simple way to work with Kotlin Coroutines in Android" />
 
         <LinearLayout
@@ -228,6 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
