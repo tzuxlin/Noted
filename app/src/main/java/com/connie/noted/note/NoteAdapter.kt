@@ -295,10 +295,10 @@ class NoteAdapter(
                     )
                     }
 
-                    viewModel.noteToAdd = notes.filter { note ->
+                    viewModel.noteToAdd.value = notes.filter { note ->
                         note.isSelected
                     }
-                    Log.d("Connie", viewModel.noteToAdd.size.toString())
+                    Log.d("Connie", viewModel.noteToAdd.value?.size.toString())
                 }
 
 

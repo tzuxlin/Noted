@@ -1,6 +1,5 @@
 package com.connie.noted.explore
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,10 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.connie.noted.NaviDirections
-import com.connie.noted.R
-import com.connie.noted.board.item.BoardItemAdapter
-import com.connie.noted.board.item.BoardItemViewModel
-import com.connie.noted.databinding.FragmentBoardItemBinding
 import com.connie.noted.databinding.FragmentExploreBinding
 import com.connie.noted.ext.getVmFactory
 

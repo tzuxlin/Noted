@@ -159,10 +159,12 @@
             android:background="@drawable/shape_radius"
             android:fitsSystemWindows="true"
             app:itemIconSize="18dp"
-            app:itemIconTint="@color/greyish_brown"
-            app:itemTextColor="@color/greyish_brown"
+            app:itemIconTint="@color/icon_color_selector"
+            app:itemTextColor="@color/icon_color_selector"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/navdrawer_menu" />
+            app:menu="@menu/navdrawer_menu"
+            app:itemTextAppearanceActive="@style/Bottom_Text_Active"
+            app:itemTextAppearanceInactive="@style/Bottom_Text_Active"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

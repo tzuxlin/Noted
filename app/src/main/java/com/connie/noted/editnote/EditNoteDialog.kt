@@ -1,4 +1,4 @@
-package com.connie.noted.add2board
+package com.connie.noted.editnote
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,20 +10,20 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.connie.noted.R
-import com.connie.noted.databinding.DialogAdd2boardBinding
+import com.connie.noted.databinding.DialogEditNoteBinding
 import com.connie.noted.ext.getVmFactory
 
 
 /**
  * Created by Wayne Chen in Jul. 2019.
  */
-class Add2boardDialog : DialogFragment() {
+class EditNoteDialog : DialogFragment() {
 
     /**
-     * Lazily initialize our [Add2boardDialog].
+     * Lazily initialize our [EditNoteViewModel].
      */
-    private val viewModel by viewModels<Add2boardViewModel> { getVmFactory() }
-    private lateinit var binding: DialogAdd2boardBinding
+    private val viewModel by viewModels<EditNoteViewModel> { getVmFactory() }
+    private lateinit var binding: DialogEditNoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +36,11 @@ class Add2boardDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.liveNotes.value = Add2boardDialogArgs.fromBundle(requireArguments()).notesKey.toList()
+        viewModel.note.value = EditNoteDialogArgs.fromBundle(requireArguments()).noteKey
+        viewModel.originTitle.value = EditNoteDialogArgs.fromBundle(requireArguments()).noteKey.title
 
-        binding = DialogAdd2boardBinding.inflate(inflater, container, false)
-        binding.layoutAdd2board.startAnimation(
+        binding = DialogEditNoteBinding.inflate(inflater, container, false)
+        binding.layoutEditNote.startAnimation(
             AnimationUtils.loadAnimation(
                 context,
                 R.anim.anim_slide_up
@@ -49,29 +50,13 @@ class Add2boardDialog : DialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        binding.iconAdd2boardPublicHelp.setOnClickListener {
-            binding.textAdd2boardHelp.visibility = View.VISIBLE
-        }
+//        binding.iconAdd2boardPublicHelp.setOnClickListener {
+//            binding.textAdd2boardHelp.visibility = View.VISIBLE
+//        }
 
 
-
-        val noteRecyclerView = binding.noteRecyclerView
-
-
-        noteRecyclerView.adapter = Add2boardAdapter()
-
-        viewModel.toUploadBoard.observe(viewLifecycleOwner, Observer {
-            val isPublicSwitch = binding.switchAdd2boardPublic
-
-            viewModel.isPublic = isPublicSwitch.isChecked
-            viewModel.uploadBoard()
-
-        })
-
-        viewModel.liveNotes.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                (noteRecyclerView.adapter as Add2boardAdapter).submitList(it)
-            }
+        viewModel.toUpdateNote.observe(viewLifecycleOwner, Observer {
+            viewModel.updateNote()
         })
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
@@ -87,7 +72,7 @@ class Add2boardDialog : DialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutAdd2board.startAnimation(
+        binding.layoutEditNote.startAnimation(
             AnimationUtils.loadAnimation(
                 context,
                 R.anim.anim_slide_down

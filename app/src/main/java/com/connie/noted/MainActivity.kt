@@ -25,6 +25,7 @@ import com.connie.noted.login.UserManager
 import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationView
 
 
@@ -42,6 +43,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        binding.bottomNavView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+//        binding.bottomNavView.itemTex
+
 
         binding.icon2changeViewType.setOnClickListener {
 

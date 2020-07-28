@@ -9,7 +9,7 @@
             name="viewModel"
             type="com.connie.noted.profile.ProfileViewModel" />
 
-        <import type="com.connie.noted.login.UserManager"/>
+        <import type="com.connie.noted.login.UserManager" />
 
     </data>
 
@@ -65,15 +65,14 @@
                 tools:text="Xuan Lin" />
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_profile_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="40dp"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,15 +80,28 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/group_profile_tag"
+                    style="@style/Widget.MaterialComponents.ChipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:theme="@style/Theme.MaterialComponents.Light"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:theme="@style/Theme.MaterialComponents.Light"
-                    style="@style/Widget.MaterialComponents.ChipGroup"/>
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <ImageView
+                    android:id="@+id/icon_profile_add_tag"
+                    android:layout_margin="8dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/icon_add"
+                    android:backgroundTint="@color/olive_green"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/group_profile_tag" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -100,20 +112,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profile_bottom_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager_profile"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs_profile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     app:tabIndicatorColor="@color/olive_green"
                     app:tabSelectedTextColor="@color/olive_green"

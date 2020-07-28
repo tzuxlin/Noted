@@ -170,8 +170,9 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         }
 
         binding.noteAdd2boardButton.setOnClickListener {
-            findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(viewModel.noteToAdd.toTypedArray()))
-        }
+            viewModel.noteToAdd.value?.let{
+            findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(it.toTypedArray()))
+        }}
 
 
         return binding.root

@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.connie.noted.add2board.Add2boardViewModel" />
+            type="com.connie.noted.editnote.EditNoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
         tools:background="@color/brownish_grey">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_add2board"
+            android:id="@+id/layout_edit_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_top_radius"
@@ -33,72 +33,25 @@
 
 
             <EditText
-                android:id="@+id/edit_add2board_title"
+                android:id="@+id/edit_note_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="@{viewModel.invalidInput != null? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
-                android:hint="輸入分類版標題"
+                android:hint="@{viewModel.originTitle}"
                 android:letterSpacing="0.15"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@={viewModel.title}"
                 android:textColor="@color/black_3f3a3a"
-                android:textColorHint="@{viewModel.invalidInput != null ? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/button_add2cart_close"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Switch
-                android:id="@+id/switch_add2board_public"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.15"
-                android:switchPadding="8dp"
-                android:text="公開分類版"
-                android:textColor="@color/brownish_grey"
-                android:textSize="13sp"
-                android:theme="@style/Switch"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_add2board_title" />
-
-            <ImageView
-                android:id="@+id/icon_add2board_public_help"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/icon_help"
-                android:backgroundTint="@color/gray_999999"
-                app:layout_constraintBottom_toBottomOf="@+id/switch_add2board_public"
-                app:layout_constraintStart_toEndOf="@+id/switch_add2board_public"
-                app:layout_constraintTop_toTopOf="@+id/switch_add2board_public" />
-
-
-            <TextView
-                android:id="@+id/text_add2board_help"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.15"
-                android:maxLines="1"
-                android:text="任何人均能查看並收藏您的分類版"
-                android:textColor="@color/gray_999999"
-                android:textSize="12sp"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/switch_add2board_public"
-                tools:visibility="visible" />
-
             <View
-                android:id="@+id/view_add2board_top_separation"
+                android:id="@+id/view_edit_note_top_separation"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
@@ -107,7 +60,7 @@
                 app:layout_constraintBottom_toTopOf="@id/note_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_add2board_help" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_note_title" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -118,7 +71,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_add2board_top_separation"
+                app:layout_constraintTop_toBottomOf="@id/view_edit_note_top_separation"
                 app:reverseLayout="false"/>
 
 
@@ -147,7 +100,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <View
-                android:id="@+id/view_add2cart_bottom_separation"
+                android:id="@+id/view_edit_note_bottom_separation"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
@@ -158,7 +111,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button_add2board"
+                android:id="@+id/button_edit_note"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -171,7 +124,7 @@
                 android:clickable="true"
                 android:letterSpacing="0.15"
                 android:onClick="@{() -> viewModel.checkData()}"
-                android:text="新增至分類版"
+                android:text="更新"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -40,7 +40,9 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     var notes = MutableLiveData<MutableList<Note>>()
 
-    var noteToAdd: List<Note> = listOf()
+    var noteToAdd = MutableLiveData<List<Note>>().apply {
+        value = mutableListOf()
+    }
 
     private val _leave = MutableLiveData<Boolean>()
 

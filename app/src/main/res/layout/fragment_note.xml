@@ -9,50 +9,64 @@
             name="viewModel"
             type="com.connie.noted.note.NoteViewModel" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".note.NoteFragment"
         android:background="#FFFFFF"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:paddingEnd="8dp"
+        tools:context=".note.NoteFragment">
 
         <ImageView
             android:id="@+id/note_icon_change_layout"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
+            android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"
             android:backgroundTint="@color/greyish_brown"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"
-            android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/note_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            app:reverseLayout="false"
-            app:listNote="@{viewModel.notes}"
-            app:layout_constraintTop_toBottomOf="@id/note_icon_change_layout"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_icon_change_layout"
+            app:listNote="@{viewModel.notes}"
+            app:reverseLayout="false" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility='@{viewModel.isEditMode == true ? View.VISIBLE : View.GONE}'
+            android:background="@drawable/shape_round_solid"
+            android:backgroundTint="#FFFFFF"
+            app:layout_constraintStart_toStartOf="@+id/note_add2board_button"
+            app:layout_constraintEnd_toEndOf="@+id/note_add2board_button"
+            app:layout_constraintBottom_toBottomOf="@+id/note_add2board_button"
+            app:layout_constraintTop_toTopOf="@+id/note_add2board_button"/>
 
         <ImageView
             android:id="@+id/note_add2board_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint='@{viewModel.noteToAdd.size() == 0 ? @color/cccccc : @color/olive_green}'
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/icon_add"
+            android:layout_marginBottom="20dp"
+            android:background='@{viewModel.noteToAdd.size() == 0 ? @drawable/icon_add_cccccc : @drawable/icon_add_green}'
+            android:padding="8dp"
+            android:visibility='@{viewModel.isEditMode == true ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:background="@drawable/icon_add_green"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,7 +17,7 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-    <style name="Add2BoardDialog">
+    <style name="Style_Dialog">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@null</item>
         <item name="android:windowBackground">@color/translucent_40</item>
@@ -59,6 +59,12 @@
         <item name="android:textAppearance">@style/chip_thin_text</item>
         <item name="shapeAppearanceOverlay">@style/chip_thin_shape</item>
 
+    </style>
+
+    <style name="Bottom_Text_Active">
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="fontFamily">@font/noto_sans</item>
     </style>
 
 </resources>
