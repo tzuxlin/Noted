@@ -61,10 +61,27 @@
 
     </style>
 
-    <style name="Bottom_Text_Active">
-        <item name="android:textSize">11sp</item>
-        <item name="android:letterSpacing">0.1</item>
+  <style name="BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigationView.Inactive</item>
         <item name="fontFamily">@font/noto_sans</item>
+    </style>
+
+
+    <!-- blank styles for better code readability-->
+    <style name="TextAppearance"/>
+    <style name="TextAppearance.BottomNavigationView"/>
+
+    <!-- inactive tab icon style -->
+    <style name="TextAppearance.BottomNavigationView.Inactive">
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <!-- active tab icon style -->
+    <style name="TextAppearance.BottomNavigationView.Active">
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.1</item>
     </style>
 
 </resources>

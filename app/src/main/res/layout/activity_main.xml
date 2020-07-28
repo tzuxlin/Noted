@@ -141,14 +141,17 @@
                 android:background="@android:color/white"
                 android:backgroundTint="@android:color/black"
                 android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL || viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL ? View.GONE : View.VISIBLE}"
-                app:itemIconSize="32dp"
+                app:itemIconSize="26dp"
                 app:itemIconTint="@color/icon_color_selector"
+                app:itemTextColor="@color/icon_color_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:menu="@menu/navigation" />
+                app:menu="@menu/navigation"
+                style="@style/BottomNavigationView"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
         <com.google.android.material.navigation.NavigationView
@@ -158,13 +161,11 @@
             android:layout_gravity="start"
             android:background="@drawable/shape_radius"
             android:fitsSystemWindows="true"
-            app:itemIconSize="18dp"
-            app:itemIconTint="@color/icon_color_selector"
-            app:itemTextColor="@color/icon_color_selector"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/navdrawer_menu"
-            app:itemTextAppearanceActive="@style/Bottom_Text_Active"
-            app:itemTextAppearanceInactive="@style/Bottom_Text_Active"/>
+            app:itemIconSize="16dp"
+            app:itemIconTint="@color/greyish_brown"
+            app:itemTextColor="@color/greyish_brown"
+            app:menu="@menu/navdrawer_menu"/>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
 

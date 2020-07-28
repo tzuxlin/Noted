@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        binding.bottomNavView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
-//        binding.bottomNavView.itemTex
 
 
         binding.icon2changeViewType.setOnClickListener {
@@ -144,6 +142,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * which is change the [CurrentFragmentType] enum value by [MainViewModel] at [onCreateView]
      */
     private fun setupNavController() {
+
+        binding.bottomNavView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+
         findNavController(R.id.myNavHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
 
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
