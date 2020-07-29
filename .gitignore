@@ -14,4 +14,5 @@
 .cxx
 /app/src/debug/res/values/google_maps_api.xml
 /app/src/release/res/values/google_maps_api.xml
-irongithub.keystore
+/app/irongithub.keystore
+/app/release
