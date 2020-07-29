@@ -55,7 +55,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        moveMainPage(auth?.currentUser)
+
+        auth?.currentUser?.let {
+            UserManager.userEmail = it.email
+            moveMainPage(it)
+            Log.e("Connie", "UserManager.userEmail = ${UserManager.userEmail}")
+
+        }
+
     }
 
     //    fun googleLogin(){
@@ -103,10 +110,12 @@ class LoginActivity : AppCompatActivity() {
                         val userId = result.additionalUserInfo?.profile?.getValue("id")
 
 
+                        UserManager.userEmail = result.user?.email ?: ""
                         UserManager.user.value?.name = result.user?.displayName ?: ""
                         UserManager.user.value?.id = result.user!!.uid
                         UserManager.user.value?.email = result.user?.email ?: ""
-                        UserManager.user.value?.image = "https://graph.facebook.com/$userId/picture?height=500"
+                        UserManager.user.value?.image =
+                            "https://graph.facebook.com/$userId/picture?height=500"
 
                         UserManager.justLogin = true
 
@@ -164,7 +173,7 @@ class LoginActivity : AppCompatActivity() {
 //            }
     }
 
-//    fun signinEmail(){
+    //    fun signinEmail(){
 //        auth?.signInWithEmailAndPassword(email_edittext.text.toString(),password_edittext.text.toString())
 //            ?.addOnCompleteListener {
 //                    task ->

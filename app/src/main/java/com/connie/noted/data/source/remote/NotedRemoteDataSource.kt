@@ -30,29 +30,37 @@ object NotedRemoteDataSource : NotedDataSource {
     override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
         val liveData = MutableLiveData<MutableList<Note>>()
 
-        FirebaseFirestore.getInstance()
-            .collection(PATH_NOTES)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
-            .addSnapshotListener { snapshot, exception ->
+        Log.e("ConnieFirebase", "getLiveNotes, userEmail = ${UserManager.userEmail}")
 
-                Log.i("ConnieFirebaseGetLiveNote", "Notes changed, addSnapshotListener detect")
+        UserManager.userEmail?.let { email ->
 
-                exception?.let {
-                    Log.w("ConnieFirebaseGetLiveNote", "Error getting documents. ${it.message}")
+
+            FirebaseFirestore.getInstance()
+                .collection(PATH_NOTES)
+                .whereEqualTo("createdBy", email)
+                .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+                .addSnapshotListener { snapshot, exception ->
+
+                    Log.i("ConnieFirebaseGetLiveNote", "Notes changed, addSnapshotListener detect")
+
+                    exception?.let {
+                        Log.w("ConnieFirebaseGetLiveNote", "Error getting documents. ${it.message}")
+                    }
+
+                    val list = mutableListOf<Note>()
+
+                    for (document in snapshot!!) {
+                        Log.v(
+                            "ConnieFirebaseGetLiveNote",
+                            document.id + " => " + document.data["title"] + ", " + document.data["url"]
+                        )
+
+                        val note = document.toObject(Note::class.java)
+                        list.add(note)
+                    }
+                    liveData.value = list
                 }
-
-                val list = mutableListOf<Note>()
-                for (document in snapshot!!) {
-                    Log.v(
-                        "ConnieFirebaseGetLiveNote",
-                        document.id + " => " + document.data["title"] + ", " + document.data["url"]
-                    )
-
-                    val note = document.toObject(Note::class.java)
-                    list.add(note)
-                }
-                liveData.value = list
-            }
+        }
 
         return liveData
     }
@@ -164,10 +172,12 @@ object NotedRemoteDataSource : NotedDataSource {
 
                                     liveData.value = when (type) {
                                         BoardTypeFilter.SAVED -> {
-                                            list.filter { it.savedBy.contains(email) }.sortedByDescending { it.createdTime }
+                                            list.filter { it.savedBy.contains(email) }
+                                                .sortedByDescending { it.createdTime }
                                         }
                                         BoardTypeFilter.MINE -> {
-                                            list.filter { it.createdBy == email }.sortedByDescending { it.createdTime }
+                                            list.filter { it.createdBy == email }
+                                                .sortedByDescending { it.createdTime }
                                         }
                                         else -> {
                                             list.sortedByDescending { it.createdTime }
