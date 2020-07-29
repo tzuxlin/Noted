@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,75 +9,78 @@
             name="viewModel"
             type="com.connie.noted.board.item.BoardItemViewModel" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".note.NoteFragment"
         android:background="#FFFFFF"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:paddingEnd="8dp"
+        tools:context=".note.NoteFragment">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/group_board_tag"
+            style="@style/Widget.MaterialComponents.ChipGroup"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_horizontal"
-            app:layout_constraintTop_toTopOf="parent"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            style="@style/Widget.MaterialComponents.ChipGroup"
-            android:visibility="visible"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/board_icon_change_layout"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
-            android:visibility="gone"
+            android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"
             android:backgroundTint="@color/greyish_brown"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@{viewModel.viewType.equals(0) ?@drawable/icon_view_linear :@drawable/icon_view_grid}"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/board_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            app:reverseLayout="false"
-            app:listBoard="@{viewModel.liveBoards}"
-            app:layout_constraintTop_toBottomOf="@id/group_board_tag"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_board_tag"
+            app:listBoard="@{viewModel.liveBoards}"
+            app:reverseLayout="false" />
 
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/icon_board"
+            android:backgroundTint="@color/gray_999999"
+            android:visibility='@{viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-
-<!--        <com.connie.noted.util.DragFloatActionLayout-->
-<!--            android:id="@+id/board_drag_layout"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="40dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/buttonBag"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:padding="10dp"-->
-<!--                android:src="@drawable/icon_add"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/board_drag_layout"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/board_drag_layout"/>-->
-
-
-<!--        </com.connie.noted.util.DragFloatActionLayout>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="沒有分類板"
+            android:fontFamily="@font/noto_sans"
+            android:textSize="14sp"
+            android:letterSpacing="0.1"
+            android:visibility='@{viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
