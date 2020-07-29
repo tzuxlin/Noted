@@ -134,7 +134,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.11.3")
 
     //facebook
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
 
     // Firebase核心
     implementation 'com.google.firebase:firebase-core:17.4.4'
