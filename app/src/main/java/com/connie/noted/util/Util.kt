@@ -43,6 +43,9 @@ object Util {
         return NotedApplication.instance.getColor(resourceId)
     }
 
+    fun replaceBr(string: String): String {
+        return string.replace("brbr", "\n")
+    }
 
     fun getWindowWidth(): Int {
         return NotedApplication.instance.resources.displayMetrics.widthPixels

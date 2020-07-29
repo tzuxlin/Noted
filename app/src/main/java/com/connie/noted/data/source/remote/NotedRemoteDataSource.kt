@@ -14,6 +14,7 @@ import com.connie.noted.data.Result
 import com.connie.noted.data.User
 import com.connie.noted.data.source.NotedDataSource
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.Util.replaceBr
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlin.coroutines.resume
@@ -28,12 +29,10 @@ object NotedRemoteDataSource : NotedDataSource {
 
 
     override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
+
         val liveData = MutableLiveData<MutableList<Note>>()
 
-        Log.e("ConnieFirebase", "getLiveNotes, userEmail = ${UserManager.userEmail}")
-
         UserManager.userEmail?.let { email ->
-
 
             FirebaseFirestore.getInstance()
                 .collection(PATH_NOTES)
@@ -56,13 +55,44 @@ object NotedRemoteDataSource : NotedDataSource {
                         )
 
                         val note = document.toObject(Note::class.java)
+
+                        note.summary = replaceBr(note.summary ?: "")
+
                         list.add(note)
+
                     }
-                    liveData.value = list
+
+                    if (list.isNullOrEmpty()) {
+
+                        val initList = mutableListOf<Note>()
+
+                        FirebaseFirestore.getInstance()
+                            .collection(PATH_NOTES)
+                            .document("0000")
+                            .get()
+                            .addOnSuccessListener { document ->
+
+                                val initNote = document.toObject(Note::class.java)
+
+                                initNote?.let { note ->
+
+                                    note.summary = replaceBr(note.summary ?: "")
+                                    initList.add(note)
+
+                                    liveData.value = initList
+                                }
+                            }
+
+                    } else {
+
+                        liveData.value = list
+
+                    }
                 }
         }
 
         return liveData
+
     }
 
     override fun getLiveGlobalBoards(condition: String): MutableLiveData<List<Board>> {
@@ -100,7 +130,8 @@ object NotedRemoteDataSource : NotedDataSource {
                                     list.sortByDescending {
                                         it.savedBy.size
                                     }
-                                    liveData.value = list
+
+                                    liveData.value = list.filter { it.savedBy.size != 0 }
 
                                 }
                             }
