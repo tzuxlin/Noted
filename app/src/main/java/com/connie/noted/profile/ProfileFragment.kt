@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.connie.noted.NaviDirections
 import com.connie.noted.databinding.FragmentProfileBinding
 import com.connie.noted.login.UserManager
 import com.google.android.material.chip.Chip
@@ -47,6 +49,9 @@ class ProfileFragment : Fragment() {
             it.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabsProfile))
         }
 
+        binding.buttonProfileAddTag.setOnClickListener {
+            findNavController().navigate(NaviDirections.actionGlobalTagDialog())
+        }
 
 
         getUserTags()
