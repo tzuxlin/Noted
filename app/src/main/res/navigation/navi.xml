@@ -106,7 +106,7 @@
     <dialog
         android:id="@+id/add2boardDialog"
         android:name="com.connie.noted.add2board.Add2boardDialog"
-        android:label="Add2boardDialog" >
+        android:label="Add2boardDialog">
         <argument
             android:name="notesKey"
             app:argType="com.connie.noted.data.Note[]" />
@@ -124,7 +124,7 @@
     <dialog
         android:id="@+id/editNoteDialog"
         android:name="com.connie.noted.editnote.EditNoteDialog"
-        android:label="EditNoteDialog" >
+        android:label="EditNoteDialog">
 
         <argument
             android:name="noteKey"
@@ -139,4 +139,11 @@
             android:name="noteKey"
             app:argType="com.connie.noted.data.Note" />
     </action>
+    <dialog
+        android:id="@+id/tagDialog"
+        android:name="com.connie.noted.tag.TagDialog"
+        android:label="TagDialog" />
+    <action
+        android:id="@+id/action_global_tagDialog"
+        app:destination="@id/tagDialog" />
 </navigation>

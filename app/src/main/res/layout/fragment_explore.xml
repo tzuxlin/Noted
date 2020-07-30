@@ -26,12 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.15"
                 android:text="@string/the_most_popular"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
                 android:id="@+id/explore_popular_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:padding="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -54,16 +54,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.15"
                 android:text="@string/recommend"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/explore_popular_recycler" />
 
             <ImageView
+                android:id="@+id/explore_recommend_help"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:background="@drawable/icon_help"

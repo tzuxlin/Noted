@@ -56,6 +56,10 @@ class ExploreFragment : Fragment() {
 
             }, viewModel)
 
+        binding.exploreRecommendHelp.setOnClickListener {
+            findNavController().navigate(NaviDirections.actionGlobalTagDialog())
+        }
+
 //        viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
 //            boardPopularRecyclerView.scrollToPosition(0)
 //        })

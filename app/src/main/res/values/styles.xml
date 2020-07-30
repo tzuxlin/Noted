@@ -26,6 +26,15 @@
         <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
 
+    <style name="Style_Dialog_resize">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+        <item name="android:windowBackground">@color/translucent_40</item>
+        <item name="android:animation">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
 
     <style name="Switch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
