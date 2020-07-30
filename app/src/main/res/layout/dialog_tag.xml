@@ -30,7 +30,9 @@
             android:paddingTop="16dp"
             app:layout_constraintBottom_toTopOf="@id/layout_edit_note_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <TextView
                 android:id="@+id/text_tag_title"
@@ -147,6 +149,8 @@
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
                 android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@id/button_tag_add2tag"
                 android:text="@={viewModel.newTag}"
                 android:textAlignment="center"
                 android:textColor="@color/black_3f3a3a"
@@ -156,7 +160,6 @@
                 app:layout_constraintTop_toBottomOf="@id/view_tag_top_separation"
                 app:layout_constraintEnd_toStartOf="@+id/button_tag_add2tag"
                 app:layout_constraintBottom_toTopOf="@id/group_profile_tag"
-
                 tools:visibility="visible" />
 
             <Button
@@ -190,7 +193,10 @@
             android:onClick="@{() -> viewModel.nothing()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
 
             <View
                 android:id="@+id/view_add2cart_bottom_separation"
@@ -214,7 +220,7 @@
                 android:background="@drawable/shape_radius"
                 android:backgroundTint="@color/gray_999999"
                 android:letterSpacing="0.15"
-                android:text="取消"
+                android:text="放棄修改"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:visibility="gone"
@@ -236,9 +242,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/shape_radius"
                 android:backgroundTint="@color/olive_green"
-                android:clickable="true"
                 android:letterSpacing="0.15"
-                android:onClick="@{() -> viewModel.leave()}"
                 android:text="我瞭解了"
                 android:textColor="@color/white"
                 android:textSize="16sp"

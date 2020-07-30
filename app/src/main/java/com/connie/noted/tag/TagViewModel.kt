@@ -94,11 +94,12 @@ class TagViewModel(
         _toUploadBoard.value = true
     }
 
-    fun uploadBoard() {
+    fun updateTags() {
 
 
+        Log.e("Connie", "I am here to update Tags!")
 
-456
+
 
     }
 

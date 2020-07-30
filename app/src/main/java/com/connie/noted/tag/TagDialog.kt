@@ -1,5 +1,6 @@
 package com.connie.noted.tag
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,11 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.connie.noted.MainActivity
+import com.connie.noted.NotedApplication
 import com.connie.noted.R
-import com.connie.noted.databinding.DialogAdd2boardBinding
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
@@ -33,6 +36,9 @@ class TagDialog : DialogFragment() {
     private val viewModel by viewModels<TagViewModel> { getVmFactory() }
     private lateinit var binding: DialogTagBinding
     private lateinit var chipGroup: ChipGroup
+
+    private lateinit var inputMethodManager: InputMethodManager
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +67,16 @@ class TagDialog : DialogFragment() {
         chipGroup = binding.groupProfileTag
         getUserTags()
 
+        inputMethodManager =
+            NotedApplication.instance.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
+        inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
+
+        binding.editTagAdd2tag.setOnFocusChangeListener { view: View, isFocus: Boolean ->
+             if (!isFocus){
+                 (activity as MainActivity).hideSoftInput(view)
+             }
+        }
 
         binding.switchTagEdit.setOnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.isChecked) {
@@ -69,8 +85,18 @@ class TagDialog : DialogFragment() {
                 binding.buttonBottom.text = "確認修改"
                 binding.switchTagEdit.visibility = View.GONE
                 binding.buttonBottomCancel.visibility = View.VISIBLE
+
+                binding.buttonBottom.setOnClickListener {
+                    viewModel.updateTags()
+                }
+            } else {
+                binding.buttonBottom.setOnClickListener {
+                    viewModel.leave()
+                }
             }
         }
+
+
 
         binding.buttonBottomCancel.setOnClickListener {
             binding.editTagAdd2tag.visibility = View.GONE
@@ -79,6 +105,9 @@ class TagDialog : DialogFragment() {
             binding.switchTagEdit.visibility = View.VISIBLE
             binding.buttonBottomCancel.visibility = View.GONE
             binding.switchTagEdit.isChecked = false
+
+            chipGroup.removeAllViews()
+            getUserTags()
         }
         binding.buttonTagAdd2tag.setOnClickListener {
             setUpTags(mutableListOf(viewModel.newTag.value ?: "Hello"))
@@ -179,6 +208,15 @@ class TagDialog : DialogFragment() {
 
 
     }
+
+//    fun hideKeyBoard(context: Context, view: View) {
+//        val inputMethodManager =
+//            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+//    }
+
+
+
 
 
 }
