@@ -27,9 +27,9 @@ class ExploreFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val boardRecyclerView = binding.explorePopularRecycler
+        val boardPopularRecyclerView = binding.explorePopularRecycler
 
-        boardRecyclerView.adapter =
+        boardPopularRecyclerView.adapter =
             ExplorePopularAdapter(ExplorePopularAdapter.OnClickListener { board ->
 
                 Log.i("Connie", "Board is clicked, $board")
@@ -41,9 +41,24 @@ class ExploreFragment : Fragment() {
 
             }, viewModel)
 
-        viewModel.liveBoards.observe(viewLifecycleOwner, Observer {
-            boardRecyclerView.scrollToPosition(0)
-        })
+
+        val boardRecommendRecyclerView = binding.exploreRecommendRecycler
+
+        boardRecommendRecyclerView.adapter =
+            ExploreRecommendAdapter(ExploreRecommendAdapter.OnClickListener { board ->
+
+                Log.i("Connie", "Board is clicked, $board")
+                findNavController().navigate(
+                    NaviDirections.actionGlobalBoardPageFragment(
+                        board
+                    )
+                )
+
+            }, viewModel)
+
+//        viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
+//            boardPopularRecyclerView.scrollToPosition(0)
+//        })
 
         return binding.root
 

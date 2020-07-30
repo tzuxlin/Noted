@@ -19,6 +19,7 @@ import com.connie.noted.boardpage.BoardNotesAdapter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.explore.ExplorePopularAdapter
+import com.connie.noted.explore.ExploreRecommendAdapter
 import com.connie.noted.note.NoteAdapter
 
 
@@ -155,6 +156,7 @@ fun bindBoardRecyclerView(recyclerView: RecyclerView, data: List<Board>?) {
             val adapter = when (adapter) {
                 is BoardItemAdapter -> adapter
                 is ExplorePopularAdapter -> adapter
+                is ExploreRecommendAdapter -> adapter
                 else -> null
             }
 

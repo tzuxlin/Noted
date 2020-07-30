@@ -17,6 +17,7 @@ import com.connie.noted.login.UserManager
 import com.connie.noted.util.Util.replaceBr
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -103,46 +104,54 @@ object NotedRemoteDataSource : NotedDataSource {
 
             val list = mutableListOf<Board>()
 
+            FirebaseFirestore.getInstance()
+                .collection(PATH_BOARDS)
+                .whereEqualTo("public", true)
+                .get()
+                .addOnCompleteListener { task ->
 
-            when (condition) {
+                    if (task.isSuccessful) {
 
-                "popular" -> {
-                    FirebaseFirestore.getInstance()
-                        .collection(PATH_BOARDS)
-                        .whereEqualTo("public", true)
-                        .get()
-                        .addOnCompleteListener { task ->
+                        task.result?.let { documents ->
 
-                            if (task.isSuccessful) {
+                            for (document in documents) {
+                                Log.d(
+                                    "ConnieFirebaseGetLiveBoards",
+                                    document.id + " => " + document.data
+                                )
 
-                                task.result?.let { documents ->
+                                val board = document.toObject(Board::class.java)
+                                list.add(board)
+                            }
 
-                                    for (document in documents) {
-                                        Log.d(
-                                            "ConnieFirebaseGetLiveBoards",
-                                            document.id + " => " + document.data
-                                        )
+                            when (condition) {
 
-                                        val board = document.toObject(Board::class.java)
-                                        list.add(board)
-                                    }
+                                "popular" -> {
 
-                                    list.sortByDescending {
-                                        it.savedBy.size
-                                    }
-
+                                    list.sortByDescending { it.savedBy.size }
                                     liveData.value = list.filter { it.savedBy.size != 0 }
 
                                 }
+
+                                "recommend" -> {
+
+                                    val followingTags = UserManager.user.value?.followingTags
+
+                                    if (!followingTags.isNullOrEmpty()) {
+                                        val myList: MutableList<Board> = list.filter { board ->
+                                            board.tags.any { tag -> tag in followingTags }
+                                        }.toMutableList()
+
+                                        liveData.value = myList.shuffled()
+                                    }
+
+                                }
+                                else -> { }
                             }
                         }
+                    }
+
                 }
-
-                else -> {
-                }
-
-            }
-
         }
         return liveData
 
