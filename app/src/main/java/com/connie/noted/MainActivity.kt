@@ -1,11 +1,16 @@
 package com.connie.noted
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -64,6 +69,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupDrawer()
         setupNavController()
+
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
 
         Log.d("Connie", "on Create UserManager.user = ${UserManager.user.value}")
 
@@ -278,6 +287,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.closeDrawer(START)
 
         return true
+    }
+
+    fun hideSoftInput(view: View) {
+        val inputMethodManager =
+            this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 
