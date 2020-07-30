@@ -26,6 +26,7 @@ object NotedRemoteDataSource : NotedDataSource {
 
     private const val PATH_NOTES = "notes"
     private const val PATH_BOARDS = "boards"
+    private const val PATH_USERS = "users"
     private const val KEY_CREATED_TIME = "createdTime"
 
 
@@ -146,7 +147,8 @@ object NotedRemoteDataSource : NotedDataSource {
                                     }
 
                                 }
-                                else -> { }
+                                else -> {
+                                }
                             }
                         }
                     }
@@ -427,6 +429,39 @@ object NotedRemoteDataSource : NotedDataSource {
                     }
                 }
         }
+
+    override suspend fun updateUserTags(tags: List<String?>): Result<Boolean> =
+        suspendCoroutine { continuation ->
+
+            val email = UserManager.userEmail ?: ""
+            val users = FirebaseFirestore.getInstance().collection("users")
+
+
+            users.document(email).update("followingTags", tags)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.i("Connie", "Tag is updated, $tags")
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+                            Log.w(
+                                "Connie",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(
+                            Result.Fail(
+                                NotedApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
+                        )
+                    }
+                }
+        }
+
 
 
     override fun getLiveUser(): MutableLiveData<User> {

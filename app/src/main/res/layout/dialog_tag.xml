@@ -9,6 +9,8 @@
 
         <import type="android.text.TextUtils" />
 
+        <import type="com.connie.noted.data.network.LoadApiStatus"/>
+
         <variable
             name="viewModel"
             type="com.connie.noted.tag.TagViewModel" />
@@ -43,7 +45,7 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.15"
-                android:text="依據您感興趣的主題"
+                android:text="您感興趣的主題"
                 android:textColor="@color/black_3f3a3a"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/button_add2cart_close"
@@ -252,6 +254,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:background="@drawable/shape_radius"
                 tools:backgroundTint="@color/olive_green" />
+
+            <ProgressBar
+                android:id="@+id/progress_payment_checkout"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

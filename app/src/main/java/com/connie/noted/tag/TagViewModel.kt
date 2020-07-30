@@ -36,6 +36,9 @@ class TagViewModel(
     var liveNotes = MutableLiveData<List<Note>>()
 
 
+    val tagsToAdd = mutableListOf<String?>()
+
+
     var newTag = MutableLiveData<String>()
     var isPublic = false
 
@@ -95,24 +98,18 @@ class TagViewModel(
     }
 
     fun updateTags() {
-
-
-        Log.e("Connie", "I am here to update Tags!")
-
-
-
+        toUploadTags()
     }
 
-    private fun toUploadBoard(board: Board) {
+    private fun toUploadTags() {
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = notedRepository.createBoard(board)) {
+            when (val result = notedRepository.updateUserTags(tagsToAdd)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    leave()
                 }
                 is Result.Fail -> {
                     _error.value = result.error

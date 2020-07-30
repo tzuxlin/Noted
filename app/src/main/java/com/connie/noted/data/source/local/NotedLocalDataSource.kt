@@ -32,6 +32,10 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateUserTags(tags: List<String?>): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override fun getLiveUser(): MutableLiveData<User> {
         TODO("Not yet implemented")
     }

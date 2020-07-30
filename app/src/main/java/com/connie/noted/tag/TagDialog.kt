@@ -12,12 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.connie.noted.MainActivity
 import com.connie.noted.NotedApplication
 import com.connie.noted.R
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
@@ -38,7 +42,6 @@ class TagDialog : DialogFragment() {
     private lateinit var chipGroup: ChipGroup
 
     private lateinit var inputMethodManager: InputMethodManager
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,12 +73,15 @@ class TagDialog : DialogFragment() {
         inputMethodManager =
             NotedApplication.instance.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
+        inputMethodManager.hideSoftInputFromWindow(
+            requireActivity().currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
 
         binding.editTagAdd2tag.setOnFocusChangeListener { view: View, isFocus: Boolean ->
-             if (!isFocus){
-                 (activity as MainActivity).hideSoftInput(view)
-             }
+            if (!isFocus) {
+                (activity as MainActivity).hideSoftInput(view)
+            }
         }
 
         binding.switchTagEdit.setOnCheckedChangeListener { compoundButton, b ->
@@ -116,6 +122,46 @@ class TagDialog : DialogFragment() {
 
 
 
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+                LoadApiStatus.LOADING -> {
+
+                    binding.editTagAdd2tag.visibility = View.GONE
+                    binding.buttonTagAdd2tag.visibility = View.GONE
+                    binding.buttonBottom.text = ""
+                    binding.buttonBottom.isActivated = false
+                    binding.switchTagEdit.visibility = View.VISIBLE
+                    binding.buttonBottomCancel.visibility = View.GONE
+                    binding.switchTagEdit.isChecked = false
+
+
+                }
+                LoadApiStatus.DONE -> {
+
+                    Toast.makeText(NotedApplication.instance, "修改成功", Toast.LENGTH_SHORT).show()
+
+                    binding.editTagAdd2tag.visibility = View.GONE
+                    binding.buttonTagAdd2tag.visibility = View.GONE
+                    binding.buttonBottom.text = "關閉"
+                    binding.switchTagEdit.visibility = View.VISIBLE
+                    binding.buttonBottomCancel.visibility = View.GONE
+                    binding.switchTagEdit.isChecked = false
+
+                    chipGroup.removeAllViews()
+                    getUserTags()
+
+                }
+
+
+
+
+            }
+
+
+
+
+        })
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -157,6 +203,7 @@ class TagDialog : DialogFragment() {
 
     private fun setUpTags(tagList: MutableList<String>) {
 
+        viewModel.tagsToAdd.addAll(tagList)
 
         for (index in tagList.indices) {
             val tagName = tagList[index]
@@ -193,7 +240,7 @@ class TagDialog : DialogFragment() {
                 chip.setOnCloseIconClickListener {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
-
+                    viewModel.tagsToAdd.remove(tagName)
                     Log.e("Connie", tagList.toString())
                 }
 
@@ -208,15 +255,5 @@ class TagDialog : DialogFragment() {
 
 
     }
-
-//    fun hideKeyBoard(context: Context, view: View) {
-//        val inputMethodManager =
-//            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-//    }
-
-
-
-
 
 }

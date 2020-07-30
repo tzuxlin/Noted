@@ -27,8 +27,13 @@ class DefaultNotedRepository(
     override suspend fun likeBoard(board: Board): Result<Boolean> {
         return remoteDataSource.likeBoard(board)
     }
+
     override suspend fun updateUser(user: User): Result<Boolean> {
         return remoteDataSource.updateUser(user)
+    }
+
+    override suspend fun updateUserTags(tags: List<String?>): Result<Boolean> {
+        return remoteDataSource.updateUserTags(tags)
     }
 
     override fun getLiveUser(): MutableLiveData<User> {
