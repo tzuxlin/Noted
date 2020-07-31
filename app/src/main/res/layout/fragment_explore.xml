@@ -9,89 +9,119 @@
             name="viewModel"
             type="com.connie.noted.explore.ExploreViewModel" />
 
+        <import type="com.connie.noted.data.network.LoadApiStatus" />
+
+        <import type="android.view.View" />
+
     </data>
 
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".explore.ExploreFragment">
-
-            <TextView
-                android:id="@+id/explore_title_popular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginHorizontal="16dp"
-                android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.15"
-                android:text="@string/the_most_popular"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/explore_popular_recycler"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/explore_title_popular"
-                app:listBoard="@{viewModel.popularBoards}" />
+                android:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"
+                tools:context=".explore.ExploreFragment">
 
-            <TextView
-                android:id="@+id/explore_title_recommend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginHorizontal="16dp"
-                android:fontFamily="@font/noto_sans"
-                android:letterSpacing="0.15"
-                android:text="@string/recommend"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/explore_popular_recycler" />
-
-            <ImageView
-                android:id="@+id/explore_recommend_help"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:background="@drawable/icon_help"
-                android:backgroundTint="@color/gray_cccccc"
-                android:layout_margin="8dp"
-                app:layout_constraintStart_toEndOf="@id/explore_title_recommend"
-                app:layout_constraintTop_toTopOf="@id/explore_title_recommend"
-                app:layout_constraintBottom_toBottomOf="@id/explore_title_recommend"/>
+                <TextView
+                    android:id="@+id/explore_title_popular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:letterSpacing="0.15"
+                    android:text="@string/the_most_popular"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/explore_recommend_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="8dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/explore_title_recommend"
-                app:listBoard="@{viewModel.recommendBoards}"
-                app:reverseLayout="false"
-                app:spanCount="2" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/explore_popular_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/explore_title_popular"
+                    app:listBoard="@{viewModel.popularBoards}" />
+
+                <TextView
+                    android:id="@+id/explore_title_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:letterSpacing="0.15"
+                    android:text="@string/recommend"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/explore_popular_recycler" />
+
+                <ImageView
+                    android:id="@+id/explore_recommend_help"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/icon_help"
+                    android:backgroundTint="@color/gray_cccccc"
+                    app:layout_constraintBottom_toBottomOf="@id/explore_title_recommend"
+                    app:layout_constraintStart_toEndOf="@id/explore_title_recommend"
+                    app:layout_constraintTop_toTopOf="@id/explore_title_recommend" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/explore_recommend_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/explore_title_recommend"
+                    app:listBoard="@{viewModel.recommendBoards}"
+                    app:reverseLayout="false"
+                    app:spanCount="2" />
 
-    </ScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/anim_loading"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_grey"
+            app:lottie_speed="2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

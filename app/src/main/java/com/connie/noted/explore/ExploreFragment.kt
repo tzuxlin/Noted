@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.connie.noted.NaviDirections
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.FragmentExploreBinding
 import com.connie.noted.ext.getVmFactory
 
@@ -59,6 +60,22 @@ class ExploreFragment : Fragment() {
         binding.exploreRecommendHelp.setOnClickListener {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }
+
+        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                viewModel.popularBoards.value?.let {
+                    if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
+                }
+            }
+        })
+
+        viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                viewModel.recommendBoards.value?.let {
+                    if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
+                }
+            }
+        })
 
 //        viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
 //            boardPopularRecyclerView.scrollToPosition(0)

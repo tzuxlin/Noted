@@ -121,6 +121,12 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         })
 
+        viewModel.liveBoards.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                viewModel.loadApiStatusDone()
+            }
+        })
+
 
         return binding.root
     }

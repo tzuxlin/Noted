@@ -11,6 +11,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.connie.noted.data.network.LoadApiStatus"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +64,7 @@
             android:layout_marginBottom="50dp"
             android:background="@drawable/icon_board"
             android:backgroundTint="@color/gray_999999"
-            android:visibility='@{viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{viewModel.status == LoadApiStatus.DONE &amp; viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +78,29 @@
             android:fontFamily="@font/noto_sans"
             android:textSize="14sp"
             android:letterSpacing="0.1"
-            android:visibility='@{viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
+            android:visibility='@{viewModel.status == LoadApiStatus.DONE &amp; viewModel.liveBoards.size() == 0 ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/anim_loading"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_grey"
+            app:lottie_speed="2" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

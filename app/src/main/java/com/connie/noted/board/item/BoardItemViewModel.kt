@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +47,12 @@ class BoardItemViewModel(
 
     var liveBoards = MutableLiveData<List<Board>>()
 
+    // status: The internal MutableLiveData that stores the status of the most recent request
+    private val _status = MutableLiveData<LoadApiStatus>()
+
+    val status: LiveData<LoadApiStatus>
+        get() = _status
+
 
     /**
      * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
@@ -62,7 +69,12 @@ class BoardItemViewModel(
     }
 
     private fun toGetBoard() {
+        _status.value = LoadApiStatus.LOADING
         liveBoards = notedRepository.getLiveBoards(boardType)
+    }
+
+    fun loadApiStatusDone() {
+        _status.value = LoadApiStatus.DONE
     }
 
     fun tagClicked(tag: String) {
