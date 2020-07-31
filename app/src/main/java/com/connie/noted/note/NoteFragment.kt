@@ -17,9 +17,11 @@ import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.Note
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.FragmentNoteBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.util.CurrentFilterType
+import com.connie.noted.util.DialogBoxMessageType
 
 class NoteFragment(private val note: Note = Note()) : Fragment() {
 
@@ -145,6 +147,26 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
             }
         })
+
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+
+            when (it){
+
+                LoadApiStatus.LOADING -> {
+                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.LOADING_NOTE.message))
+                }
+
+                LoadApiStatus.DONE -> {
+                    findNavController().navigateUp()
+                    mainViewModel.urlString.value = null
+                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NEW_NOTE.message))
+                }
+
+            }
+
+        })
+
+
 
         viewModel.isEditMode.observe(viewLifecycleOwner, Observer {
 

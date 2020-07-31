@@ -10,10 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.connie.noted.R
 import com.connie.noted.boardpage.BoardPageFragmentArgs
 import com.connie.noted.databinding.DialogBoxBinding
+import com.connie.noted.util.DialogBoxMessageType
 import java.util.*
 import kotlin.concurrent.schedule
 
 class BoxDialog : DialogFragment() {
+
+    private lateinit var message: String
 
 
     override fun onCreateView(
@@ -24,9 +27,26 @@ class BoxDialog : DialogFragment() {
 
         val binding = DialogBoxBinding.inflate(inflater, container, false)
 
-        val message = BoxDialogArgs.fromBundle(requireArguments()).messageKey
 
-        binding.boxMessage.text = message
+        message = BoxDialogArgs.fromBundle(requireArguments()).messageKey
+
+
+        when (message) {
+
+            DialogBoxMessageType.LOADING_NOTE.message -> {
+                binding.boxMessage.visibility = View.GONE
+                binding.iconSuccessWhite.visibility = View.GONE
+                binding.animLoading.visibility = View.VISIBLE
+            }
+
+            else -> {
+                binding.boxMessage.text = message
+            }
+
+        }
+
+
+
 
 
         return binding.root
@@ -35,13 +55,27 @@ class BoxDialog : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
+
+
+
         Timer("SettingUp", false).schedule(2000) {
             close()
         }
+
+
     }
 
     private fun close() {
-        this.dismiss()
+        when (message) {
+
+            DialogBoxMessageType.LOADING_NOTE.message -> {
+
+            }
+
+            else -> {
+                this.dismiss()
+            }
+        }
     }
 }
 
