@@ -20,9 +20,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/edit_explore_search"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:fontFamily="@font/noto_sans"
+            android:hint="關鍵字"
+            android:letterSpacing="0.15"
+            android:maxLines="1"
+            android:paddingHorizontal="30dp"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="@color/black_3f3a3a"
+            android:textSize="12sp"
+            android:visibility="@{viewModel.enableSearch ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon_explore_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_search"
+            android:backgroundTint="@color/greyish_brown"
+            android:clickable="true"
+            android:onClick="@{()-> viewModel.enableSearch ? viewModel.search() : viewModel.toEnableSearch()}"
+            android:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon_explore_search_close"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/icon_close"
+            android:backgroundTint="@color/gray_999999"
+            android:clickable="true"
+            android:onClick="@{()-> viewModel.toDisableSearch()}"
+            android:visibility="@{viewModel.enableSearch ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/edit_explore_search"
+            app:layout_constraintStart_toStartOf="@id/edit_explore_search"
+            app:layout_constraintTop_toTopOf="@id/edit_explore_search" />
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon_explore_search">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

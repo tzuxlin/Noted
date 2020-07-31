@@ -1,5 +1,6 @@
 package com.connie.noted.explore
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,12 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
     val status: LiveData<LoadApiStatus>
         get() = _status
 
+    private val _enableSearch = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+    val enableSearch: LiveData<Boolean>
+        get() = _enableSearch
+
 
     init {
         getLiveBoard()
@@ -35,6 +42,19 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
 
     fun loadApiStatusDone() {
         _status.value = LoadApiStatus.DONE
+    }
+
+    fun search() {
+        Log.e("Connie", "Search")
+    }
+
+    fun toEnableSearch() {
+        _enableSearch.value = true
+    }
+
+
+    fun toDisableSearch() {
+        _enableSearch.value = false
     }
 
 

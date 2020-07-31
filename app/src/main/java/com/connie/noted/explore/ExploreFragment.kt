@@ -61,6 +61,14 @@ class ExploreFragment : Fragment() {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }
 
+        binding.iconExploreSearch.setOnClickListener {
+
+
+
+
+
+        }
+
         viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
             it?.let {
                 viewModel.popularBoards.value?.let {
