@@ -15,8 +15,7 @@ import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.databinding.FragmentBoardPageBinding
 import com.connie.noted.ext.getVmFactory
-import com.connie.noted.note.NoteAdapter
-import com.connie.noted.util.DialogBoxMessage
+import com.connie.noted.util.DialogBoxMessageType
 
 class BoardPageFragment : Fragment() {
 
@@ -59,13 +58,13 @@ class BoardPageFragment : Fragment() {
                     if (viewModel.toSaved) {
                         findNavController().navigate(
                             NaviDirections.actionGlobalBoxDialog(
-                                DialogBoxMessage.SAVED_BOARD.message
+                                DialogBoxMessageType.SAVED_BOARD.message
                             )
                         )
                     } else {
                         findNavController().navigate(
                             NaviDirections.actionGlobalBoxDialog(
-                                DialogBoxMessage.UNSAVED_BOARD.message
+                                DialogBoxMessageType.UNSAVED_BOARD.message
                             )
                         )
                     }

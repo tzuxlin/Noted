@@ -12,9 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.view.get
-import androidx.core.view.size
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -27,7 +24,7 @@ import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
-import com.connie.noted.util.DialogBoxMessage
+import com.connie.noted.util.DialogBoxMessageType
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -142,7 +139,7 @@ class TagDialog : DialogFragment() {
                 }
                 LoadApiStatus.DONE -> {
 
-                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessage.EDITED.message))
+                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.EDITED.message))
 
                     binding.editTagAdd2tag.visibility = View.GONE
                     binding.buttonTagAdd2tag.visibility = View.GONE
