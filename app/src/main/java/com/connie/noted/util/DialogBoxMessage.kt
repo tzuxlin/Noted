@@ -7,6 +7,5 @@ enum class DialogBoxMessage(val message: String) {
     SAVED_BOARD("已儲存"),
     UNSAVED_BOARD("取消儲存"),
     SHARED("分享成功"),
-    EDITED("修改成功"),
-    LOCATION("Location")
+    EDITED("修改成功")
 }

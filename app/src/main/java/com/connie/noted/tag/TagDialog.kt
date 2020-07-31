@@ -18,13 +18,16 @@ import androidx.core.view.size
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.connie.noted.MainActivity
+import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.R
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.DialogBoxMessage
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -139,7 +142,7 @@ class TagDialog : DialogFragment() {
                 }
                 LoadApiStatus.DONE -> {
 
-                    Toast.makeText(NotedApplication.instance, "修改成功", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessage.EDITED.message))
 
                     binding.editTagAdd2tag.visibility = View.GONE
                     binding.buttonTagAdd2tag.visibility = View.GONE
