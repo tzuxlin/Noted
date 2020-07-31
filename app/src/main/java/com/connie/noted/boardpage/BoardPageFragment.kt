@@ -16,6 +16,7 @@ import com.connie.noted.NotedApplication
 import com.connie.noted.databinding.FragmentBoardPageBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.note.NoteAdapter
+import com.connie.noted.util.DialogBoxMessage
 
 class BoardPageFragment : Fragment() {
 
@@ -49,6 +50,26 @@ class BoardPageFragment : Fragment() {
         viewModel.board.observe(viewLifecycleOwner, Observer {
             it?.let {
                 Log.e("Connie", it.toString())
+            }
+        })
+
+        viewModel.savedCompleted.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                if (it) {
+                    if (viewModel.toSaved) {
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalBoxDialog(
+                                DialogBoxMessage.SAVED_BOARD.message
+                            )
+                        )
+                    } else {
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalBoxDialog(
+                                DialogBoxMessage.UNSAVED_BOARD.message
+                            )
+                        )
+                    }
+                }
             }
         })
 

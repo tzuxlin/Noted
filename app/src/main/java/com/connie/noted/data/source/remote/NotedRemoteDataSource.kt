@@ -462,6 +462,28 @@ object NotedRemoteDataSource : NotedDataSource {
                 }
         }
 
+    override suspend fun saveBoard(board: Board): Boolean =
+        suspendCoroutine { continuation ->
+
+            FirebaseFirestore.getInstance().collection(PATH_BOARDS)
+                .document(board.id).update("savedBy", board.savedBy)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resume(true)
+                    } else {
+                        task.exception?.let {
+                            Log.w(
+                                "Connie",
+                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                            )
+                            continuation.resume(false)
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(false)
+
+                    }
+                }
+        }
 
 
     override fun getLiveUser(): MutableLiveData<User> {

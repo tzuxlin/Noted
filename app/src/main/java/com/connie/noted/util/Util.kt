@@ -14,6 +14,7 @@ import com.connie.noted.MainActivity
 import com.connie.noted.NotedApplication
 import com.connie.noted.R
 import com.connie.noted.board.item.BoardItemAdapter
+import com.connie.noted.login.UserManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
@@ -49,6 +50,13 @@ object Util {
 
     fun getWindowWidth(): Int {
         return NotedApplication.instance.resources.displayMetrics.widthPixels
+    }
+
+    fun checkIfSaved(savedBy: List<String?>): Boolean {
+
+        Log.e("Connie", "checkIfSaved: ${savedBy.contains((UserManager.userEmail)?:"")}, currentUser = ${UserManager.userEmail}, savedBy = $savedBy")
+
+        return savedBy.contains((UserManager.userEmail)?:"")
     }
 
     fun setUpThinTags(

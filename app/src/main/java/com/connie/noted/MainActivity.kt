@@ -187,7 +187,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.clipToPadding = false
         binding.drawerNavView.setNavigationItemSelectedListener(this)
 
-
     }
 
 

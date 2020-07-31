@@ -21,6 +21,8 @@ interface NotedDataSource {
 
     suspend fun updateUserTags(tags: List<String?>): Result<Boolean>
 
+    suspend fun saveBoard(board: Board): Boolean
+
     fun getLiveUser(): MutableLiveData<User>
 
     fun getLiveNotes(): MutableLiveData<MutableList<Note>>

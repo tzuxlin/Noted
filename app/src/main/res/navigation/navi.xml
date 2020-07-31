@@ -146,4 +146,19 @@
     <action
         android:id="@+id/action_global_tagDialog"
         app:destination="@id/tagDialog" />
+    <dialog
+        android:id="@+id/boxDialog"
+        android:name="com.connie.noted.box.BoxDialog"
+        android:label="BoxDialog" >
+        <argument
+            android:name="messageKey"
+            app:argType="string" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_boxDialog"
+        app:destination="@id/boxDialog">
+        <argument
+            android:name="messageKey"
+            app:argType="string" />
+    </action>
 </navigation>
