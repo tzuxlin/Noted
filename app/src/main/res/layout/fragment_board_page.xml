@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.connie.noted.boardpage.BoardPageViewModel" />
 
+        <import type="android.view.View" />
+
+        <import type="com.connie.noted.login.UserManager" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,11 +20,31 @@
         android:layout_height="match_parent"
         tools:context=".boardpage.BoardPageFragment">
 
+        <ImageView
+            android:id="@+id/board_page_saved"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/icon_save"
+            android:backgroundTint="@color/brownish_grey"
+            app:layout_constraintEnd_toStartOf="@id/board_page_share"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/board_page_share"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/icon_share"
+            android:backgroundTint="@color/brownish_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/board_page_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/noto_sans"
             android:letterSpacing="0.15"
             android:text="@{viewModel.board.title}"
@@ -29,17 +53,17 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/board_page_share"
             tools:text="我都唸作ＣＯＳＴＣＯ" />
 
         <TextView
             android:id="@+id/board_page_creator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/noto_sans"
-            android:textSize="13sp"
             android:letterSpacing="0.1"
+            android:textSize="13sp"
             app:createdBy="@{viewModel.board.creatorName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +88,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
-            app:reverseLayout="false"
             android:layout_margin="16dp"
-            app:listNote="@{viewModel.liveNotes}"
-            app:layout_constraintTop_toBottomOf="@id/board_page_public"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/board_page_public"
+            app:listNote="@{viewModel.liveNotes}"
+            app:reverseLayout="false" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,10 +54,17 @@ class ProfileFragment : Fragment() {
         }
 
 
-        getUserTags()
 
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        chipGroup.removeAllViews()
+        getUserTags()
+
     }
 
     private fun getUserTags() {

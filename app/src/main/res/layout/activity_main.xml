@@ -44,7 +44,7 @@
                 style="@style/toolbar_style"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL ? View.GONE : View.VISIBLE}'
+                android:visibility='@{viewModel.currentFragmentType == CurrentFragmentType.BOARDDETAIL || viewModel.currentFragmentType == CurrentFragmentType.NOTEDETAIL ? View.GONE : View.VISIBLE}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

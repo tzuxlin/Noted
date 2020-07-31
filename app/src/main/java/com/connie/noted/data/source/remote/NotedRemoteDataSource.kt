@@ -118,7 +118,7 @@ object NotedRemoteDataSource : NotedDataSource {
                             for (document in documents) {
                                 Log.d(
                                     "ConnieFirebaseGetLiveBoards",
-                                    document.id + " => " + document.data
+                                    document.id + " => " + document.data["title"]
                                 )
 
                                 val board = document.toObject(Board::class.java)
