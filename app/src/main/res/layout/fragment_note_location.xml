@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.notepage.location.LocationViewModel" />
+
+        <variable
+            name="imageString"
+            type="String" />
+
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/image_note"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@drawable/shape_top_radius"-->
+            <!--                android:scaleType="centerCrop"-->
+            <!--                app:imageUrl="@{viewModel.note.images.get(0)}"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                tools:layout_height="100dp"-->
+            <!--                tools:src="@drawable/ic_placeholder" />-->
+
+
+            <include
+                android:id="@id/image_note"
+                layout="@layout/fragment_maps"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <ImageView
+                android:id="@+id/icon_bg_note_liked"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/shape_round"
+                android:backgroundTint="@color/translucent_40"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_note_liked"
+                app:layout_constraintEnd_toEndOf="@+id/icon_note_liked"
+                app:layout_constraintStart_toStartOf="@+id/icon_note_liked"
+                app:layout_constraintTop_toTopOf="@+id/icon_note_liked" />
+
+            <ImageView
+                android:id="@+id/icon_note_source"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_margin="16dp"
+                android:background='@{"Location".equals(viewModel.note.type) ? @drawable/icon_location : "Video".equals(viewModel.note.type) ? @drawable/icon_video : @drawable/icon_article}'
+                android:backgroundTint="@color/greyish_brown"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_note"
+                tools:background="@drawable/icon_location" />
+
+            <TextView
+                android:id="@+id/text_note_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.07"
+                android:text="@{viewModel.note.contentSource}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/brownish_grey"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/icon_note_source"
+                app:layout_constraintStart_toEndOf="@+id/icon_note_source"
+                app:layout_constraintTop_toTopOf="@id/icon_note_source"
+                tools:text="Google 地圖" />
+
+
+            <ImageView
+                android:id="@+id/icon_note_liked"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_margin="16dp"
+                android:background='@{viewModel.note.liked ? @drawable/icon_like_true : @drawable/icon_like_false}'
+                android:backgroundTint="@color/white"
+                android:elevation="5dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/text_note_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
+                android:text="@{viewModel.note.title}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/greyish_brown"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon_note_source"
+                tools:text="烤蘋果派的方法" />
+
+            <TextView
+                android:id="@+id/text_note_summary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="8dp"
+                android:text="@{viewModel.note.summary}"
+                android:textAlignment="viewStart"
+                android:textColor="@color/brownish_grey"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_note_title"
+                tools:text="★★★★☆ · 甜品店 · 仁愛路三段80號3樓" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

@@ -1,11 +1,19 @@
 package com.connie.noted.data
 
-data class Note (
-    var type: String = "",
-    var contentSource: String = "",
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Board (
+    var id: String = "",
+    var createdTime: Long = -1,
+    var createdBy: String = "",
+    var creatorName: String = "",
+    var savedBy: MutableList<String?> = mutableListOf(),
     var title: String = "",
-    var images: MutableList<String> = mutableListOf(),
-    var summary: String? = null,
-    var tags: MutableList<String>? = null,
-    var isLiked: Boolean = false
-)
+    var images: MutableList<String?> = mutableListOf(),
+    var tags: MutableList<String?> = mutableListOf(),
+    var isLiked: Boolean = false,
+    var isPublic: Boolean = false,
+    var notes: MutableList<String?> = mutableListOf()
+): Parcelable

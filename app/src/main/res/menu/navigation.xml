@@ -5,20 +5,24 @@
 
     <item
         android:id="@+id/navigation_noteFragment"
-        android:icon="@drawable/icon_note_selector"
-        android:title=""/>
+        android:icon="@drawable/icon_note"
+        android:title="筆記" />
 
     <item
         android:id="@+id/navigation_boardFragment"
-        android:icon="@drawable/icon_notes_selector"
-        android:title=""/>
+        android:icon="@drawable/icon_board"
+        android:title="分類板" />
+
+    <item
+        android:id="@+id/navigation_exploreFragment"
+        android:icon="@drawable/icon_public"
+        android:title="探索" />
+
 
     <item
         android:id="@+id/navigation_profileFragment"
-        android:icon="@drawable/icon_profile_selector"
-        android:title="" />
-
-
+        android:icon="@drawable/icon_profile"
+        android:title="個人" />
 
 
 </menu>

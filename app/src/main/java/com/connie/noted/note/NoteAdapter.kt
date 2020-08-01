@@ -1,9 +1,12 @@
 package com.connie.noted.note
 
-import android.content.ClipData.Item
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,36 +21,24 @@ import com.connie.noted.databinding.ItemNoteLinearBinding
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * [Note], including computing diffs between lists.
  */
-class NoteAdapter(private val viewModel: NoteViewModel) :
+class NoteAdapter(
+    private val onClickListener: OnClickListener,
+    private val viewModel: NoteViewModel
+) :
     ListAdapter<Note, RecyclerView.ViewHolder>(DiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
-        return viewModel.viewType.value ?:0
+        return viewModel.viewType.value ?: 0
     }
 
 
-//    abstract class ViewHolder {
-//        abstract fun bind(model: Note, viewModel: NoteViewModel)
-//
-//        companion object {
-//            fun create(v: View?, viewType: Int): RecyclerView.ViewHolder {
-//                return when (viewType) {
-//
-//                    0 -> NoteGridViewHolder()
-//                    else -> NoteLinearViewHolder()
-//
-//                }
-//
-//            }
-//        }
-//    }
-
-
     class NoteLinearViewHolder(private var binding: ItemNoteLinearBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
         fun bind(note: Note, viewModel: NoteViewModel) {
 
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
             binding.note = note
 
             if (note.images.isNotEmpty()) {
@@ -56,16 +47,40 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
                 binding.imageNote.visibility = View.GONE
             }
 
-//          binding.viewModel = viewModel
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(note)
+            }
+
             binding.executePendingBindings()
         }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun onAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun onDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+
     }
 
 
     class NoteGridViewHolder(private var binding: ItemNoteGridBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
         fun bind(note: Note, viewModel: NoteViewModel) {
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
 
             binding.note = note
 
@@ -74,8 +89,30 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
             } else {
                 binding.imageNote.visibility = View.GONE
             }
-//            binding.viewModel = viewModel
+
+            binding.iconNoteLiked.setOnClickListener {
+                viewModel.likeButtonClicked(note)
+            }
+
             binding.executePendingBindings()
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun onAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun onDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
         }
     }
 
@@ -90,7 +127,7 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            return oldItem == newItem
+            return oldItem.isSelected == newItem.isSelected
         }
     }
 
@@ -101,11 +138,23 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
         return when (viewType) {
 
             0 -> {
-                NoteGridViewHolder(ItemNoteGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                NoteGridViewHolder(
+                    ItemNoteGridBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
 
             else -> {
-                NoteLinearViewHolder(ItemNoteLinearBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                NoteLinearViewHolder(
+                    ItemNoteLinearBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
 
         }
@@ -118,21 +167,67 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        val note = getItem(position)
+
         when (holder) {
 
             is NoteGridViewHolder -> {
                 holder.bind(getItem(position), viewModel)
+
+                holder.itemView.setOnClickListener {
+
+                    if (viewModel.isEditMode.value == false) {
+                        Log.e("Connie", "Note Adapter, onClick = $note")
+                        onClickListener.onClick(note)
+                    } else {
+                        noteSelected(note)
+                        notifyItemChanged(position)
+                    }
+                }
+
+                holder.itemView.setOnLongClickListener {
+                    viewModel.isEditMode.value = viewModel.isEditMode.value != true
+                    true
+                }
+
             }
 
             is NoteLinearViewHolder -> {
+
                 holder.bind(getItem(position), viewModel)
+
+
+                holder.itemView.setOnClickListener {
+
+                    if (viewModel.isEditMode.value == false) {
+                        Log.e("Connie", "Note Adapter, onClick = $note")
+                        onClickListener.onClick(note)
+                    } else {
+                        noteSelected(note)
+                        notifyItemChanged(position)
+                    }
+                }
+
+                holder.itemView.setOnLongClickListener {
+                    viewModel.isEditMode.value = viewModel.isEditMode.value != true
+                    true
+                }
+
             }
         }
 
     }
 
+    class OnClickListener(val clickListener: (note: Note) -> Unit) {
+        fun onClick(note: Note) = clickListener(note)
+    }
 
 
+//    private fun longClick(): Boolean {
+//        Toast.makeText(NotedApplication.instance, "Long Clicked", Toast.LENGTH_SHORT).show()
+//        viewModel.isEditMode.value = !viewModel.isEditMode.value!!
+//        return true
+//    }
 
 //    private fun setTag(tagList: MutableList<String>) {
 //        val chipGroup: ChipGroup = findViewById(R.id.tag_group)
@@ -159,4 +254,56 @@ class NoteAdapter(private val viewModel: NoteViewModel) :
 //    }
 
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        when (holder) {
+            is NoteGridViewHolder -> holder.onAttach()
+            is NoteLinearViewHolder -> holder.onAttach()
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+
+        when (holder) {
+            is NoteGridViewHolder -> holder.onDetach()
+            is NoteLinearViewHolder -> holder.onDetach()
+        }
+    }
+
+    private fun noteSelected(note: Note) {
+
+        viewModel.notes.value?.let { notes ->
+
+            val list = mutableListOf<Note>()
+            for (i in notes.indices) {
+
+                if (notes[i].id == note.id) {
+                    notes[i].isSelected = !notes[i].isSelected
+                    Log.e(
+                        "Connie",
+                        "Adapter: ${notes[i].title} isSelected = ${notes[i].isSelected}"
+                    )
+
+                    viewModel.notes.value = notes
+
+                    viewModel.notes.value?.let {
+                    Log.e(
+                        "Connie",
+                        "Adapter: ${it[i].title} isSelected = ${it[i].isSelected} (viewModel)"
+                    )
+                    }
+
+                    viewModel.noteToAdd.value = notes.filter { note ->
+                        note.isSelected
+                    }
+                    Log.d("Connie", viewModel.noteToAdd.value?.size.toString())
+                }
+
+
+            }
+        }
+    }
 }
+

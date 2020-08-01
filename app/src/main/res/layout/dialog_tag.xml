@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="com.connie.noted.data.network.LoadApiStatus"/>
+
+        <variable
+            name="viewModel"
+            type="com.connie.noted.tag.TagViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}"
+        tools:background="@color/brownish_grey">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_top_radius"
+            android:maxHeight="600dp"
+            android:onClick="@{() -> viewModel.nothing()}"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_edit_note_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <TextView
+                android:id="@+id/text_tag_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:text="您感興趣的主題"
+                android:textColor="@color/black_3f3a3a"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/button_add2cart_close"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_tag_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:text="我們會依據下方您所追蹤的主題，推薦您可能會感興趣的內容。您隨時可以修改想追蹤的主題標籤。"
+                android:textColor="@color/gray_999999"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_tag_title" />
+
+            <View
+                android:id="@+id/view_tag_top_separation"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="24dp"
+                android:background="@color/gray_cccccc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_tag_text" />
+
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/text_tag_following_title"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="16dp"-->
+            <!--                android:layout_marginTop="16dp"-->
+            <!--                android:layout_marginEnd="16dp"-->
+            <!--                android:letterSpacing="0.15"-->
+            <!--                android:text="您追蹤中的主題"-->
+            <!--                android:fontFamily="@font/noto_sans"-->
+            <!--                android:textColor="@color/black_3f3a3a"-->
+            <!--                android:textSize="16sp"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/view_tag_top_separation" />-->
+
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/text_tag_following_text"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="16dp"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:fontFamily="@font/noto_sans"-->
+            <!--                android:letterSpacing="0.15"-->
+            <!--                android:text=""-->
+            <!--                android:textColor="@color/gray_999999"-->
+            <!--                android:textSize="14sp"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/text_tag_following_title"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"/>-->
+
+
+            <Switch
+                android:id="@+id/switch_tag_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:switchPadding="8dp"
+                android:text="修改追蹤中的標籤"
+                android:textColor="@color/brownish_grey"
+                android:textSize="13sp"
+                android:theme="@style/Switch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_tag_top_separation"
+                app:layout_constraintBottom_toTopOf="@id/group_profile_tag"
+                />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/group_profile_tag"
+                style="@style/Widget.MaterialComponents.ChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center_horizontal"
+                android:theme="@style/Theme.MaterialComponents.Light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <EditText
+                android:id="@+id/edit_tag_add2tag"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@{viewModel.invalidInput != null? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
+                android:hint="追蹤標籤"
+                android:letterSpacing="0.15"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@id/button_tag_add2tag"
+                android:text="@={viewModel.newTag}"
+                android:textAlignment="center"
+                android:textColor="@color/black_3f3a3a"
+                android:textColorHint="@{viewModel.invalidInput != null ? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_999999}"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/view_tag_top_separation"
+                app:layout_constraintEnd_toStartOf="@+id/button_tag_add2tag"
+                app:layout_constraintBottom_toTopOf="@id/group_profile_tag"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_tag_add2tag"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="28dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/olive_green"
+                android:letterSpacing="0.15"
+                android:text="新增"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_tag_add2tag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edit_tag_add2tag"
+                tools:background="@drawable/shape_radius"
+                tools:backgroundTint="@color/olive_green"
+                tools:visibility="visible" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_edit_note_bottom"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.nothing()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+
+            <View
+                android:id="@+id/view_add2cart_bottom_separation"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray_cccccc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_bottom_cancel"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/gray_999999"
+                android:letterSpacing="0.15"
+                android:text="放棄修改"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/button_bottom"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/shape_radius"
+                tools:visibility="visible"/>
+
+            <Button
+                android:id="@+id/button_bottom"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/olive_green"
+                android:letterSpacing="0.15"
+                android:text="我瞭解了"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/button_bottom_cancel"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/shape_radius"
+                tools:backgroundTint="@color/olive_green" />
+
+            <ProgressBar
+                android:id="@+id/progress_payment_checkout"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

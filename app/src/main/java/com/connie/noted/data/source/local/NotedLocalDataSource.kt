@@ -2,8 +2,11 @@ package com.connie.noted.data.source.local
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.connie.noted.board.BoardTypeFilter
+import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
+import com.connie.noted.data.User
 import com.connie.noted.data.source.NotedDataSource
 
 class NotedLocalDataSource(val context: Context): NotedDataSource {
@@ -13,7 +16,51 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveNotes(): MutableLiveData<List<Note>> {
+    override suspend fun createBoard(board: Board): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun likeNote(note: Note): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun likeBoard(board: Board): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUser(user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUserTags(tags: List<String?>): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun saveBoard(board: Board): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveUser(): MutableLiveData<User> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveNotes(): MutableLiveData<MutableList<Note>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveBoards(type: BoardTypeFilter): MutableLiveData<List<Board>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveGlobalBoards(condition: String): MutableLiveData<List<Board>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun searchLiveGlobalBoards(keywords: String): MutableLiveData<MutableList<Board>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>> {
         TODO("Not yet implemented")
     }
 

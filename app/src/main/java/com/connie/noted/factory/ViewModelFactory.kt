@@ -3,7 +3,10 @@ package com.connie.noted.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.connie.noted.MainViewModel
+import com.connie.noted.add2board.Add2boardViewModel
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.explore.ExploreViewModel
+import com.connie.noted.tag.TagViewModel
 
 /**
  * Created by Wayne Chen in Jul. 2019.
@@ -21,8 +24,18 @@ class ViewModelFactory constructor(
                 isAssignableFrom(MainViewModel::class.java) ->
                     MainViewModel(notedRepository)
 
+                isAssignableFrom(ExploreViewModel::class.java) ->
+                    ExploreViewModel(notedRepository)
+
+                isAssignableFrom(Add2boardViewModel::class.java) ->
+                    Add2boardViewModel(notedRepository)
+
+                isAssignableFrom(TagViewModel::class.java) ->
+                    TagViewModel(notedRepository)
+
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-            }
-        } as T
+
+            } as T
+        }
 }

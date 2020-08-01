@@ -21,6 +21,7 @@ class NotedApplication : Application() {
 
     companion object {
         var instance: NotedApplication by Delegates.notNull()
+        var isGoGo = false
     }
 
     override fun onCreate() {

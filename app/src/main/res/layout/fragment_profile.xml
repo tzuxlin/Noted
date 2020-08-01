@@ -9,6 +9,8 @@
             name="viewModel"
             type="com.connie.noted.profile.ProfileViewModel" />
 
+        <import type="com.connie.noted.login.UserManager" />
+
     </data>
 
     <LinearLayout
@@ -43,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:profileImageUrl="@{viewModel.user.image}"
+                app:profileImageUrl="@{UserManager.INSTANCE.user.image}"
                 tools:background="@drawable/icon_user" />
 
 
@@ -53,15 +55,71 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:letterSpacing="0.1"
-                android:text="@{viewModel.user.name}"
+                android:text="@{UserManager.INSTANCE.user.name}"
                 android:textColor="@color/greyish_brown"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_user_image"
                 tools:text="Xuan Lin" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_profile_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_user_name">
+
+                <TextView
+                    android:id="@+id/profile_title_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:letterSpacing="0.1"
+                    android:text="追蹤主題"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/greyish_brown"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/button_profile_add_tag"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/icon_add"
+                    android:backgroundTint="@color/greyish_brown"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@+id/profile_title_tag"
+                    app:layout_constraintTop_toTopOf="@id/profile_title_tag"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_title_tag"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/group_profile_tag"
+                    style="@style/Widget.MaterialComponents.ChipGroup"
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:theme="@style/Theme.MaterialComponents.Light"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_title_tag">
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -70,20 +128,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profile_bottom_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager_profile"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs_profile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     app:tabIndicatorColor="@color/olive_green"
                     app:tabSelectedTextColor="@color/olive_green"

@@ -5,4 +5,26 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="facebook_app_id">650067248927041</string>
+    <string name="fb_login_protocol_scheme">fb650067248927041</string>
+    <string name="you_know_nothing">You know nothing</string>
+
+
+    <string name="note">筆記</string>
+    <string name="board">分類板</string>
+    <string name="explore">探索分類板</string>
+    <string name="profile">個人</string>
+
+
+
+    <string name="all">全部</string>
+    <string name="mine">我的</string>
+    <string name="saved">已儲存</string>
+
+
+    <string name="the_most_popular">熱門</string>
+    <string name="recommend">推薦</string>
+
 </resources>

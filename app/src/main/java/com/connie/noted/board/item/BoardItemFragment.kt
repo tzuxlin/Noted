@@ -1,61 +1,155 @@
 package com.connie.noted.board.item
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.connie.noted.MainViewModel
+import com.connie.noted.NaviDirections
+import com.connie.noted.NotedApplication
+import com.connie.noted.board.BoardTypeFilter
+import com.connie.noted.databinding.FragmentBoardItemBinding
+import com.connie.noted.ext.getVmFactory
+import com.connie.noted.util.CurrentFilterType
+import com.connie.noted.util.Util.setUpThinTags
+import com.google.android.material.chip.ChipGroup
 
-import com.connie.noted.R
+class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+    private val viewModel by viewModels<BoardItemViewModel> { getVmFactory(boardType) }
+    private lateinit var mainViewModel: MainViewModel
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BoardItemFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class BoardItemFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var chipGroup: ChipGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_board_item, container, false)
-    }
+        val binding = FragmentBoardItemBinding.inflate(inflater, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BoardItemFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BoardItemFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        val boardRecyclerView = binding.boardRecyclerView
+
+        mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
+
+            it?.let { type ->
+                boardRecyclerView.adapter?.let { adapter ->
+                    checkFilterType(type, adapter as BoardItemAdapter)
                 }
             }
+
+        })
+
+        mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+
+                0 -> {
+                    viewModel.viewType.value = it
+
+                    boardRecyclerView.adapter =
+                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
+
+                            Log.i("Connie", "Board is clicked, $board")
+                            findNavController().navigate(
+                                NaviDirections.actionGlobalBoardPageFragment(
+                                    board
+                                )
+                            )
+
+                        }, viewModel)
+                    boardRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
+
+                    viewModel.liveBoards.value = viewModel.liveBoards.value
+
+                }
+
+                1 -> {
+                    viewModel.viewType.value = it
+
+                    boardRecyclerView.adapter =
+                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
+
+                            Log.i("Connie", "Board is clicked, $board")
+                            findNavController().navigate(
+                                NaviDirections.actionGlobalBoardPageFragment(
+                                    board
+                                )
+                            )
+
+                        }, viewModel)
+                    boardRecyclerView.layoutManager =
+                        LinearLayoutManager(NotedApplication.instance.applicationContext)
+
+                    viewModel.liveBoards.value = viewModel.liveBoards.value
+
+                }
+
+            }
+
+        })
+
+        chipGroup = binding.groupBoardTag
+
+
+        binding.boardIconChangeLayout.setOnClickListener {
+
+            when (viewModel.viewType.value) {
+                0 -> viewModel.viewType.value = 1
+                1 -> viewModel.viewType.value = 0
+            }
+
+        }
+
+        viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
+
+            Log.e("Connie", "Hello World!")
+            setUpThinTags(viewModel.filterTags, chipGroup)
+
+        })
+
+        viewModel.liveBoards.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                viewModel.loadApiStatusDone()
+            }
+        })
+
+
+        return binding.root
     }
+
+    private fun checkFilterType(filterType: CurrentFilterType, boardAdapter: BoardItemAdapter) {
+
+        filterType.let { type ->
+
+            when (type) {
+
+                CurrentFilterType.LIKED -> {
+                    boardAdapter.submitList(viewModel.liveBoards.value?.filter { board ->
+                        board.isLiked
+                    })
+                }
+
+                else -> {
+                    viewModel.liveBoards.value = viewModel.liveBoards.value
+                }
+
+            }
+        }
+    }
+
+
 }

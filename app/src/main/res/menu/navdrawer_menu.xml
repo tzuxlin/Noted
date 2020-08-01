@@ -3,45 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="Note">
+    <item android:title="篩選">
         <menu>
             <item
-                android:id="@+id/nav_awaiting_payment"
+                android:id="@+id/drawer_all"
+                android:icon="@drawable/icon_filter"
                 android:title="全部" />
             <item
-                android:id="@+id/nav_awaiting_shipment"
+                android:id="@+id/drawer_liked"
+                android:icon="@drawable/icon_like_true"
                 android:title="蒐藏" />
         </menu>
     </item>
 
-    <item android:title="類型">
-        <menu>
-            <item
-
-                android:id="@+id/nav_awaiting_payment2"
-                android:title="文章" />
-            <item
-                android:id="@+id/nav_awaiting_shipment2"
-                android:title="影片" />
-            <item
-                android:id="@+id/nav_awaiting_shipment3"
-                android:title="地標" />
-        </menu>
-    </item>
-    <item android:title="標籤">
-        <menu>
-            <item
-
-                android:id="@+id/nav_awaiting_payment55"
-                android:title="Happy" />
-            <item
-                android:id="@+id/nav_awaiting_shipment334"
-                android:title="Ya" />
-            <item
-                android:id="@+id/nav_awaiting_shipment342"
-                android:title="Yoyo" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/drawer_article"
+        android:icon="@drawable/icon_article"
+        android:title="文章" />
+    <item
+        android:id="@+id/drawer_video"
+        android:icon="@drawable/icon_video"
+        android:title="影片" />
+    <item
+        android:id="@+id/drawer_location"
+        android:icon="@drawable/icon_location"
+        android:title="地標" />
 
 
 </menu>

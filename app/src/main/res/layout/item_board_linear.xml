@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="board"
+            type="com.connie.noted.data.Board" />
+
+        <variable
+            name="imageString"
+            type="String" />
+
+        <import type="java.util.ArrayList" />
+        <import type="android.view.View"/>
+        <import type="com.connie.noted.login.UserManager"/>
+
+        <variable
+            name="imagesList"
+            type="ArrayList&lt;String&gt;" />
+
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_radius"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_image_collage_board"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:padding="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image0_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                android:visibility="@{board.images.size() > 0 ? View.VISIBLE : View.GONE}"
+                app:imageCollageUrl="@{imagesList.get(0)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/image1_board"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="#333333" />
+
+            <ImageView
+                android:id="@+id/image1_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                app:imageCollageUrl="@{imagesList.get(1)}"
+                android:visibility="@{board.images.size() &lt; 2 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toTopOf="@id/image2_board"
+                app:layout_constraintEnd_toStartOf="@id/image3_board"
+                app:layout_constraintStart_toEndOf="@id/image0_board"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="#777777" />
+
+            <ImageView
+                android:id="@+id/image2_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                app:imageCollageUrl="@{imagesList.get(2)}"
+                android:visibility="@{board.images.size() &lt; 3 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/image3_board"
+                app:layout_constraintStart_toEndOf="@id/image0_board"
+                app:layout_constraintTop_toBottomOf="@id/image1_board"
+                tools:background="#AAAAAA" />
+
+            <ImageView
+                android:id="@+id/image3_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                app:imageCollageUrl="@{imagesList.get(3)}"
+                android:visibility="@{board.images.size() &lt; 4 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toTopOf="@id/image4_board"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image1_board"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="#D7D7D7" />
+
+            <ImageView
+                android:id="@+id/image4_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                app:imageCollageUrl="@{imagesList.get(4)}"
+                android:visibility="@{board.images.size() > 4 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image1_board"
+                app:layout_constraintTop_toBottomOf="@id/image3_board"
+                tools:background="#717171" />
+
+            <View
+                android:id="@+id/image_more_board"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:visibility="@{board.images.size() > 5 ? View.VISIBLE : View.GONE}"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/translucent_80"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image1_board"
+                app:layout_constraintTop_toBottomOf="@id/image3_board"
+                tools:background="#717171" />
+
+            <TextView
+                android:id="@+id/text_more_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:fontFamily="@font/noto_sans"
+                tools:text="2+"
+                android:visibility="@{board.images.size() > 5 ? View.VISIBLE : View.GONE}"
+                app:boardMore="@{board.images.size()}"
+                app:layout_constraintTop_toTopOf="@id/image_more_board"
+                app:layout_constraintStart_toStartOf="@id/image_more_board"
+                app:layout_constraintEnd_toEndOf="@id/image_more_board"
+                app:layout_constraintBottom_toBottomOf="@id/image_more_board"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/text_board_notes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/gray_999999"
+            android:textSize="12sp"
+            android:letterSpacing="0.1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_image_collage_board"
+            app:notesCount="@{board.notes.size()}"
+            tools:text="4 個筆記"/>
+
+
+        <ImageView
+            android:id="@+id/icon_bg_note_liked"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_round"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.15"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/layout_image_collage_board"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon_note_liked"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background='@{board.isLiked ? @drawable/icon_like_true : @drawable/icon_like_false}'
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.15"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/icon_bg_note_liked"
+            app:layout_constraintEnd_toEndOf="@id/icon_bg_note_liked"
+            app:layout_constraintStart_toStartOf="@id/icon_bg_note_liked"
+            app:layout_constraintTop_toTopOf="@id/icon_bg_note_liked" />
+
+
+        <ImageView
+            android:id="@+id/icon_board"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/icon_clip_board"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_image_collage_board" />
+
+
+        <ImageView
+            android:id="@+id/icon_board_public"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:background="@{board.public ? @drawable/icon_public : @drawable/icon_private}"
+            android:backgroundTint="@color/gray_999999"
+            app:layout_constraintStart_toEndOf="@id/icon_board"
+            app:layout_constraintTop_toTopOf="@id/icon_board"
+            app:layout_constraintBottom_toBottomOf="@id/icon_board"
+            tools:background="@drawable/icon_public" />
+
+        <TextView
+            android:id="@+id/icon_board_creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:textSize="12sp"
+            android:textColor="@color/gray_999999"
+            android:letterSpacing="0.1"
+            app:createdBy="@{board.creatorName}"
+            app:layout_constraintStart_toEndOf="@id/icon_board_public"
+            app:layout_constraintTop_toTopOf="@id/icon_board"
+            app:layout_constraintBottom_toBottomOf="@id/icon_board"
+            tools:text="由 村民Ｂ 新增" />
+
+
+
+        <TextView
+            android:id="@+id/text_note_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.1"
+            android:text="@{board.title}"
+            android:textAlignment="viewStart"
+            android:textColor="@color/greyish_brown"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_board_notes_count"
+            app:layout_constraintBottom_toTopOf="@+id/layout_note_tag"
+            tools:text="A simple way to work with Kotlin Coroutines in Android" />
+
+        <LinearLayout
+            android:id="@+id/layout_note_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_note_title">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/note_tag_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Theme.MaterialComponents.Light"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
