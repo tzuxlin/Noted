@@ -9,9 +9,14 @@ import com.connie.noted.data.Board
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.util.ServiceLocator.notedRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel() {
 
+    var searchBoards = MutableLiveData<MutableList<Board>>()
 
     var popularBoards = MutableLiveData<List<Board>>()
     var recommendBoards = MutableLiveData<List<Board>>()
@@ -28,10 +33,18 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
     val enableSearch: LiveData<Boolean>
         get() = _enableSearch
 
+    val keywords = MutableLiveData<String>()
 
     init {
         getLiveBoard()
     }
+
+    // Create a Coroutine scope using a job to be able to cancel when needed
+    private var viewModelJob = Job()
+
+    // the Coroutine runs using the Main (UI) dispatcher
+    private val coroutineScopeMain = CoroutineScope(viewModelJob + Dispatchers.Main)
+
 
     private fun getLiveBoard() {
         _status.value = LoadApiStatus.LOADING
@@ -45,7 +58,26 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
     }
 
     fun search() {
-        Log.e("Connie", "Search")
+        Log.e("Connie", "Search ${keywords.value}")
+
+        keywords.value?.let {
+            toSearchBoard(it)
+            getLiveBoard()
+        }
+    }
+
+    private fun toSearchBoard(searchKey: String) {
+//        _status.value = LoadApiStatus.LOADING
+//        searchBoards.value = searchBoards.value
+        coroutineScopeMain.launch {
+
+
+            _status.value = LoadApiStatus.LOADING
+
+            popularBoards = notedRepository.getLiveGlobalBoards("popular")
+//        searchBoards = notedRepository.searchLiveGlobalBoards(searchKey)
+
+        }
     }
 
     fun toEnableSearch() {

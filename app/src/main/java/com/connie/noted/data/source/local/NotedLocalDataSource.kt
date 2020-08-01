@@ -56,6 +56,10 @@ class NotedLocalDataSource(val context: Context): NotedDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun searchLiveGlobalBoards(keywords: String): MutableLiveData<MutableList<Board>> {
+        TODO("Not yet implemented")
+    }
+
     override fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>> {
         TODO("Not yet implemented")
     }

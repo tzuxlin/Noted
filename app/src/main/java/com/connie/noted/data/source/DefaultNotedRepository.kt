@@ -56,6 +56,10 @@ class DefaultNotedRepository(
         return remoteDataSource.getLiveGlobalBoards(condition)
     }
 
+    override fun searchLiveGlobalBoards(keywords: String): MutableLiveData<MutableList<Board>> {
+        return remoteDataSource.searchLiveGlobalBoards(keywords)
+    }
+
     override fun getBoardLiveNotes(noteIdList: MutableList<String?>): MutableLiveData<List<Note>> {
         return remoteDataSource.getBoardLiveNotes(noteIdList)
     }

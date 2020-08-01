@@ -13,6 +13,8 @@ import com.connie.noted.NaviDirections
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.FragmentExploreBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.util.DialogBoxMessageType
+import io.grpc.Status.NOT_FOUND
 
 class ExploreFragment : Fragment() {
 
@@ -61,15 +63,10 @@ class ExploreFragment : Fragment() {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }
 
-        binding.iconExploreSearch.setOnClickListener {
-
-
-
-
-
-        }
-
         viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
+
+            Log.e("Connie", "Fragment, recommendBoards = $it")
+
             it?.let {
                 viewModel.popularBoards.value?.let {
                     if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
@@ -78,10 +75,34 @@ class ExploreFragment : Fragment() {
         })
 
         viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
+
+            Log.e("Connie", "Fragment, popularBoards = $it")
+
             it?.let {
                 viewModel.recommendBoards.value?.let {
                     if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
                 }
+            }
+        })
+
+        viewModel.searchBoards.observe(viewLifecycleOwner, Observer {
+
+            Log.e("Connie", "Fragment, searchBoards = $it")
+
+            it?.let { searchResult ->
+
+                viewModel.loadApiStatusDone()
+
+                when {
+                    searchResult.isEmpty() -> {
+                        findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NOT_FOUND.message))
+                    }
+
+
+
+
+                }
+
             }
         })
 

@@ -145,7 +145,6 @@ object NotedRemoteDataSource : NotedDataSource {
 
                                         liveData.value = myList.shuffled()
                                     }
-
                                 }
                                 else -> {
                                 }
@@ -157,6 +156,50 @@ object NotedRemoteDataSource : NotedDataSource {
         }
         return liveData
 
+    }
+
+    override fun searchLiveGlobalBoards(keywords: String): MutableLiveData<MutableList<Board>> {
+
+        val liveData = MutableLiveData<MutableList<Board>>()
+
+        val list = mutableListOf<Board>()
+
+        val keys = keywords.split(" ")
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_BOARDS)
+            .whereEqualTo("public", true)
+            .whereArrayContainsAny("tags", keys)
+            .get()
+            .addOnCompleteListener { task ->
+
+                if (task.isSuccessful) {
+
+                    task.result?.let { documents ->
+
+                        for (document in documents) {
+                            Log.d(
+                                "ConnieFirebaseGetLiveBoards",
+                                document.id + " => " + document.data["title"]
+                            )
+
+                            val board = document.toObject(Board::class.java)
+                            list.add(board)
+                            liveData.value = list
+
+                            Log.e("Connie", liveData.value.toString())
+
+                        }
+
+//                        liveData.value = list
+
+                    }
+
+                }
+
+            }
+
+        return liveData
     }
 
     override fun getLiveBoards(type: BoardTypeFilter): MutableLiveData<List<Board>> {
