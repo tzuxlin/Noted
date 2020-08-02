@@ -37,6 +37,9 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
 
     val doObserveSearch = MutableLiveData<Boolean>()
 
+    val doObserveRecommend = MutableLiveData<Boolean>()
+
+
     init {
         getLiveBoard()
     }
@@ -52,6 +55,11 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
         _status.value = LoadApiStatus.LOADING
         popularBoards = notedRepository.getLiveGlobalBoards("popular")
         recommendBoards = notedRepository.getLiveGlobalBoards("recommend")
+    }
+
+    fun getRecommendBoards(){
+        recommendBoards = notedRepository.getLiveGlobalBoards("recommend")
+        doObserveRecommend.value = true
     }
 
 
@@ -81,6 +89,10 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
 
     fun onSearchedObserved() {
         doObserveSearch.value = false
+    }
+
+    fun onRecommendObserved() {
+        doObserveRecommend.value = false
     }
 
     fun toEnableSearch() {

@@ -155,6 +155,22 @@
                     app:reverseLayout="false"
                     app:spanCount="2" />
 
+<!--                <TextView-->
+<!--                    android:id="@+id/explore_recommend_no_text"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="32dp"-->
+<!--                    android:fontFamily="@font/noto_sans"-->
+<!--                    android:letterSpacing="0.1"-->
+<!--                    android:text="目前沒有推薦內容，快去新增新的追蹤標籤吧！"-->
+<!--                    android:textColor="@color/gray_999999"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/explore_title_recommend" />-->
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

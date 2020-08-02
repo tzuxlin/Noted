@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.FragmentExploreBinding
@@ -20,6 +22,7 @@ import io.grpc.Status.NOT_FOUND
 class ExploreFragment : Fragment() {
 
     private val viewModel by viewModels<ExploreViewModel> { getVmFactory() }
+    private lateinit var mainViewModel: MainViewModel
 
 
     override fun onCreateView(
@@ -28,11 +31,11 @@ class ExploreFragment : Fragment() {
     ): View? {
         val binding = FragmentExploreBinding.inflate(inflater, container, false)
 
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-
-        Log.i("Wayne", "before assign viewModel.searchBoards=${viewModel.searchBoards}")
 
         val boardPopularRecyclerView = binding.explorePopularRecycler
 
@@ -78,6 +81,19 @@ class ExploreFragment : Fragment() {
             }
         })
 
+        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
+
+
+            it?.let {
+                if (it.isEmpty()){
+                    binding.exploreRecommendNoText.visibility = View.VISIBLE
+                } else {
+                    binding.exploreRecommendNoText.visibility = View.GONE
+                }
+            }
+
+        })
+
         checkTags()
 
         viewModel.doObserveSearch.observe(viewLifecycleOwner, Observer { b ->
@@ -111,6 +127,38 @@ class ExploreFragment : Fragment() {
                     })
 
                     viewModel.onSearchedObserved()
+                }
+            }
+        })
+
+        mainViewModel.userIsSynced.observe(viewLifecycleOwner, Observer {
+
+            it?.let { b ->
+                if (b) {
+                    Log.e("Connie", "viewModel.getRecommendBoards()")
+                    viewModel.getRecommendBoards()
+                }
+            }
+        })
+
+        viewModel.doObserveRecommend.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    viewModel.recommendBoards.observe(viewLifecycleOwner, Observer { boards ->
+                        (boardRecommendRecyclerView.adapter as ExploreRecommendAdapter).submitList(
+                            boards
+                        )
+
+                        if (boards.isEmpty()) {
+                            binding.exploreRecommendNoText.visibility = View.VISIBLE
+                        } else {
+                            binding.exploreRecommendNoText.visibility = View.GONE
+                        }
+                    })
+
+
+                    viewModel.onRecommendObserved()
+
                 }
             }
         })

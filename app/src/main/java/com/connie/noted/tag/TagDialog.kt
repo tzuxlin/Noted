@@ -16,11 +16,9 @@ import android.widget.CompoundButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.connie.noted.MainActivity
-import com.connie.noted.NaviDirections
-import com.connie.noted.NotedApplication
-import com.connie.noted.R
+import com.connie.noted.*
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
@@ -39,6 +37,10 @@ class TagDialog : DialogFragment() {
      * Lazily initialize our [TagDialog].
      */
     private val viewModel by viewModels<TagViewModel> { getVmFactory() }
+
+    private lateinit var mainViewModel: MainViewModel
+
+
     private lateinit var binding: DialogTagBinding
     private lateinit var chipGroup: ChipGroup
     private lateinit var switchButton: CompoundButton
@@ -68,6 +70,9 @@ class TagDialog : DialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
 
         chipGroup = binding.groupProfileTag
         getUserTags()
@@ -143,6 +148,8 @@ class TagDialog : DialogFragment() {
 
                 }
                 LoadApiStatus.DONE -> {
+
+                    mainViewModel.syncUserData()
 
                     findNavController().navigate(
                         NaviDirections.actionGlobalBoxDialog(
