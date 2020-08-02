@@ -150,16 +150,24 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
 
-            when (it){
+            when (it) {
 
                 LoadApiStatus.LOADING -> {
-                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.LOADING_NOTE.message))
+                    findNavController().navigate(
+                        NaviDirections.actionGlobalBoxDialog(
+                            DialogBoxMessageType.LOADING_NOTE.message
+                        )
+                    )
                 }
 
                 LoadApiStatus.DONE -> {
                     findNavController().navigateUp()
                     mainViewModel.urlString.value = null
-                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NEW_NOTE.message))
+                    findNavController().navigate(
+                        NaviDirections.actionGlobalBoxDialog(
+                            DialogBoxMessageType.NEW_NOTE.message
+                        )
+                    )
                 }
 
             }
@@ -195,6 +203,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         binding.noteAdd2boardButton.setOnClickListener {
             viewModel.noteToAdd.value?.let {
                 findNavController().navigate(NaviDirections.actionGlobalAdd2boardDialog(it.toTypedArray()))
+                viewModel.isEditMode.value = false
             }
         }
 
