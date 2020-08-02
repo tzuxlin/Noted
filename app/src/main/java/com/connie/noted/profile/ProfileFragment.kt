@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.databinding.FragmentProfileBinding
 import com.connie.noted.login.UserManager
@@ -21,6 +23,8 @@ import com.google.android.material.tabs.TabLayout
 class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var mainViewModel: MainViewModel
+
     private lateinit var chipGroup: ChipGroup
 
     override fun onCreateView(
@@ -39,10 +43,6 @@ class ProfileFragment : Fragment() {
         chipGroup = binding.groupProfileTag
 
 
-        Log.e(
-            "Connie", "Profile, User = ${UserManager.user.value}"
-        )
-
         binding.viewpagerProfile.let {
             binding.tabsProfile.setupWithViewPager(it)
             it.adapter = ProfileAdapter(childFragmentManager)
@@ -53,23 +53,44 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }
 
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+        mainViewModel.userIsSynced.observe(viewLifecycleOwner, Observer { isSynced ->
+            isSynced?.let {
+
+                if (isSynced) {
+
+                    mainViewModel.user.observe(viewLifecycleOwner, Observer {
+                        it?.let { user ->
+                            viewModel.user.value = user
+                            mainViewModel.onSyncUserDataFinished()
+                            resetTags()
+                            Log.e(
+                                "Connie",
+                                "ProfileFragment, viewModel.user = ${viewModel.user.value}"
+                            )
+
+                        }
+
+                    })
 
 
+                }
+
+            }
+        })
 
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-
+    private fun resetTags() {
         chipGroup.removeAllViews()
         getUserTags()
-
     }
 
     private fun getUserTags() {
 
-        UserManager.user.value?.followingTags?.let {
+        viewModel.user.value?.followingTags?.let {
 
             if (it.isNotEmpty()) {
                 setUpTags(it)
@@ -106,24 +127,7 @@ class ProfileFragment : Fragment() {
             chip.chipBackgroundColor = chipColorsStateList
             chip.closeIconTint = ColorStateList(states, intArrayOf(Color.WHITE))
 
-
-
-
-            chip.setOnClickListener {
-                chip.isCloseIconEnabled = !chip.isCloseIconEnabled
-
-
-                //Added click listener on close icon to remove tag from ChipGroup
-                chip.setOnCloseIconClickListener {
-                    tagList.remove(tagName)
-                    chipGroup.removeView(chip)
-
-                    Log.e ("Connie", tagList.toString())
-                }
-
-            }
-
-
+            chip.isClickable = false
 
             chipGroup.addView(chip)
 

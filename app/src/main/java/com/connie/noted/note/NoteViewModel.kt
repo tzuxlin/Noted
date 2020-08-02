@@ -36,8 +36,6 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     val userIsReady = MutableLiveData<Boolean>()
 
-    var test = MutableLiveData<Boolean>()
-
     var notes = MutableLiveData<MutableList<Note>>()
 
     var noteToAdd = MutableLiveData<List<Note>>().apply {
@@ -71,23 +69,15 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     init {
-//        goGo()
-//        checkLogin()
         getLiveNotes()
-//        test()
     }
 
-    fun test(){
-        coroutineScopeIO.launch {
-                        _newNote.postValue(toGetGoogleLocation("https://goo.gl/maps/sMACcJzUx72aZwZE9"))
-                    }
-    }
 
 
     fun goGo(url: String) {
 //        if (!NotedApplication.isGoGo) {
 
-            when {
+        when {
 
 //                url.contains("http:", true) -> {
 //                    Log.e("ConnieCrawler", "Gogo, split")
@@ -95,32 +85,39 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 //                    goGo("https://${splitUrl[1]}")
 //                }
 
-                url.contains("//youtu", true) -> {
-                    Log.e("ConnieCrawler", "Gogo, youtube: $url")
-                    coroutineScopeIO.launch {
-                        _newNote.postValue(toGetYoutube(url))
-                    }
-                }
-                url.contains("//g.", true) ||
-                url.contains("//goo", true) -> {
-
-                    val data = url.lines()
-
-//                    val url = data[3]
-                    Log.e("Connie", "0 = ${data[0]}, 1 = ${data[1]}, 2 = ${data[2]}, 3 = ${data[3]}, 4 = ${data[4]}")
-
-
-                    coroutineScopeIO.launch {
-                        _newNote.postValue(toGetGoogleLocation(data[4]))
-                    }
-                }
-                else -> {
-                    coroutineScopeIO.launch {
-                        Log.e("ConnieCrawler", "Gogo, article: $url")
-                        _newNote.postValue(toGetMediumArticle(url))
-                    }
+            url.contains("//youtu", true) -> {
+                Log.e("ConnieCrawler", "Gogo, youtube: $url")
+                coroutineScopeIO.launch {
+                    _newNote.postValue(toGetYoutube(url))
                 }
             }
+            url.contains("//g.", true) ||
+                    url.contains("//goo", true) -> {
+
+                val data = url.lines()
+
+//                    val url = data[3]
+                Log.e(
+                    "Connie",
+                    "0 = ${data[0]}, 1 = ${data[1]}, 2 = ${data[2]}, 3 = ${data[3]}, 4 = ${data[4]}"
+                )
+
+                for (i in data.indices){
+                    if (data[i].contains("http")) {
+                        coroutineScopeIO.launch {
+                            _newNote.postValue(toGetGoogleLocation(data[i]))
+                        }
+                    }
+                }
+
+            }
+            else -> {
+                coroutineScopeIO.launch {
+                    Log.e("ConnieCrawler", "Gogo, article: $url")
+                    _newNote.postValue(toGetMediumArticle(url))
+                }
+            }
+        }
 //            NotedApplication.isGoGo = true
 //        }
     }
@@ -205,12 +202,12 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     }
 
 
-    fun likeButtonClicked(note: Note){
+    fun likeButtonClicked(note: Note) {
         Log.e("Connie", note.toString())
         updateIsLiked(note)
     }
 
-    private fun updateIsLiked(note: Note){
+    private fun updateIsLiked(note: Note) {
         coroutineScopeMain.launch {
             notedRepository.likeNote(note)
         }

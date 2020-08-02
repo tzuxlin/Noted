@@ -38,6 +38,8 @@ class TagViewModel(
 
     val tagsToAdd = mutableListOf<String?>()
 
+    var inTagEditMode = false
+
 
     var newTag = MutableLiveData<String>()
     var isPublic = false

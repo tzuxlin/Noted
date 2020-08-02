@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.CompoundButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -40,6 +41,7 @@ class TagDialog : DialogFragment() {
     private val viewModel by viewModels<TagViewModel> { getVmFactory() }
     private lateinit var binding: DialogTagBinding
     private lateinit var chipGroup: ChipGroup
+    private lateinit var switchButton: CompoundButton
 
     private lateinit var inputMethodManager: InputMethodManager
 
@@ -84,8 +86,10 @@ class TagDialog : DialogFragment() {
             }
         }
 
-        binding.switchTagEdit.setOnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.isChecked) {
+        switchButton = binding.switchTagEdit
+
+        switchButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
                 binding.editTagAdd2tag.visibility = View.VISIBLE
                 binding.buttonTagAdd2tag.visibility = View.VISIBLE
                 binding.buttonBottom.text = "確認修改"
@@ -95,10 +99,14 @@ class TagDialog : DialogFragment() {
                 binding.buttonBottom.setOnClickListener {
                     viewModel.updateTags()
                 }
+
+                viewModel.inTagEditMode = true
+
             } else {
                 binding.buttonBottom.setOnClickListener {
                     viewModel.leave()
                 }
+                viewModel.inTagEditMode = false
             }
         }
 
@@ -139,7 +147,11 @@ class TagDialog : DialogFragment() {
                 }
                 LoadApiStatus.DONE -> {
 
-                    findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.EDITED.message))
+                    findNavController().navigate(
+                        NaviDirections.actionGlobalBoxDialog(
+                            DialogBoxMessageType.EDITED.message
+                        )
+                    )
 
                     binding.editTagAdd2tag.visibility = View.GONE
                     binding.buttonTagAdd2tag.visibility = View.GONE
@@ -154,11 +166,7 @@ class TagDialog : DialogFragment() {
                 }
 
 
-
-
             }
-
-
 
 
         })
@@ -230,18 +238,20 @@ class TagDialog : DialogFragment() {
             chip.closeIconTint = ColorStateList(states, intArrayOf(Color.WHITE))
 
 
-
-
             chip.setOnClickListener {
+
                 chip.isCloseIconEnabled = !chip.isCloseIconEnabled
-
-
+                
                 //Added click listener on close icon to remove tag from ChipGroup
                 chip.setOnCloseIconClickListener {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
                     viewModel.tagsToAdd.remove(tagName)
                     Log.e("Connie", tagList.toString())
+                }
+
+                if (!viewModel.inTagEditMode) {
+                    switchButton.isChecked = true
                 }
 
             }

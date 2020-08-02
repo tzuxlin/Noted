@@ -16,6 +16,10 @@ android {
 //        enabled = true
 //    }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     buildFeatures {
         dataBinding = true

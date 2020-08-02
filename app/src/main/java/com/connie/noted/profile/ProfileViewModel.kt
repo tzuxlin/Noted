@@ -7,14 +7,10 @@ import com.connie.noted.data.User
 
 class ProfileViewModel : ViewModel() {
 
-    private val _user = MutableLiveData<User>().apply {
+    val user = MutableLiveData<User>().apply {
         value = User()
     }
 
-
-
-    val user: LiveData<User>
-        get() = _user
 
 
 }
