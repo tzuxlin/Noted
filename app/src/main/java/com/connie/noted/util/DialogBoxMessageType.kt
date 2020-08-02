@@ -10,5 +10,5 @@ enum class DialogBoxMessageType(val message: String) {
     EDITED("修改成功"),
     NEW_NOTE("新筆記已新增"),
     LOADING_NOTE("呼嚕嚕⋯"),
-    NOT_FOUND("沒有相關的分類板")
+    NOT_FOUND("找不到分類板")
 }

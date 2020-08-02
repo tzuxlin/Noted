@@ -30,6 +30,9 @@ class ExploreFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+
+        Log.i("Wayne", "before assign viewModel.searchBoards=${viewModel.searchBoards}")
+
         val boardPopularRecyclerView = binding.explorePopularRecycler
 
         boardPopularRecyclerView.adapter =
@@ -69,7 +72,9 @@ class ExploreFragment : Fragment() {
 
             it?.let {
                 viewModel.popularBoards.value?.let {
-                    if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
+                    if (viewModel.status.value == LoadApiStatus.LOADING) {
+                        viewModel.loadApiStatusDone()
+                    }
                 }
             }
         })
@@ -80,35 +85,48 @@ class ExploreFragment : Fragment() {
 
             it?.let {
                 viewModel.recommendBoards.value?.let {
-                    if (viewModel.status.value == LoadApiStatus.LOADING) {viewModel.loadApiStatusDone()}
-                }
-            }
-        })
-
-        viewModel.searchBoards.observe(viewLifecycleOwner, Observer {
-
-            Log.e("Connie", "Fragment, searchBoards = $it")
-
-            it?.let { searchResult ->
-
-                viewModel.loadApiStatusDone()
-
-                when {
-                    searchResult.isEmpty() -> {
-                        findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NOT_FOUND.message))
+                    if (viewModel.status.value == LoadApiStatus.LOADING) {
+                        viewModel.loadApiStatusDone()
                     }
-
-
-
-
                 }
-
             }
         })
 
-//        viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
-//            boardPopularRecyclerView.scrollToPosition(0)
-//        })
+
+        viewModel.doObserveSearch.observe(viewLifecycleOwner, Observer { b ->
+
+            b?.let {
+
+                if (it) {
+
+//                    Log.i("Connie", "viewModel.searchBoards=${viewModel.searchBoards.value}")
+
+                    viewModel.searchBoards.observe(viewLifecycleOwner, Observer { board ->
+
+                        Log.e("Connie", "Fragment, searchBoards = $board")
+
+                        board?.let { searchResult ->
+
+                            viewModel.loadApiStatusDone()
+
+                            if (searchResult.isEmpty()) {
+                                findNavController().navigate(
+                                    NaviDirections.actionGlobalBoxDialog(
+                                        DialogBoxMessageType.NOT_FOUND.message
+                                    )
+                                )
+                            } else {
+
+                            }
+
+
+                        }
+                    })
+
+                    viewModel.onSearchedObserved()
+                }
+            }
+        })
 
         return binding.root
 

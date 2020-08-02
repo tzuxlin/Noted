@@ -35,6 +35,8 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
 
     val keywords = MutableLiveData<String>()
 
+    val doObserveSearch = MutableLiveData<Boolean>()
+
     init {
         getLiveBoard()
     }
@@ -62,22 +64,23 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
 
         keywords.value?.let {
             toSearchBoard(it)
-            getLiveBoard()
         }
     }
 
     private fun toSearchBoard(searchKey: String) {
-//        _status.value = LoadApiStatus.LOADING
-//        searchBoards.value = searchBoards.value
-        coroutineScopeMain.launch {
 
+        coroutineScopeMain.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            popularBoards = notedRepository.getLiveGlobalBoards("popular")
-//        searchBoards = notedRepository.searchLiveGlobalBoards(searchKey)
+            searchBoards = notedRepository.searchLiveGlobalBoards(searchKey)
+            doObserveSearch.value = true
 
         }
+    }
+
+    fun onSearchedObserved() {
+        doObserveSearch.value = false
     }
 
     fun toEnableSearch() {

@@ -185,13 +185,10 @@ object NotedRemoteDataSource : NotedDataSource {
 
                             val board = document.toObject(Board::class.java)
                             list.add(board)
-                            liveData.value = list
-
-                            Log.e("Connie", liveData.value.toString())
 
                         }
 
-//                        liveData.value = list
+                        liveData.value = list
 
                     }
 

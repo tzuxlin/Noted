@@ -51,11 +51,10 @@
             android:backgroundTint="@{ viewModel.enableSearch == true &amp; viewModel.keywords.length() == 0 ? @color/cccccc : @color/greyish_brown}"
             android:clickable="@{ viewModel.enableSearch == true &amp; viewModel.keywords.length() == 0 ? false : true}"
             android:onClick="@{()-> viewModel.enableSearch ? viewModel.search() : viewModel.toEnableSearch()}"
-            android:visibility="gone"
+            android:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--        android:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"-->
 
         <ImageView
             android:id="@+id/icon_explore_search_close"
