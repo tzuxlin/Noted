@@ -81,18 +81,18 @@ class ExploreFragment : Fragment() {
             }
         })
 
-        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
-
-
-            it?.let {
-                if (it.isEmpty()){
-                    binding.exploreRecommendNoText.visibility = View.VISIBLE
-                } else {
-                    binding.exploreRecommendNoText.visibility = View.GONE
-                }
-            }
-
-        })
+//        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
+//
+//
+//            it?.let {
+//                if (it.isEmpty()){
+//                    binding.exploreRecommendNoText.visibility = View.VISIBLE
+//                } else {
+//                    binding.exploreRecommendNoText.visibility = View.GONE
+//                }
+//            }
+//
+//        })
 
         checkTags()
 
@@ -149,11 +149,11 @@ class ExploreFragment : Fragment() {
                             boards
                         )
 
-                        if (boards.isEmpty()) {
-                            binding.exploreRecommendNoText.visibility = View.VISIBLE
-                        } else {
-                            binding.exploreRecommendNoText.visibility = View.GONE
-                        }
+//                        if (boards.isEmpty()) {
+//                            binding.exploreRecommendNoText.visibility = View.VISIBLE
+//                        } else {
+//                            binding.exploreRecommendNoText.visibility = View.GONE
+//                        }
                     })
 
 
