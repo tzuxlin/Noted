@@ -111,7 +111,6 @@ class TagDialog : DialogFragment() {
         }
 
 
-
         binding.buttonBottomCancel.setOnClickListener {
             binding.editTagAdd2tag.visibility = View.GONE
             binding.buttonTagAdd2tag.visibility = View.GONE
@@ -127,8 +126,6 @@ class TagDialog : DialogFragment() {
             setUpTags(mutableListOf(viewModel.newTag.value ?: "Hello"))
             viewModel.newTag.value = null
         }
-
-
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
 
@@ -164,11 +161,7 @@ class TagDialog : DialogFragment() {
                     getUserTags()
 
                 }
-
-
             }
-
-
         })
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
@@ -178,7 +171,7 @@ class TagDialog : DialogFragment() {
             }
         })
 
-
+        checkTags()
 
         return binding.root
     }
@@ -241,7 +234,7 @@ class TagDialog : DialogFragment() {
             chip.setOnClickListener {
 
                 chip.isCloseIconEnabled = !chip.isCloseIconEnabled
-                
+
                 //Added click listener on close icon to remove tag from ChipGroup
                 chip.setOnCloseIconClickListener {
                     tagList.remove(tagName)
@@ -255,15 +248,20 @@ class TagDialog : DialogFragment() {
                 }
 
             }
-
-
-
             chipGroup.addView(chip)
-
 
         }
 
 
+    }
+
+    private fun checkTags() {
+
+        val followingTags = (UserManager.user.value?.followingTags) ?: listOf<String?>()
+
+        if (followingTags.isEmpty()) {
+            switchButton.isChecked = true
+        }
     }
 
 }

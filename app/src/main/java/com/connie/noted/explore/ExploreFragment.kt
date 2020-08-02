@@ -13,6 +13,7 @@ import com.connie.noted.NaviDirections
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.FragmentExploreBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.login.UserManager
 import com.connie.noted.util.DialogBoxMessageType
 import io.grpc.Status.NOT_FOUND
 
@@ -66,32 +67,18 @@ class ExploreFragment : Fragment() {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }
 
-        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
-
-            Log.e("Connie", "Fragment, recommendBoards = $it")
-
-            it?.let {
-                viewModel.popularBoards.value?.let {
-                    if (viewModel.status.value == LoadApiStatus.LOADING) {
-                        viewModel.loadApiStatusDone()
-                    }
-                }
-            }
-        })
-
         viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
 
             Log.e("Connie", "Fragment, popularBoards = $it")
 
             it?.let {
-                viewModel.recommendBoards.value?.let {
-                    if (viewModel.status.value == LoadApiStatus.LOADING) {
-                        viewModel.loadApiStatusDone()
-                    }
+                if (viewModel.status.value == LoadApiStatus.LOADING) {
+                    viewModel.loadApiStatusDone()
                 }
             }
         })
 
+        checkTags()
 
         viewModel.doObserveSearch.observe(viewLifecycleOwner, Observer { b ->
 
@@ -130,6 +117,15 @@ class ExploreFragment : Fragment() {
 
         return binding.root
 
+    }
+
+    private fun checkTags() {
+
+        val followingTags = (UserManager.user.value?.followingTags) ?: listOf<String?>()
+
+        if (followingTags.isEmpty()) {
+            findNavController().navigate(NaviDirections.actionGlobalTagDialog())
+        }
     }
 
 }
