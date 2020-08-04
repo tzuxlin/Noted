@@ -70,8 +70,10 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     init {
         getLiveNotes()
-    }
 
+        //test
+        goGo("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
+    }
 
 
     fun goGo(url: String) {
@@ -92,17 +94,12 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
                 }
             }
             url.contains("//g.", true) ||
-                    url.contains("//goo", true) -> {
+                    url.contains("//goo", true) ||
+                    url.contains("//maps.", true) -> {
 
                 val data = url.lines()
 
-//                    val url = data[3]
-                Log.e(
-                    "Connie",
-                    "0 = ${data[0]}, 1 = ${data[1]}, 2 = ${data[2]}, 3 = ${data[3]}, 4 = ${data[4]}"
-                )
-
-                for (i in data.indices){
+                for (i in data.indices) {
                     if (data[i].contains("http")) {
                         coroutineScopeIO.launch {
                             _newNote.postValue(toGetGoogleLocation(data[i]))

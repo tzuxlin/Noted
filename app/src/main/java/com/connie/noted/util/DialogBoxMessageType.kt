@@ -9,6 +9,7 @@ enum class DialogBoxMessageType(val message: String) {
     SHARED("分享成功"),
     EDITED("修改成功"),
     NEW_NOTE("新筆記已新增"),
+    NEW_BOARD("新增成功"),
     LOADING_NOTE("呼嚕嚕⋯"),
     NOT_FOUND("找不到分類板")
 }

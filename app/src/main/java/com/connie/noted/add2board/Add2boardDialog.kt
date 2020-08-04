@@ -9,9 +9,12 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.connie.noted.NaviDirections
 import com.connie.noted.R
 import com.connie.noted.databinding.DialogAdd2boardBinding
 import com.connie.noted.ext.getVmFactory
+import com.connie.noted.util.DialogBoxMessageType
 
 
 /**
@@ -76,6 +79,7 @@ class Add2boardDialog : DialogFragment() {
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
             it?.let {
+                findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NEW_BOARD.message))
                 dismiss()
                 viewModel.onLeaveCompleted()
             }
