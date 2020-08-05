@@ -1,4 +1,4 @@
-package com.connie.noted.data.source.remote
+package com.connie.noted.data.source
 
 import android.icu.util.Calendar
 import android.os.Build
@@ -11,7 +11,6 @@ import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
-import com.connie.noted.data.source.NotedDataSource
 import com.connie.noted.login.UserManager
 import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.replaceBr
@@ -369,14 +368,26 @@ object NotedRemoteDataSource : NotedDataSource {
                                 if (task.isSuccessful) {
                                     Logger.d("$note")
 
-                                    continuation.resume(Result.Success(true))
+                                    continuation.resume(
+                                        Result.Success(
+                                            true
+                                        )
+                                    )
                                 } else {
                                     task.exception?.let { e ->
                                         Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
-                                        continuation.resume(Result.Error(e))
+                                        continuation.resume(
+                                            Result.Error(
+                                                e
+                                            )
+                                        )
                                         return@addOnCompleteListener
                                     }
-                                    continuation.resume(Result.Fail("Fail"))
+                                    continuation.resume(
+                                        Result.Fail(
+                                            "Fail"
+                                        )
+                                    )
                                 }
                             }
                     }
@@ -397,12 +408,20 @@ object NotedRemoteDataSource : NotedDataSource {
                     if (task.isSuccessful) {
                         Logger.d("$board")
 
-                        continuation.resume(Result.Success(true))
+                        continuation.resume(
+                            Result.Success(
+                                true
+                            )
+                        )
                     } else {
                         task.exception?.let { e ->
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
 
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(
+                                Result.Error(
+                                    e
+                                )
+                            )
                             return@addOnCompleteListener
                         }
                         continuation.resume(Result.Fail("Fail"))
@@ -427,12 +446,20 @@ object NotedRemoteDataSource : NotedDataSource {
                         document.set(user).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Logger.i("New User: $user")
-                                continuation.resume(Result.Success(true))
+                                continuation.resume(
+                                    Result.Success(
+                                        true
+                                    )
+                                )
                             } else {
                                 task.exception?.let { e ->
                                     Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}"
                                     )
-                                    continuation.resume(Result.Error(e))
+                                    continuation.resume(
+                                        Result.Error(
+                                            e
+                                        )
+                                    )
                                     return@addOnCompleteListener
                                 }
                                 continuation.resume(
@@ -459,12 +486,20 @@ object NotedRemoteDataSource : NotedDataSource {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Logger.i("Tag is updated, $tags")
-                        continuation.resume(Result.Success(true))
+                        continuation.resume(
+                            Result.Success(
+                                true
+                            )
+                        )
                     } else {
                         task.exception?.let { e ->
                             Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
 
-                            continuation.resume(Result.Error(e))
+                            continuation.resume(
+                                Result.Error(
+                                    e
+                                )
+                            )
                             return@addOnCompleteListener
                         }
                         continuation.resume(
