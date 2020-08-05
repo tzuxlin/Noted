@@ -1,6 +1,5 @@
 package com.connie.noted.board.item
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.connie.noted.data.Board
 import com.connie.noted.databinding.ItemBoardGridBinding
 import com.connie.noted.databinding.ItemBoardLinearBinding
+import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.setUpThinTags
 
 /**
@@ -55,7 +55,7 @@ class BoardItemAdapter(
                 val chipGroup = binding.noteTagGroup
                 setUpThinTags(board.tags, chipGroup, OnTagClickListener {
                     viewModel.tagClicked(it)
-                    Log.i("Connie", "OnTagClickListener, it=$it")
+                    Logger.i("OnTagClickListener, it = $it")
                 })
             }
 
@@ -100,7 +100,7 @@ class BoardItemAdapter(
                 val chipGroup = binding.noteTagGroup
                 setUpThinTags(board.tags, chipGroup, BoardLinearViewHolder.OnTagClickListener {
                     viewModel.tagClicked(it)
-                    Log.i("Connie", "OnTagClickListener, it=$it")
+                    Logger.i("OnTagClickListener, it = $it")
                 })
             }
 

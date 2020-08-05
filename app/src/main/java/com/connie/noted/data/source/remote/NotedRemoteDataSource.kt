@@ -2,7 +2,6 @@ package com.connie.noted.data.source.remote
 
 import android.icu.util.Calendar
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.connie.noted.NotedApplication
@@ -14,10 +13,10 @@ import com.connie.noted.data.Result
 import com.connie.noted.data.User
 import com.connie.noted.data.source.NotedDataSource
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.replaceBr
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -42,19 +41,18 @@ object NotedRemoteDataSource : NotedDataSource {
                 .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, exception ->
 
-                    Log.i("ConnieFirebaseGetLiveNote", "Notes changed, addSnapshotListener detect")
+                    Logger.i("Firebase: Notes changed, addSnapshotListener detect")
 
                     exception?.let {
-                        Log.w("ConnieFirebaseGetLiveNote", "Error getting documents. ${it.message}")
+
+                        Logger.w("Firebase: Error getting documents. ${it.message}")
                     }
 
                     val list = mutableListOf<Note>()
 
                     for (document in snapshot!!) {
-                        Log.v(
-                            "ConnieFirebaseGetLiveNote",
-                            document.id + " => " + document.data["title"] + ", " + document.data["url"]
-                        )
+
+                        Logger.v("Firebase: ${document.id} => ${document.data["title"]}, ${document.data["url"]}")
 
                         val note = document.toObject(Note::class.java)
 
@@ -116,10 +114,7 @@ object NotedRemoteDataSource : NotedDataSource {
                         task.result?.let { documents ->
 
                             for (document in documents) {
-                                Log.d(
-                                    "ConnieFirebaseGetLiveBoards",
-                                    document.id + " => " + document.data["title"]
-                                )
+                                Logger.d("${document.id} => ${document.data["title"]}")
 
                                 val board = document.toObject(Board::class.java)
                                 list.add(board)
@@ -178,10 +173,8 @@ object NotedRemoteDataSource : NotedDataSource {
                     task.result?.let { documents ->
 
                         for (document in documents) {
-                            Log.d(
-                                "ConnieFirebaseGetLiveBoards",
-                                document.id + " => " + document.data["title"]
-                            )
+
+                            Logger.d("${document.id} => ${document.data["title"]}")
 
                             val board = document.toObject(Board::class.java)
                             list.add(board)
@@ -217,10 +210,8 @@ object NotedRemoteDataSource : NotedDataSource {
                         task.result?.let { documents ->
 
                             for (document in documents) {
-                                Log.d(
-                                    "Connie",
-                                    document.id + " => " + document.data["title"]
-                                )
+
+                                Logger.d("${document.id} => ${document.data["title"]}")
 
                                 val board = document.toObject(Board::class.java)
                                 list.add(board)
@@ -241,10 +232,8 @@ object NotedRemoteDataSource : NotedDataSource {
                                 task.result?.let { documents ->
 
                                     for (document in documents) {
-                                        Log.d(
-                                            "Connie",
-                                            document.id + " => " + document.data["title"]
-                                        )
+
+                                        Logger.d("${document.id} => ${document.data["title"]}")
 
                                         val board = document.toObject(Board::class.java)
                                         list.add(board)
@@ -299,7 +288,7 @@ object NotedRemoteDataSource : NotedDataSource {
                         task.result?.let { documents ->
 
                             for (document in documents) {
-                                Log.v("Connie", document.id + " => " + document.data)
+                                Logger.d("${document.id} => ${document.data}")
 
                                 val note = document.toObject(Note::class.java)
                                 list.add(note)
@@ -378,17 +367,13 @@ object NotedRemoteDataSource : NotedDataSource {
                             .set(note)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Log.d("Connie", "$note")
+                                    Logger.d("$note")
 
                                     continuation.resume(Result.Success(true))
                                 } else {
-                                    task.exception?.let {
-                                        Log.w(
-                                            "Connie",
-                                            "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                                        )
-
-                                        continuation.resume(Result.Error(it))
+                                    task.exception?.let { e ->
+                                        Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
+                                        continuation.resume(Result.Error(e))
                                         return@addOnCompleteListener
                                     }
                                     continuation.resume(Result.Fail("Fail"))
@@ -410,17 +395,14 @@ object NotedRemoteDataSource : NotedDataSource {
                 .set(board)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d("Connie", "$board")
+                        Logger.d("$board")
 
                         continuation.resume(Result.Success(true))
                     } else {
-                        task.exception?.let {
-                            Log.w(
-                                "Connie",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
+                        task.exception?.let { e ->
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
 
-                            continuation.resume(Result.Error(it))
+                            continuation.resume(Result.Error(e))
                             return@addOnCompleteListener
                         }
                         continuation.resume(Result.Fail("Fail"))
@@ -444,15 +426,13 @@ object NotedRemoteDataSource : NotedDataSource {
                     if (result.isEmpty) {
                         document.set(user).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                Log.i("Connie", "New User: $user")
+                                Logger.i("New User: $user")
                                 continuation.resume(Result.Success(true))
                             } else {
-                                task.exception?.let {
-                                    Log.w(
-                                        "Connie",
-                                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
+                                task.exception?.let { e ->
+                                    Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}"
                                     )
-                                    continuation.resume(Result.Error(it))
+                                    continuation.resume(Result.Error(e))
                                     return@addOnCompleteListener
                                 }
                                 continuation.resume(
@@ -464,8 +444,6 @@ object NotedRemoteDataSource : NotedDataSource {
                                 )
                             }
                         }
-                    } else {
-                        Log.d("Connie", "User already exist")
                     }
                 }
         }
@@ -480,15 +458,13 @@ object NotedRemoteDataSource : NotedDataSource {
             users.document(email).update("followingTags", tags)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.i("Connie", "Tag is updated, $tags")
+                        Logger.i("Tag is updated, $tags")
                         continuation.resume(Result.Success(true))
                     } else {
-                        task.exception?.let {
-                            Log.w(
-                                "Connie",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
-                            continuation.resume(Result.Error(it))
+                        task.exception?.let { e ->
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
+
+                            continuation.resume(Result.Error(e))
                             return@addOnCompleteListener
                         }
                         continuation.resume(
@@ -511,11 +487,9 @@ object NotedRemoteDataSource : NotedDataSource {
                     if (task.isSuccessful) {
                         continuation.resume(true)
                     } else {
-                        task.exception?.let {
-                            Log.w(
-                                "Connie",
-                                "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                            )
+                        task.exception?.let { e ->
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
+
                             continuation.resume(false)
                             return@addOnCompleteListener
                         }
@@ -532,16 +506,14 @@ object NotedRemoteDataSource : NotedDataSource {
             .collection("users")
             .whereEqualTo("email", UserManager.userEmail)
             .addSnapshotListener { snapshot, exception ->
-                Log.i("Connie", "addSnapshotListener detect")
-                exception?.let {
-                    Log.w(
-                        "Connie",
-                        "[${this::class.simpleName}] Error getting documents. ${it.message}"
-                    )
+                Logger.i("addSnapshotListener detect")
+                exception?.let { e ->
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${e.message}")
+
                 }
                 var user = User()
                 for (document in snapshot!!) {
-                    Log.d("Connie", document.id + " => " + document.data)
+                    Logger.d("${document.id} => ${document.data}")
                     val info = document.toObject(User::class.java)
                     user = info
                 }
@@ -554,9 +526,6 @@ object NotedRemoteDataSource : NotedDataSource {
     override suspend fun likeNote(note: Note): Result<Boolean> =
         suspendCoroutine { continuation ->
 
-            Log.e("Connie", "Hello!")
-
-
             val value = !note.isLiked
 
             val notes = FirebaseFirestore.getInstance().collection(PATH_NOTES)
@@ -568,9 +537,6 @@ object NotedRemoteDataSource : NotedDataSource {
 
     override suspend fun likeBoard(board: Board): Result<Boolean> =
         suspendCoroutine { continuation ->
-
-            Log.e("Connie", "Hello!")
-
 
             val value = !board.isLiked
 

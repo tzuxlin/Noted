@@ -1,8 +1,6 @@
 package com.connie.noted.notepage.video
 
-import android.R
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.connie.noted.databinding.FragmentNoteVideoBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.notepage.article.ArticleFragmentArgs
+import com.connie.noted.util.Logger
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -36,7 +35,7 @@ class VideoFragment : Fragment() {
 
 
 
-        Log.i("Connie", "Video Fragment")
+        Logger.i("Video Fragment")
         val binding = FragmentNoteVideoBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -52,7 +51,7 @@ class VideoFragment : Fragment() {
                 player: YouTubePlayer?,
                 wasRestored: Boolean
             ) {
-                Log.e("Connie", "YouTube Player onInitializationSuccess")
+                Logger.e("YouTube Player onInitializationSuccess")
 
 
             }

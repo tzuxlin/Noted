@@ -1,6 +1,5 @@
 package com.connie.noted.add2board
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,8 +32,6 @@ class Add2boardAdapter :
             }
 
             binding.textNoteTitle.text = note.title
-
-            Log.e("Connie", "${binding.textNoteTitle.text}")
 
             binding.executePendingBindings()
         }

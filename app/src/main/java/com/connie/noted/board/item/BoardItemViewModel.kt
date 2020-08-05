@@ -1,14 +1,13 @@
 package com.connie.noted.board.item
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.data.Board
-import com.connie.noted.data.Note
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -81,22 +80,19 @@ class BoardItemViewModel(
 
         hasNewTag.value = true
 
-
         if (filterTags.contains(tag)) {
             filterTags.remove(tag)
         } else {
             filterTags.add(tag)
         }
 
-
-        Log.w("Connie", "viewModel, tagClicked, ${filterTags}")
-
-
     }
 
     fun likeButtonClicked(board: Board){
-        Log.e("Connie", board.toString())
+
         updateIsLiked(board)
+        Logger.i("${board.title} isLike: ${!board.isLiked}")
+
     }
 
     private fun updateIsLiked(board: Board){

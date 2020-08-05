@@ -1,6 +1,5 @@
 package com.connie.noted.note
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.ItemNoteGridBinding
 import com.connie.noted.databinding.ItemNoteLinearBinding
+import com.connie.noted.util.Logger
 
 
 /**
@@ -177,7 +177,7 @@ class NoteAdapter(
                 holder.itemView.setOnClickListener {
 
                     if (viewModel.isEditMode.value == false) {
-                        Log.e("Connie", "Note Adapter, onClick = $note")
+                        Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     } else {
                         noteSelected(note)
@@ -200,7 +200,7 @@ class NoteAdapter(
                 holder.itemView.setOnClickListener {
 
                     if (viewModel.isEditMode.value == false) {
-                        Log.e("Connie", "Note Adapter, onClick = $note")
+                        Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     } else {
                         noteSelected(note)
@@ -281,26 +281,15 @@ class NoteAdapter(
 
                 if (notes[i].id == note.id) {
                     notes[i].isSelected = !notes[i].isSelected
-                    Log.e(
-                        "Connie",
-                        "Adapter: ${notes[i].title} isSelected = ${notes[i].isSelected}"
-                    )
 
                     viewModel.notes.value = notes
-
-                    viewModel.notes.value?.let {
-                    Log.e(
-                        "Connie",
-                        "Adapter: ${it[i].title} isSelected = ${it[i].isSelected} (viewModel)"
-                    )
-                    }
 
                     viewModel.noteToAdd.value = notes.filter { note ->
                         note.isSelected
                     }
-                    Log.d("Connie", viewModel.noteToAdd.value?.size.toString())
-                }
 
+                    Logger.d("Note to add count: ${viewModel.noteToAdd.value?.size}")
+                }
 
             }
         }

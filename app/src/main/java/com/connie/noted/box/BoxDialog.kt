@@ -1,14 +1,10 @@
 package com.connie.noted.box
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
-import com.connie.noted.R
-import com.connie.noted.boardpage.BoardPageFragmentArgs
 import com.connie.noted.databinding.DialogBoxBinding
 import com.connie.noted.util.DialogBoxMessageType
 import java.util.*

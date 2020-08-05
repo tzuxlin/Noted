@@ -1,24 +1,19 @@
 package com.connie.noted.login
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.connie.noted.MainActivity
-import com.connie.noted.NotedApplication
 import com.connie.noted.R
-import com.connie.noted.data.User
+import com.connie.noted.util.Logger
 import com.facebook.*
-import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
-import java.security.MessageDigest
 import java.util.*
 
 
@@ -59,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
         auth?.currentUser?.let {
             UserManager.userEmail = it.email
             moveMainPage(it)
-            Log.e("Connie", "UserManager.userEmail = ${UserManager.userEmail}")
+            Logger.d("UserManager.userEmail = ${UserManager.userEmail}")
 
         }
 
@@ -88,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onError(error: FacebookException?) {
 
-                    Log.e("Connie", "Facebook Error: $error")
+                    Logger.d("Facebook Exception: $error")
 
                 }
 

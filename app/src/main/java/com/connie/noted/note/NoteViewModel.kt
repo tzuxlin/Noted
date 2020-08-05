@@ -1,12 +1,8 @@
 package com.connie.noted.note
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.connie.noted.NotedApplication
-import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -14,6 +10,7 @@ import com.connie.noted.data.crawler.NoteCrawlerClass
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -88,7 +85,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 //                }
 
             url.contains("//youtu", true) -> {
-                Log.e("ConnieCrawler", "Gogo, youtube: $url")
+                Logger.d("Gogo, youtube: $url")
                 coroutineScopeIO.launch {
                     _newNote.postValue(toGetYoutube(url))
                 }
@@ -110,7 +107,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
             }
             else -> {
                 coroutineScopeIO.launch {
-                    Log.e("ConnieCrawler", "Gogo, article: $url")
+                    Logger.d("Gogo, article: $url")
                     _newNote.postValue(toGetMediumArticle(url))
                 }
             }
@@ -200,7 +197,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     fun likeButtonClicked(note: Note) {
-        Log.e("Connie", note.toString())
+        Logger.d(note.toString())
         updateIsLiked(note)
     }
 

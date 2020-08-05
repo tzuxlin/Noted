@@ -1,6 +1,5 @@
 package com.connie.noted
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +10,7 @@ import com.connie.noted.login.UserManager
 import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
 import com.connie.noted.util.DrawerToggleType
+import com.connie.noted.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -122,7 +122,7 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 
     fun syncUserData() {
         coroutineScope.launch {
-            Log.e("Connie","MainViewModel, syncUserData() -> getLiveUser()")
+            Logger.d("MainViewModel, syncUserData() -> getLiveUser()")
             user = notedRepository.getLiveUser()
             UserManager.user = notedRepository.getLiveUser()
             _userIsSynced.value = true

@@ -1,12 +1,10 @@
 package com.connie.noted
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -15,7 +13,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat.*
-import androidx.core.view.iterator
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -29,6 +26,7 @@ import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
 import com.connie.noted.util.CurrentFilterType
 import com.connie.noted.util.CurrentFragmentType
+import com.connie.noted.util.Logger
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationView
@@ -74,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
 
-        Log.d("Connie", "on Create UserManager.user = ${UserManager.user.value}")
+        Logger.d("on Create UserManager.user = ${UserManager.user.value}")
 
         viewModel.currentFragmentType.observe(this, Observer {
 
@@ -209,7 +207,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .getStringExtra(Intent.EXTRA_TEXT)
 
                 receivedText?.let {
-                    Log.e("ConnieCrawler", "receivedText = $it")
+                    Logger.d("Crawler, receivedText = $it")
 
                     viewModel.urlString.value = it
 
@@ -219,15 +217,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 val receiveUri: Uri = receivedIntent
                     .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
-                Log.e("ConnieCrawler", "receiveUri = $receiveUri")
+                Logger.d("Crawler, receiveUri = $receiveUri")
 
             }
         } else if (receivedAction == Intent.ACTION_MAIN) {
 
-            Log.e("ConnieCrawler", "onSharedIntent: nothing shared")
+            Logger.d("Crawler, onSharedIntent: nothing shared")
 
         } else {
-            Log.e("ConnieCrawler", "onShareIntent: else situation")
+            Logger.d("Crawler, onShareIntent: else situation")
         }
     }
 
@@ -237,7 +235,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
     fun navigateToNote(note: Note) {
 
-        Log.i("Connie", "Main activity: Note is clicked, $note")
+        Logger.i("Main activity: Note is clicked, $note")
 
         when (note.type) {
 //            "Youtube" -> findNavController(R.id.myNavHostFragment).navigate(

@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -247,7 +246,6 @@ class TagDialog : DialogFragment() {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
                     viewModel.tagsToAdd.remove(tagName)
-                    Log.e("Connie", tagList.toString())
                 }
 
                 if (!viewModel.inTagEditMode) {
