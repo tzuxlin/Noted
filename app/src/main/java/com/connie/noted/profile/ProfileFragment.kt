@@ -41,13 +41,6 @@ class ProfileFragment : Fragment() {
 
         chipGroup = binding.groupProfileTag
 
-
-        binding.viewpagerProfile.let {
-            binding.tabsProfile.setupWithViewPager(it)
-            it.adapter = ProfileAdapter(childFragmentManager)
-            it.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabsProfile))
-        }
-
         binding.buttonProfileAddTag.setOnClickListener {
             findNavController().navigate(NaviDirections.actionGlobalTagDialog())
         }

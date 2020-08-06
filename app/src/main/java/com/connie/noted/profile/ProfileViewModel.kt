@@ -1,6 +1,5 @@
 package com.connie.noted.profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.connie.noted.data.User
