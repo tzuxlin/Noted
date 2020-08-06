@@ -69,7 +69,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         getLiveNotes()
 
         //test
-        goGo("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
+//        goGo("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
     }
 
 
