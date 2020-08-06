@@ -10,11 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.NotedApplication
 import com.connie.noted.board.BoardTypeFilter
+import com.connie.noted.data.Board
 import com.connie.noted.databinding.FragmentBoardItemBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.util.CurrentFilterType
@@ -34,14 +37,21 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val binding = FragmentBoardItemBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         val boardRecyclerView = binding.boardRecyclerView
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+
+
+        /**
+         * Observe  [CurrentFilterType] changes from [MainViewModel],
+         * and call [checkFilterType] to submit the appropriate board list.
+         */
 
         mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
 
@@ -53,49 +63,31 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         })
 
+
+        /**
+         * Observe current viewType from [MainViewModel],
+         * and setup the appropriate LayoutManager to RecyclerView.
+         */
+
         mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
+
+            viewModel.viewType.value = it
+
+            boardRecyclerView.adapter =
+                BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
+                    findNavController().navigate(NaviDirections.actionGlobalBoardPageFragment(board))
+                }, viewModel)
 
             when (it) {
 
                 0 -> {
-                    viewModel.viewType.value = it
-
-                    boardRecyclerView.adapter =
-                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
-
-                            Logger.i("Board is clicked, $board")
-                            findNavController().navigate(
-                                NaviDirections.actionGlobalBoardPageFragment(
-                                    board
-                                )
-                            )
-
-                        }, viewModel)
                     boardRecyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
-
                     viewModel.liveBoards.value = viewModel.liveBoards.value
-
                 }
 
                 1 -> {
-                    viewModel.viewType.value = it
-
-                    boardRecyclerView.adapter =
-                        BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
-
-                            Logger.i("Board is clicked, $board")
-                            findNavController().navigate(
-                                NaviDirections.actionGlobalBoardPageFragment(
-                                    board
-                                )
-                            )
-
-                        }, viewModel)
-                    boardRecyclerView.layoutManager =
-                        LinearLayoutManager(NotedApplication.instance.applicationContext)
-
+                    boardRecyclerView.layoutManager = LinearLayoutManager(NotedApplication.instance)
                     viewModel.liveBoards.value = viewModel.liveBoards.value
-
                 }
 
             }
@@ -105,23 +97,16 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
         chipGroup = binding.groupBoardTag
 
 
-        binding.boardIconChangeLayout.setOnClickListener {
 
-            when (viewModel.viewType.value) {
-                0 -> viewModel.viewType.value = 1
-                1 -> viewModel.viewType.value = 0
-            }
-
-        }
-
-        viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
-
-            setUpThinTags(viewModel.filterTags, chipGroup)
-
-        })
+        // TODO: fix bug
+//        viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
+//
+//            setUpThinTags(viewModel.filterTags, chipGroup)
+//
+//        })
 
         viewModel.liveBoards.observe(viewLifecycleOwner, Observer {
-            it?.let{
+            it?.let {
                 viewModel.loadApiStatusDone()
             }
         })

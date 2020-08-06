@@ -133,8 +133,10 @@ object Util {
     fun setUpThinTags(
         tagList: MutableList<String?>,
         chipGroup: ChipGroup,
-        listener: BoardItemAdapter.BoardLinearViewHolder.OnTagClickListener
+        listener: BoardItemAdapter.Util.OnTagClickListener
     ) {
+
+        chipGroup.removeAllViews()
 
         for (index in tagList.indices) {
             val tagName = tagList[index]
