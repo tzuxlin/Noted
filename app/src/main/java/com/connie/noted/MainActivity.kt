@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 receivedText?.let {
                     Logger.d("Crawler, receivedText = $it")
 
-                    viewModel.urlString.value = it
+                    viewModel.setUrl(it)
 
                 }
 

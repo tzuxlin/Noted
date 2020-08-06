@@ -42,25 +42,41 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
+
+        /**
+         * If any url input exists and is observed from [MainViewModel],
+         * it will call [viewModel]: [determineParseType] to launch the appropriate parse function.
+         */
+
         mainViewModel.urlString.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                val url = it
+            it?.let { url ->
 
-                Logger.d("mainViewModel observed from NoteFragment, $it")
-                mainViewModel.urlString.value = null
-                Logger.d("mainViewModel.urlString = ${mainViewModel.urlString.value} (expected: null)")
+                Logger.d("Note Fragment, url observed from MainViewModel: $url")
+                viewModel.determineParseType(url)
+                mainViewModel.clearUrl()
 
-                viewModel.goGo(url)
             }
         })
 
+
         viewModel.checkLogin()
+
+
+        /**
+         * Wait for retrieving User data, will get Live Notes with User Id.
+         */
 
         viewModel.userIsReady.observe(viewLifecycleOwner, Observer {
             if (it) {
                 viewModel.getLiveNotes()
             }
         })
+
+
+        /**
+         * Observe  [CurrentFilterType] changes from [MainViewModel],
+         * and call [checkFilterType] to submit the appropriate note list.
+         */
 
         mainViewModel.currentFilterType.observe(viewLifecycleOwner, Observer {
 
@@ -73,55 +89,50 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         })
 
 
+        /**
+         * Observe current viewType from [MainViewModel],
+         * and setup the appropriate LayoutManager to RecyclerView.
+         */
+
         mainViewModel.viewType.observe(viewLifecycleOwner, Observer {
 
-            Logger.d("Note Fragment, observe viewType: $it, mainCurrentFilterType: ${mainViewModel.currentFilterType.value}")
+            viewModel.viewType.value = it
+
+            noteRecyclerView.adapter =
+                NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
+                    (activity as MainActivity).navigateToNote(clickedNote)
+                }, viewModel)
+
 
             when (it) {
 
                 0 -> {
-                    viewModel.viewType.value = it
-
-                    noteRecyclerView.adapter =
-                        NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
-                            (activity as MainActivity).navigateToNote(clickedNote)
-                        }, viewModel)
-
                     val layoutManager = StaggeredGridLayoutManager(2, 1)
                     layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
 
-
                     noteRecyclerView.layoutManager = layoutManager
-
-                    val type = mainViewModel.currentFilterType.value ?: CurrentFilterType.ALL
-                    checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
-
                 }
 
                 1 -> {
-                    viewModel.viewType.value = it
-
-                    noteRecyclerView.adapter =
-                        NoteAdapter(NoteAdapter.OnClickListener { clickedNote ->
-                            (activity as MainActivity).navigateToNote(clickedNote)
-                        }, viewModel)
                     noteRecyclerView.layoutManager =
-                        LinearLayoutManager(NotedApplication.instance.applicationContext)
-
-                    val type = mainViewModel.currentFilterType.value ?: CurrentFilterType.ALL
-                    checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+                        LinearLayoutManager(NotedApplication.instance)
                 }
 
             }
 
+            val type = mainViewModel.currentFilterType.value ?: CurrentFilterType.ALL
+            checkFilterType(type, noteRecyclerView.adapter as NoteAdapter)
+
         })
 
-        viewModel.newNote.observe(viewLifecycleOwner, Observer {
-            it?.let {
 
-                Logger.d("newNote = $it")
-                viewModel.create(it)
+        /**
+         * Once new note is done parsing and observed, it will be update to firebase.
+         */
 
+        viewModel.parsedNote.observe(viewLifecycleOwner, Observer {
+            it?.let { note ->
+                viewModel.updateNoteToFirebase(note)
             }
         })
 
@@ -132,8 +143,6 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
                 (noteRecyclerView.adapter as NoteAdapter).submitList(it)
                 Logger.d("liveNotes = $it")
-//                viewModel.notes.value = viewModel.notes.value
-//                (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
 
             }
         })
@@ -152,7 +161,6 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
                 LoadApiStatus.DONE -> {
                     findNavController().navigateUp()
-                    mainViewModel.urlString.value = null
                     findNavController().navigate(
                         NaviDirections.actionGlobalBoxDialog(
                             DialogBoxMessageType.NEW_NOTE.message
@@ -165,12 +173,15 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
         })
 
 
+        /**
+         * Restore [Note.isSelected] value when user exit the edit mode
+         */
 
         viewModel.isEditMode.observe(viewLifecycleOwner, Observer {
 
-            it?.let {
-                Logger.e("Note Fragment, isEditMode: $it")
-                if (!it) {
+            it?.let { editMode ->
+
+                if (!editMode) {
                     viewModel.notes.value?.forEach { note ->
                         note.isSelected = false
                         (noteRecyclerView.adapter as NoteAdapter).notifyDataSetChanged()
@@ -180,15 +191,6 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
         })
 
-
-        binding.noteIconChangeLayout.setOnClickListener {
-
-            when (viewModel.viewType.value) {
-                0 -> viewModel.viewType.value = 1
-                1 -> viewModel.viewType.value = 0
-            }
-
-        }
 
         binding.noteAdd2boardButton.setOnClickListener {
             viewModel.noteToAdd.value?.let {
@@ -204,7 +206,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
     private fun checkFilterType(filterType: CurrentFilterType, noteAdapter: NoteAdapter) {
 
-        Logger.e("Note, checkFilterType with type: ${filterType.type}")
+        Logger.v("Note, checkFilterType with type: ${filterType.type}")
 
         val notes = viewModel.notes.value
 
@@ -214,35 +216,30 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
 
                 CurrentFilterType.ALL -> {
                     noteAdapter.submitList(notes)
-                    Logger.i("Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.LIKED -> {
                     noteAdapter.submitList(notes.filter { note ->
                         note.isLiked
                     })
-                    Logger.i("Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.ARTICLE -> {
                     noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.ARTICLE.type
                     })
-                    Logger.i("Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.LOCATION -> {
                     noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.LOCATION.type
                     })
-                    Logger.i("Note, checkFilterType with type: ${filterType.type}")
                 }
 
                 CurrentFilterType.VIDEO -> {
                     noteAdapter.submitList(notes.filter { note ->
                         note.type == CurrentFilterType.VIDEO.type
                     })
-                    Logger.i("Note, checkFilterType with type: ${filterType.type}")
                 }
 
             }
