@@ -29,7 +29,7 @@ class BoxDialog : DialogFragment() {
 
         when (message) {
 
-            DialogBoxMessageType.LOADING_NOTE.message -> {
+            DialogBoxMessageType.LOADING.message -> {
                 binding.boxMessage.visibility = View.GONE
                 binding.iconSuccessWhite.visibility = View.GONE
                 binding.animLoading.visibility = View.VISIBLE
@@ -64,7 +64,7 @@ class BoxDialog : DialogFragment() {
     private fun close() {
         when (message) {
 
-            DialogBoxMessageType.LOADING_NOTE.message -> {
+            DialogBoxMessageType.LOADING.message -> {
 
             }
 

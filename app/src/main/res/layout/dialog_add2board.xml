@@ -39,7 +39,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="@{viewModel.invalidInput != null? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
+                android:backgroundTint="@{viewModel.invalidInput != null ? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
                 android:hint="輸入分類版標題"
                 android:letterSpacing="0.15"
                 android:maxLines="1"
@@ -62,6 +62,7 @@
                 android:letterSpacing="0.15"
                 android:switchPadding="8dp"
                 android:text="公開分類版"
+                android:checked="@={viewModel.isPublic}"
                 android:textColor="@color/brownish_grey"
                 android:textSize="13sp"
                 android:theme="@style/Switch"
@@ -119,6 +120,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_add2board_top_separation"
+                app:listNote="@{viewModel.liveNotes}"
                 app:reverseLayout="false"/>
 
 
@@ -167,10 +169,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/shape_radius"
-                android:backgroundTint="@color/olive_green"
-                android:clickable="true"
+                android:backgroundTint="@{TextUtils.isEmpty(viewModel.title) ? @color/gray_999999 : @color/olive_green}"
                 android:letterSpacing="0.15"
-                android:onClick="@{() -> viewModel.checkData()}"
+                android:onClick="@{() -> TextUtils.isEmpty(viewModel.title) ? viewModel.invalidInput() :viewModel.boardDataPreparation()}"
                 android:text="新增至分類版"
                 android:textColor="@color/white"
                 android:textSize="16sp"

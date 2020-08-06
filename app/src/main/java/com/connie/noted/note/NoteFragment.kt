@@ -145,7 +145,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                 LoadApiStatus.LOADING -> {
                     findNavController().navigate(
                         NaviDirections.actionGlobalBoxDialog(
-                            DialogBoxMessageType.LOADING_NOTE.message
+                            DialogBoxMessageType.LOADING.message
                         )
                     )
                 }
