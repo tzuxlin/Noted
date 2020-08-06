@@ -42,7 +42,7 @@ class BoardPageViewModel(private val notedRepository: NotedRepository, val board
         liveNotes = notedRepository.getBoardLiveNotes(boardKey.notes)
     }
 
-    fun saveBoard() {
+    fun saveBoardPreparation() {
 
         val email = UserManager.userEmail
 
