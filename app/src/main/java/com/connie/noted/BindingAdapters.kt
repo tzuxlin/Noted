@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.connie.noted.add2board.Add2boardAdapter
 import com.connie.noted.board.item.BoardItemAdapter
 import com.connie.noted.boardpage.BoardNotesAdapter
 import com.connie.noted.data.Board
@@ -140,6 +141,9 @@ fun bindNoteRecyclerView(recyclerView: RecyclerView, data: List<Note>?) {
                     submitList(it)
                 }
                 is BoardNotesAdapter -> {
+                    submitList(it)
+                }
+                is Add2boardAdapter -> {
                     submitList(it)
                 }
             }

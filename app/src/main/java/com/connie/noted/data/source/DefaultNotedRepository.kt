@@ -8,8 +8,7 @@ import com.connie.noted.data.Result
 import com.connie.noted.data.User
 
 class DefaultNotedRepository(
-    private val remoteDataSource: NotedDataSource,
-    private val localDataSource: NotedDataSource
+    private val remoteDataSource: NotedDataSource
 ) : NotedRepository {
 
     override suspend fun createNote(note: Note): Result<Boolean> {

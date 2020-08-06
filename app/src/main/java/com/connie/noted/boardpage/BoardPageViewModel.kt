@@ -1,12 +1,9 @@
 package com.connie.noted.boardpage
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
-import com.connie.noted.data.Result
-import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +58,6 @@ class BoardPageViewModel(private val notedRepository: NotedRepository, val board
 
             this.savedBy.value = savedBy
 
-            Log.e("Connie", "viewModel, $savedBy")
         }
 
         toSaveBoard()

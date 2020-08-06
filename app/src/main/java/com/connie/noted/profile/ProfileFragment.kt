@@ -3,7 +3,6 @@ package com.connie.noted.profile
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.connie.noted.MainViewModel
 import com.connie.noted.NaviDirections
 import com.connie.noted.databinding.FragmentProfileBinding
-import com.connie.noted.login.UserManager
+import com.connie.noted.util.Logger
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
@@ -65,8 +64,7 @@ class ProfileFragment : Fragment() {
                             viewModel.user.value = user
                             mainViewModel.onSyncUserDataFinished()
                             resetTags()
-                            Log.e(
-                                "Connie",
+                            Logger.d(
                                 "ProfileFragment, viewModel.user = ${viewModel.user.value}"
                             )
 

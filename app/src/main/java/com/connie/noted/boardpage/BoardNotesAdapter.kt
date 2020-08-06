@@ -1,7 +1,6 @@
 package com.connie.noted.boardpage
 
 import android.content.ClipData.Item
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import com.connie.noted.boardpage.BoardPageViewModel
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.ItemNoteGridBinding
 import com.connie.noted.databinding.ItemNoteLinearBinding
+import com.connie.noted.util.Logger
 
 
 /**
@@ -138,7 +138,7 @@ class BoardNotesAdapter(
                 holder.bind(getItem(position), viewModel)
                 holder.itemView.setOnClickListener {
                     onClickListener.onClick(note)
-                    Log.e("Connie", "Note Adapter, onClick = $note")
+                    Logger.i("Note Adapter, onClick = $note")
                 }
             }
         }

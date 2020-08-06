@@ -1,7 +1,6 @@
 package com.connie.noted.explore
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,7 @@ import com.connie.noted.databinding.FragmentExploreBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
 import com.connie.noted.util.DialogBoxMessageType
-import io.grpc.Status.NOT_FOUND
+import com.connie.noted.util.Logger
 
 class ExploreFragment : Fragment() {
 
@@ -42,7 +41,7 @@ class ExploreFragment : Fragment() {
         boardPopularRecyclerView.adapter =
             ExplorePopularAdapter(ExplorePopularAdapter.OnClickListener { board ->
 
-                Log.i("Connie", "Board is clicked, $board")
+                Logger.i("Board is clicked, $board")
                 findNavController().navigate(
                     NaviDirections.actionGlobalBoardPageFragment(
                         board
@@ -57,7 +56,7 @@ class ExploreFragment : Fragment() {
         boardRecommendRecyclerView.adapter =
             ExploreRecommendAdapter(ExploreRecommendAdapter.OnClickListener { board ->
 
-                Log.i("Connie", "Board is clicked, $board")
+                Logger.i("Board is clicked, $board")
                 findNavController().navigate(
                     NaviDirections.actionGlobalBoardPageFragment(
                         board
@@ -72,7 +71,7 @@ class ExploreFragment : Fragment() {
 
         viewModel.popularBoards.observe(viewLifecycleOwner, Observer {
 
-            Log.e("Connie", "Fragment, popularBoards = $it")
+            Logger.d("Fragment, popularBoards = $it")
 
             it?.let {
                 if (viewModel.status.value == LoadApiStatus.LOADING) {
@@ -102,11 +101,10 @@ class ExploreFragment : Fragment() {
 
                 if (it) {
 
-//                    Log.i("Connie", "viewModel.searchBoards=${viewModel.searchBoards.value}")
 
                     viewModel.searchBoards.observe(viewLifecycleOwner, Observer { board ->
 
-                        Log.e("Connie", "Fragment, searchBoards = $board")
+                        Logger.d("Fragment, searchBoards = $board")
 
                         board?.let { searchResult ->
 
@@ -118,8 +116,6 @@ class ExploreFragment : Fragment() {
                                         DialogBoxMessageType.NOT_FOUND.message
                                     )
                                 )
-                            } else {
-
                             }
 
 
@@ -135,7 +131,8 @@ class ExploreFragment : Fragment() {
 
             it?.let { b ->
                 if (b) {
-                    Log.e("Connie", "viewModel.getRecommendBoards()")
+                    Logger.d("viewModel.getRecommendBoards()")
+
                     viewModel.getRecommendBoards()
                 }
             }

@@ -1,6 +1,5 @@
 package com.connie.noted.add2board
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,10 @@ import com.connie.noted.databinding.ItemNoteLinearSmallBinding
 
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * [Note], including computing diffs between lists.
  */
+
 class Add2boardAdapter :
     ListAdapter<Note, Add2boardAdapter.NoteLinearViewHolder>(DiffCallback) {
 
@@ -33,8 +31,6 @@ class Add2boardAdapter :
             }
 
             binding.textNoteTitle.text = note.title
-
-            Log.e("Connie", "${binding.textNoteTitle.text}")
 
             binding.executePendingBindings()
         }
@@ -56,6 +52,7 @@ class Add2boardAdapter :
         }
     }
 
+
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
@@ -73,13 +70,10 @@ class Add2boardAdapter :
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-
-
     override fun onBindViewHolder(holder: NoteLinearViewHolder, position: Int) {
         val note = getItem(position)
         holder.bind(note)
     }
-
 
 
 }

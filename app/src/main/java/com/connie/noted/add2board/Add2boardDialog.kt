@@ -12,41 +12,36 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.connie.noted.NaviDirections
 import com.connie.noted.R
+import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogAdd2boardBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.util.DialogBoxMessageType
+import com.connie.noted.util.Logger
 
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
 class Add2boardDialog : DialogFragment() {
 
-    /**
-     * Lazily initialize our [Add2boardDialog].
-     */
+
     private val viewModel by viewModels<Add2boardViewModel> { getVmFactory() }
     private lateinit var binding: DialogAdd2boardBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_FRAME, R.style.Style_Dialog)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.liveNotes.value = Add2boardDialogArgs.fromBundle(requireArguments()).notesKey.toList()
+        viewModel.liveNotes.value =
+            Add2boardDialogArgs.fromBundle(requireArguments()).notesKey.toList()
 
         binding = DialogAdd2boardBinding.inflate(inflater, container, false)
+
         binding.layoutAdd2board.startAnimation(
-            AnimationUtils.loadAnimation(
-                context,
-                R.anim.anim_slide_up
-            )
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
         )
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -57,38 +52,64 @@ class Add2boardDialog : DialogFragment() {
         }
 
 
-
         val noteRecyclerView = binding.noteRecyclerView
-
 
         noteRecyclerView.adapter = Add2boardAdapter()
 
-        viewModel.toUploadBoard.observe(viewLifecycleOwner, Observer {
-            val isPublicSwitch = binding.switchAdd2boardPublic
 
-            viewModel.isPublic = isPublicSwitch.isChecked
-            viewModel.uploadBoard()
+        viewModel.status.observe(viewLifecycleOwner, Observer {
 
-        })
+            it?.let { status ->
 
-        viewModel.liveNotes.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                (noteRecyclerView.adapter as Add2boardAdapter).submitList(it)
+                when (status) {
+
+                    LoadApiStatus.DONE -> {
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NEW_BOARD.message)
+                        )
+                        viewModel.leave()
+                    }
+
+                    LoadApiStatus.ERROR -> {
+
+                        Logger.w("Add2board load API error: ${viewModel.error}")
+
+                        findNavController().navigate(
+                            NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.ERROR.message)
+                        )
+                        viewModel.leave()
+                    }
+
+                    else -> {
+
+                    }
+
+                }
             }
+
         })
+
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
+
             it?.let {
-                findNavController().navigate(NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.NEW_BOARD.message))
                 dismiss()
                 viewModel.onLeaveCompleted()
             }
+
         })
 
-
+        viewModel.title.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    viewModel.restoreInvalidInput()
+                }
+            }
+        })
 
         return binding.root
     }
+
 
     override fun dismiss() {
         binding.layoutAdd2board.startAnimation(
@@ -97,15 +118,13 @@ class Add2boardDialog : DialogFragment() {
                 R.anim.anim_slide_down
             )
         )
-        Handler().postDelayed({ super.dismiss() }, 200)
+        Handler().postDelayed({ super.dismiss() }, 500)
     }
+
 
     fun leave() {
         dismiss()
     }
-
-
-
 
 
 }

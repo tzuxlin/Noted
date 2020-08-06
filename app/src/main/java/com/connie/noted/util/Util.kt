@@ -5,18 +5,14 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.connie.noted.MainActivity
 import com.connie.noted.NotedApplication
 import com.connie.noted.R
 import com.connie.noted.board.item.BoardItemAdapter
 import com.connie.noted.login.UserManager
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
 
 /**
@@ -54,9 +50,9 @@ object Util {
 
     fun checkIfSaved(savedBy: List<String?>): Boolean {
 
-        Log.e("Connie", "checkIfSaved: ${savedBy.contains((UserManager.userEmail)?:"")}, currentUser = ${UserManager.userEmail}, savedBy = $savedBy")
+        Logger.d("checkIfSaved: ${savedBy.contains((UserManager.userEmail) ?: "")}, currentUser = ${UserManager.userEmail}, savedBy = $savedBy")
 
-        return savedBy.contains((UserManager.userEmail)?:"")
+        return savedBy.contains((UserManager.userEmail) ?: "")
     }
 
     fun setUpThinTags(
@@ -97,10 +93,10 @@ object Util {
 
                     if (list.contains(chip.text as String)) {
                         list.remove(chip.text as String)
-                        Log.w("ConnieUtil", list.toString() )
+                        Logger.d(list.toString())
                     } else {
                         list.add(chip.text as String)
-                        Log.w("ConnieUtil", list.toString() )
+                        Logger.d(list.toString())
                     }
 
 
@@ -118,7 +114,7 @@ object Util {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
 
-                    Log.e("Connie", tagList.toString())
+                    Logger.d(tagList.toString())
                 }
 
                 true
@@ -179,7 +175,7 @@ object Util {
                     tagList.remove(tagName)
                     chipGroup.removeView(chip)
 
-                    Log.e("Connie", tagList.toString())
+                    Logger.d(tagList.toString())
                 }
 
                 true

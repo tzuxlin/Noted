@@ -1,24 +1,17 @@
 package com.connie.noted.notepage.location
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.connie.noted.BuildConfig
 import com.connie.noted.databinding.FragmentNoteLocationBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.notepage.article.ArticleFragmentArgs
+import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.getWindowWidth
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 
 class LocationFragment : Fragment() {
@@ -40,7 +33,7 @@ class LocationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.i("Connie", "Location Fragment")
+        Logger.i("Location Fragment")
 
         "https://maps.googleapis.com/maps/api/staticmap?center=25.036382,121.5441433&zoom=${zoomSize}&size=${width}x400&key=$googleKey"
 

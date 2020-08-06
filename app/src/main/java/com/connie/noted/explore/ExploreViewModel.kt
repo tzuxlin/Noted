@@ -1,14 +1,12 @@
 package com.connie.noted.explore
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.data.Board
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
-import com.connie.noted.util.ServiceLocator.notedRepository
+import com.connie.noted.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -68,7 +66,7 @@ class ExploreViewModel(private val notedRepository: NotedRepository) : ViewModel
     }
 
     fun search() {
-        Log.e("Connie", "Search ${keywords.value}")
+        Logger.d("Search ${keywords.value}")
 
         keywords.value?.let {
             toSearchBoard(it)

@@ -46,11 +46,15 @@ android {
         def googleKey = properties.getProperty('google.key.api')
 
         debug {
+            buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
+
             buildConfigField "String", "GOOGLE_KEY", googleKey
             resValue "string", "google_key", googleKey
         }
 
         release {
+            buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
+
             buildConfigField "String", "GOOGLE_KEY", googleKey
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

@@ -1,9 +1,10 @@
 package com.connie.noted.add2board
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
@@ -12,36 +13,32 @@ import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
 import kotlinx.coroutines.*
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * The [ViewModel] that is attached to the [Add2cartDialog].
- */
+
 class Add2boardViewModel(
     private val notedRepository: NotedRepository
 ) : ViewModel() {
 
-    // Detail has product data from arguments
+
+    // The new board to add
     val board = MutableLiveData<Board>().apply {
         value = Board()
     }
 
-    // Handle the error for checkout
+
+    var liveNotes = MutableLiveData<List<Note>>()
+    var title = MutableLiveData<String>()
+
+    val isPublic = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
+
+    // Handle the invalid input
     private val _invalidInput = MutableLiveData<Int>()
 
     val invalidInput: LiveData<Int>
         get() = _invalidInput
 
-
-    var liveNotes = MutableLiveData<List<Note>>()
-
-
-    var title = MutableLiveData<String>()
-    var isPublic = false
-
-    private val _toUploadBoard = MutableLiveData<Boolean>()
-    val toUploadBoard: LiveData<Boolean>
-        get() = _toUploadBoard
 
     // Handle navigation to Added Success
     private val _navigateToAddedSuccess = MutableLiveData<Board>()
@@ -49,17 +46,20 @@ class Add2boardViewModel(
     val navigateToAddedSuccess: LiveData<Board>
         get() = _navigateToAddedSuccess
 
+
     // Handle navigation to Added Fail
     private val _navigateToAddedFail = MutableLiveData<Board>()
 
     val navigateToAddedFail: LiveData<Board>
         get() = _navigateToAddedFail
 
-    // Handle leave add2cart
+
+    // Handle leave add2board
     private val _leave = MutableLiveData<Boolean>()
 
     val leave: LiveData<Boolean>
         get() = _leave
+
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -67,11 +67,13 @@ class Add2boardViewModel(
     val status: LiveData<LoadApiStatus>
         get() = _status
 
+
     // error: The internal MutableLiveData that stores the error of the most recent request
     private val _error = MutableLiveData<String>()
 
     val error: LiveData<String>
         get() = _error
+
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -90,13 +92,9 @@ class Add2boardViewModel(
     }
 
 
-    fun checkData() {
-        _toUploadBoard.value = true
-    }
+    fun boardDataPreparation() {
 
-    fun uploadBoard() {
-
-        val noteWithImages = liveNotes.value?.let { notes ->
+        val noteImages = liveNotes.value?.let { notes ->
             notes.filter { note ->
                 note.images.isNotEmpty()
             }.map {
@@ -104,7 +102,7 @@ class Add2boardViewModel(
             }
         }?.toMutableList<String?>()
 
-        val noteWithId = liveNotes.value?.map { note ->
+        val noteIds = liveNotes.value?.map { note ->
             note.id
         }?.toMutableList<String?>()
 
@@ -113,9 +111,9 @@ class Add2boardViewModel(
             createdBy = UserManager.user.value?.email ?: "",
             creatorName = UserManager.user.value?.name ?: "",
             title = title.value ?: "",
-            images = noteWithImages ?: mutableListOf(),
-            isPublic = isPublic,
-            notes = noteWithId ?: mutableListOf()
+            images = noteImages ?: mutableListOf(),
+            isPublic = isPublic.value ?: false,
+            notes = noteIds ?: mutableListOf()
         )
 
         toUploadBoard(board)
@@ -123,7 +121,9 @@ class Add2boardViewModel(
 
     }
 
+
     private fun toUploadBoard(board: Board) {
+
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
@@ -132,7 +132,6 @@ class Add2boardViewModel(
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
-                    leave()
                 }
                 is Result.Fail -> {
                     _error.value = result.error
@@ -143,36 +142,35 @@ class Add2boardViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = "You know nothing"
-//                        NotedApplication.instance.getString(R.string.you_know_nothing)
+                    _error.value = NotedApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
         }
     }
 
-    fun onAddedSuccessNavigated() {
-        _navigateToAddedSuccess.value = null
+    fun invalidInput(){
+        _invalidInput.value = 0
     }
 
-    fun onAddedFailNavigated() {
-        _navigateToAddedFail.value = null
+    fun restoreInvalidInput(){
+        _invalidInput.value = null
     }
 
-
-    fun convertLongToString(value: Long): String {
-        return value.toString()
-    }
 
     fun leave() {
         _leave.value = true
     }
 
+
     fun onLeaveCompleted() {
         _leave.value = null
     }
 
-    fun nothing() {}
+
+    fun nothing() {
+
+    }
 
 
 }

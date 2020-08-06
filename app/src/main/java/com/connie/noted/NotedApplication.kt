@@ -16,7 +16,7 @@ class NotedApplication : Application() {
 
     // Depends on the flavor,
     val notedRepository: NotedRepository
-        get() = ServiceLocator.provideTasksRepository(this)
+        get() = ServiceLocator.provideTasksRepository()
 
 
     companion object {

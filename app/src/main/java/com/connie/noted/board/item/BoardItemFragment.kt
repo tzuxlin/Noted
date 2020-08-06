@@ -1,7 +1,6 @@
 package com.connie.noted.board.item
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import com.connie.noted.board.BoardTypeFilter
 import com.connie.noted.databinding.FragmentBoardItemBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.util.CurrentFilterType
+import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.setUpThinTags
 import com.google.android.material.chip.ChipGroup
 
@@ -63,7 +63,7 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
                     boardRecyclerView.adapter =
                         BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
 
-                            Log.i("Connie", "Board is clicked, $board")
+                            Logger.i("Board is clicked, $board")
                             findNavController().navigate(
                                 NaviDirections.actionGlobalBoardPageFragment(
                                     board
@@ -83,7 +83,7 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
                     boardRecyclerView.adapter =
                         BoardItemAdapter(BoardItemAdapter.OnClickListener { board ->
 
-                            Log.i("Connie", "Board is clicked, $board")
+                            Logger.i("Board is clicked, $board")
                             findNavController().navigate(
                                 NaviDirections.actionGlobalBoardPageFragment(
                                     board
@@ -116,7 +116,6 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
 
         viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
 
-            Log.e("Connie", "Hello World!")
             setUpThinTags(viewModel.filterTags, chipGroup)
 
         })

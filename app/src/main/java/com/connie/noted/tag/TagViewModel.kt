@@ -1,6 +1,5 @@
 package com.connie.noted.tag
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
-import com.connie.noted.login.UserManager
 import kotlinx.coroutines.*
 
 /**
