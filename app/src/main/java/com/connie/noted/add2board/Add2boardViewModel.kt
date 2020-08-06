@@ -40,20 +40,6 @@ class Add2boardViewModel(
         get() = _invalidInput
 
 
-    // Handle navigation to Added Success
-    private val _navigateToAddedSuccess = MutableLiveData<Board>()
-
-    val navigateToAddedSuccess: LiveData<Board>
-        get() = _navigateToAddedSuccess
-
-
-    // Handle navigation to Added Fail
-    private val _navigateToAddedFail = MutableLiveData<Board>()
-
-    val navigateToAddedFail: LiveData<Board>
-        get() = _navigateToAddedFail
-
-
     // Handle leave add2board
     private val _leave = MutableLiveData<Boolean>()
 

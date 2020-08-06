@@ -125,7 +125,7 @@
 
 
             <ImageButton
-                android:id="@+id/button_add2cart_close"
+                android:id="@+id/button_add2board_close"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginTop="16dp"
