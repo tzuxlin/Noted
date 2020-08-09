@@ -3,6 +3,8 @@ package com.connie.noted.tag
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 import com.connie.noted.data.Board
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
@@ -20,9 +22,7 @@ class TagViewModel(
 ) : ViewModel() {
 
     // Detail has product data from arguments
-    val board = MutableLiveData<Board>().apply {
-        value = Board()
-    }
+    val board = MutableLiveData<Board>().apply { value = Board() }
 
     // Handle the error for checkout
     private val _invalidInput = MutableLiveData<Int>()
@@ -33,7 +33,12 @@ class TagViewModel(
 
     var liveNotes = MutableLiveData<List<Note>>()
 
+    private val _editMode = MutableLiveData<Boolean>().apply { value = false }
+    val editMode: LiveData<Boolean>
+     get() = _editMode
 
+
+    var followingTags = mutableListOf<String>()
     val tagsToAdd = mutableListOf<String?>()
 
     var inTagEditMode = false
@@ -106,23 +111,26 @@ class TagViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = notedRepository.updateUserTags(tagsToAdd)) {
+            when (val result = notedRepository.updateUserTags(followingTags)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
+//                    clearTags2Add()
                 }
                 is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
+//                    clearTags2Add()
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
+//                    clearTags2Add()
                 }
                 else -> {
-                    _error.value = "You know nothing"
-//                        NotedApplication.instance.getString(R.string.you_know_nothing)
+                    _error.value = NotedApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
+//                    clearTags2Add()
                 }
             }
         }
@@ -149,7 +157,23 @@ class TagViewModel(
         _leave.value = null
     }
 
+    fun restoreStatus() {
+        _status.value = null
+    }
+
+    fun restoreNewTag() {
+        newTag.value = null
+
+    }
+
     fun nothing() {}
 
+    fun setEditMode(boolean: Boolean){
+        _editMode.value = boolean
+    }
+
+//    fun clearTags2Add(){
+//        followingTags.removeAll(tagsToAdd)
+//    }
 
 }

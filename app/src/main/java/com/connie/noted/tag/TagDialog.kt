@@ -18,33 +18,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.connie.noted.*
+import com.connie.noted.data.Note
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.login.UserManager
 import com.connie.noted.util.DialogBoxMessageType
+import com.connie.noted.util.Logger
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
 class TagDialog : DialogFragment() {
 
-    /**
-     * Lazily initialize our [TagDialog].
-     */
+
     private val viewModel by viewModels<TagViewModel> { getVmFactory() }
 
     private lateinit var mainViewModel: MainViewModel
-
-
     private lateinit var binding: DialogTagBinding
     private lateinit var chipGroup: ChipGroup
     private lateinit var switchButton: CompoundButton
-
-    private lateinit var inputMethodManager: InputMethodManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +45,12 @@ class TagDialog : DialogFragment() {
         setStyle(STYLE_NO_FRAME, R.style.Style_Dialog_resize)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         binding = DialogTagBinding.inflate(inflater, container, false)
         binding.layoutTag.startAnimation(
@@ -74,15 +67,14 @@ class TagDialog : DialogFragment() {
 
 
         chipGroup = binding.groupProfileTag
-        getUserTags()
+        switchButton = binding.switchTagEdit
 
-        inputMethodManager =
-            NotedApplication.instance.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        inputMethodManager.hideSoftInputFromWindow(
-            requireActivity().currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
+
+
+        /**
+         * Call [MainActivity]: [hideSoftInput] method to hide SoftInput when edit view is not on focus.
+         */
 
         binding.editTagAdd2tag.setOnFocusChangeListener { view: View, isFocus: Boolean ->
             if (!isFocus) {
@@ -90,85 +82,106 @@ class TagDialog : DialogFragment() {
             }
         }
 
-        switchButton = binding.switchTagEdit
 
         switchButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.editTagAdd2tag.visibility = View.VISIBLE
-                binding.buttonTagAdd2tag.visibility = View.VISIBLE
-                binding.buttonBottom.text = "確認修改"
-                binding.switchTagEdit.visibility = View.GONE
-                binding.buttonBottomCancel.visibility = View.VISIBLE
 
                 binding.buttonBottom.setOnClickListener {
                     viewModel.updateTags()
                 }
+                viewModel.setEditMode(true)
 
-                viewModel.inTagEditMode = true
+//                viewModel.inTagEditMode = true
 
             } else {
                 binding.buttonBottom.setOnClickListener {
                     viewModel.leave()
                 }
-                viewModel.inTagEditMode = false
+                viewModel.setEditMode(false)
+//                viewModel.inTagEditMode = false
             }
         }
 
+        /**
+         * Call [getUserTags] method to sync following tags with [UserManager].
+         */
+
+        getUserTags()
+
 
         binding.buttonBottomCancel.setOnClickListener {
-            binding.editTagAdd2tag.visibility = View.GONE
-            binding.buttonTagAdd2tag.visibility = View.GONE
-            binding.buttonBottom.text = "我瞭解了"
-            binding.switchTagEdit.visibility = View.VISIBLE
-            binding.buttonBottomCancel.visibility = View.GONE
-            binding.switchTagEdit.isChecked = false
 
-            chipGroup.removeAllViews()
-            getUserTags()
+                binding.switchTagEdit.isChecked = false
+
+                chipGroup.removeAllViews()
+                getUserTags()
+
+                viewModel.leave()
+
+
         }
+
         binding.buttonTagAdd2tag.setOnClickListener {
-            setUpTags(mutableListOf(viewModel.newTag.value ?: "Hello"))
-            viewModel.newTag.value = null
+            viewModel.newTag.value?.let {
+                if (it.isNotEmpty()){
+                addTagsAndSetUp(mutableListOf(it))
+                viewModel.newTag.value = null
+            }}
         }
+
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
 
             when (it) {
                 LoadApiStatus.LOADING -> {
 
-                    binding.editTagAdd2tag.visibility = View.GONE
-                    binding.buttonTagAdd2tag.visibility = View.GONE
-                    binding.buttonBottom.text = ""
-                    binding.buttonBottom.isActivated = false
-                    binding.switchTagEdit.visibility = View.VISIBLE
-                    binding.buttonBottomCancel.visibility = View.GONE
                     binding.switchTagEdit.isChecked = false
 
-
                 }
+
+                /**
+                 * [LoadApiStatus.DONE] -> Call [MainViewModel] to sync the latest user data.
+                 */
+
                 LoadApiStatus.DONE -> {
 
                     mainViewModel.syncUserData()
 
                     findNavController().navigate(
-                        NaviDirections.actionGlobalBoxDialog(
-                            DialogBoxMessageType.EDITED.message
-                        )
+                        NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.EDITED.message)
                     )
 
-                    binding.editTagAdd2tag.visibility = View.GONE
-                    binding.buttonTagAdd2tag.visibility = View.GONE
-                    binding.buttonBottom.text = "關閉"
-                    binding.switchTagEdit.visibility = View.VISIBLE
-                    binding.buttonBottomCancel.visibility = View.GONE
                     binding.switchTagEdit.isChecked = false
-
-                    chipGroup.removeAllViews()
-                    getUserTags()
+                    resetTags()
+                    viewModel.restoreStatus()
 
                 }
             }
         })
+
+
+
+        mainViewModel.userIsSynced.observe(viewLifecycleOwner, Observer { isSynced ->
+            isSynced?.let {
+
+                if (isSynced) {
+
+                    mainViewModel.user.observe(viewLifecycleOwner, Observer {
+                        it?.let { user ->
+
+                            viewModel.followingTags = user.followingTags ?: mutableListOf()
+                            mainViewModel.onSyncUserDataFinished()
+
+                        }
+
+                    })
+                }
+            }
+        })
+
+
+
+
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -177,43 +190,41 @@ class TagDialog : DialogFragment() {
             }
         })
 
-        checkTags()
 
         return binding.root
     }
 
-    override fun dismiss() {
-        binding.layoutTag.startAnimation(
-            AnimationUtils.loadAnimation(
-                context,
-                R.anim.anim_slide_down
-            )
-        )
-        Handler().postDelayed({ super.dismiss() }, 200)
-    }
-
-    fun leave() {
-        dismiss()
-    }
 
     private fun getUserTags() {
 
         UserManager.user.value?.followingTags?.let {
 
-            if (it.isNotEmpty()) {
-                setUpTags(it)
+            viewModel.followingTags = it
+
+            if (it.isEmpty()) {
+                switchButton.isChecked = true
+            } else {
+                setUpTags()
             }
+
 
         }
     }
 
+    private fun addTagsAndSetUp(tagList: MutableList<String>) {
+        viewModel.followingTags.addAll(tagList)
+        setUpTags()
+    }
 
-    private fun setUpTags(tagList: MutableList<String>) {
 
-        viewModel.tagsToAdd.addAll(tagList)
+    private fun setUpTags() {
 
-        for (index in tagList.indices) {
-            val tagName = tagList[index]
+        chipGroup.removeAllViews()
+
+        val tags = viewModel.followingTags
+
+        for (index in tags.indices) {
+            val tagName = tags[index]
             val chip = Chip(chipGroup.context)
             val paddingDp = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -243,30 +254,41 @@ class TagDialog : DialogFragment() {
 
                 //Added click listener on close icon to remove tag from ChipGroup
                 chip.setOnCloseIconClickListener {
-                    tagList.remove(tagName)
+                    tags.remove(tagName)
                     chipGroup.removeView(chip)
-                    viewModel.tagsToAdd.remove(tagName)
+                    viewModel.followingTags.remove(tagName)
                 }
 
-                if (!viewModel.inTagEditMode) {
+                if (viewModel.editMode.value != true) {
                     switchButton.isChecked = true
                 }
 
             }
             chipGroup.addView(chip)
 
+
         }
 
 
     }
 
-    private fun checkTags() {
+    private fun resetTags() {
+        chipGroup.removeAllViews()
+        getUserTags()
+    }
 
-        val followingTags = (UserManager.user.value?.followingTags) ?: listOf<String?>()
+    override fun dismiss() {
+        binding.layoutTag.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.anim_slide_down
+            )
+        )
+        Handler().postDelayed({ super.dismiss() }, 200)
+    }
 
-        if (followingTags.isEmpty()) {
-            switchButton.isChecked = true
-        }
+    fun leave() {
+        dismiss()
     }
 
 }
