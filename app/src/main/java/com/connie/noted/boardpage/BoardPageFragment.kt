@@ -21,9 +21,7 @@ class BoardPageFragment : Fragment() {
 
     private val viewModel by viewModels<BoardPageViewModel> {
         getVmFactory(
-            BoardPageFragmentArgs.fromBundle(
-                requireArguments()
-            ).boardKey
+            BoardPageFragmentArgs.fromBundle(requireArguments()).boardKey
         )
     }
 
@@ -31,48 +29,51 @@ class BoardPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val binding = FragmentBoardPageBinding.inflate(inflater, container, false)
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
 
         val recyclerView = binding.boardPageRecyclerView
 
         recyclerView.adapter = BoardNotesAdapter(BoardNotesAdapter.OnClickListener { note ->
-
             (activity as MainActivity).navigateToNote(note)
+        })
 
-        }, viewModel)
         recyclerView.layoutManager =
             LinearLayoutManager(NotedApplication.instance.applicationContext)
 
 
-        viewModel.board.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Logger.d("Board: $it")
-            }
-        })
-
         viewModel.savedCompleted.observe(viewLifecycleOwner, Observer {
-            it?.let{
-                if (it) {
+            it?.let { completed ->
+
+                if (completed) {
+
                     if (viewModel.toSaved) {
+
                         findNavController().navigate(
-                            NaviDirections.actionGlobalBoxDialog(
-                                DialogBoxMessageType.SAVED_BOARD.message
-                            )
+                            NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.SAVED_BOARD.message)
                         )
+                        viewModel.doneNavigate()
+
                     } else {
+
                         findNavController().navigate(
-                            NaviDirections.actionGlobalBoxDialog(
-                                DialogBoxMessageType.UNSAVED_BOARD.message
-                            )
+                            NaviDirections.actionGlobalBoxDialog(DialogBoxMessageType.UNSAVED_BOARD.message)
                         )
+                        viewModel.doneNavigate()
+
                     }
                 }
+
             }
         })
 
-
         return binding.root
+
     }
+
+
 }

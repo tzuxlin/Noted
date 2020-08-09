@@ -3,6 +3,8 @@ package com.connie.noted.note
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 import com.connie.noted.data.Note
 import com.connie.noted.data.Result
 import com.connie.noted.data.User
@@ -11,6 +13,7 @@ import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
 import com.connie.noted.util.Logger
+import com.connie.noted.util.ParseType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,9 +30,9 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     private val coroutineScopeIO = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     // newNote value is assigned from crawler result
-    private val _newNote = MutableLiveData<Note>()
-    val newNote: LiveData<Note>
-        get() = _newNote
+    private val _parsedNote = MutableLiveData<Note>()
+    val parsedNote: LiveData<Note>
+        get() = _parsedNote
 
     val userIsReady = MutableLiveData<Boolean>()
 
@@ -68,68 +71,19 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     init {
         getLiveNotes()
 
-        //test
-//        goGo("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
+//        test
+//        determinedParseType("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
     }
 
 
-    fun goGo(url: String) {
-//        if (!NotedApplication.isGoGo) {
+    fun determineParseType(url: String) {
 
-        when {
+        when (parseType(url)) {
+            ParseType.VIDEO -> parseYoutube(url)
+            ParseType.LOCATION -> parseLocation(url)
+            else -> parseArticle(url)
 
-//                url.contains("http:", true) -> {
-//                    Log.e("ConnieCrawler", "Gogo, split")
-//                    val splitUrl = url.split("//")
-//                    goGo("https://${splitUrl[1]}")
-//                }
-
-            url.contains("//youtu", true) -> {
-                Logger.d("Gogo, youtube: $url")
-                coroutineScopeIO.launch {
-                    _newNote.postValue(toGetYoutube(url))
-                }
-            }
-            url.contains("//g.", true) ||
-                    url.contains("//goo", true) ||
-                    url.contains("//maps.", true) -> {
-
-                val data = url.lines()
-
-                for (i in data.indices) {
-                    if (data[i].contains("http")) {
-                        coroutineScopeIO.launch {
-                            _newNote.postValue(toGetGoogleLocation(data[i]))
-                        }
-                    }
-                }
-
-            }
-            else -> {
-                coroutineScopeIO.launch {
-                    Logger.d("Gogo, article: $url")
-                    _newNote.postValue(toGetMediumArticle(url))
-                }
-            }
         }
-//            NotedApplication.isGoGo = true
-//        }
-    }
-
-
-    private suspend fun toGetGoogleLocation(url: String): Note {
-        val noteCrawler = NoteCrawlerClass()
-        return noteCrawler.getGoogleLocation(url)
-    }
-
-    private suspend fun toGetYoutube(url: String): Note {
-        val noteCrawler = NoteCrawlerClass()
-        return noteCrawler.getYoutube(url)
-    }
-
-    private suspend fun toGetMediumArticle(url: String): Note {
-        val noteCrawler = NoteCrawlerClass()
-        return noteCrawler.getMediumArticle(url)
     }
 
 
@@ -137,7 +91,8 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         notes = notedRepository.getLiveNotes()
     }
 
-    fun create(note: Note) {
+
+    fun updateNoteToFirebase(note: Note) {
 
         coroutineScopeMain.launch {
 
@@ -159,8 +114,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = "You know nothing"
-//                        NotedApplication.instance.getString(R.string.you_know_nothing)
+                    _error.value = NotedApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
@@ -197,13 +151,76 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
 
     fun likeButtonClicked(note: Note) {
-        Logger.d(note.toString())
-        updateIsLiked(note)
+        toUpdateIsLiked(note)
     }
 
-    private fun updateIsLiked(note: Note) {
+    private fun toUpdateIsLiked(note: Note) {
         coroutineScopeMain.launch {
             notedRepository.likeNote(note)
         }
     }
+
+    private fun parseType(url: String): ParseType {
+
+        return when {
+
+            url.contains("//youtu", true) -> {
+                ParseType.VIDEO
+            }
+            url.contains("//g.", true) ||
+                    url.contains("//goo", true) ||
+                    url.contains("//maps.", true) -> {
+
+                ParseType.LOCATION
+
+            }
+            else -> {
+                ParseType.ARTICLE
+            }
+        }
+    }
+
+    private fun parseArticle(url: String) {
+        coroutineScopeIO.launch {
+            _parsedNote.postValue(toGetMediumArticle(url))
+        }
+    }
+
+    private fun parseLocation(url: String) {
+
+        Logger.d("ParseLocation, origin content: $url")
+
+        val data = url.lines()
+
+        for (i in data.indices) {
+            if (data[i].contains("http")) {
+                coroutineScopeIO.launch {
+                    _parsedNote.postValue(toGetGoogleLocation(data[i]))
+                }
+            }
+        }
+    }
+
+    private fun parseYoutube(url: String) {
+        coroutineScopeIO.launch {
+            _parsedNote.postValue(toGetYoutube(url))
+        }
+    }
+
+
+    private suspend fun toGetGoogleLocation(url: String): Note {
+        val noteCrawler = NoteCrawlerClass()
+        return noteCrawler.getGoogleLocation(url)
+    }
+
+    private suspend fun toGetYoutube(url: String): Note {
+        val noteCrawler = NoteCrawlerClass()
+        return noteCrawler.getYoutube(url)
+    }
+
+    private suspend fun toGetMediumArticle(url: String): Note {
+        val noteCrawler = NoteCrawlerClass()
+        return noteCrawler.getMediumArticle(url)
+    }
+
 }

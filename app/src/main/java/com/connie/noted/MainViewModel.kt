@@ -29,7 +29,11 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         value = DrawerToggleType.NORMAL
     }
 
-    val urlString = MutableLiveData<String>()
+    private val _urlString = MutableLiveData<String>()
+
+    val urlString: LiveData<String>
+        get() = _urlString
+
 
     val viewType = MutableLiveData<Int>().apply {
         value = 0
@@ -109,7 +113,6 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 //        get() = _error
 
 
-
     /**
      * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
      * Retrofit service to stop.
@@ -129,10 +132,17 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         }
     }
 
-    fun onSyncUserDataFinished(){
+    fun onSyncUserDataFinished() {
         _userIsSynced.value = null
     }
 
+    fun setUrl(url: String){
+        _urlString.value = url
+    }
+
+    fun clearUrl(){
+        _urlString.value = null
+    }
 //    fun checkUser() {
 //        if (user.value == null) {
 //            UserManager.userToken?.let {

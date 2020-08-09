@@ -30,7 +30,7 @@
             android:background='@{Util.INSTANCE.checkIfSaved(viewModel.savedBy) == true ? @drawable/icon_saved : @drawable/icon_save}'
             android:backgroundTint="@color/brownish_grey"
             android:clickable="true"
-            android:onClick="@{() -> viewModel.saveBoard()}"
+            android:onClick="@{() -> viewModel.saveBoardPreparation()}"
             app:layout_constraintEnd_toStartOf="@id/board_page_share"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/icon_save"/>

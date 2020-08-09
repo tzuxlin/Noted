@@ -25,7 +25,6 @@ class BoardItemViewModel(
 
 
     val hasNewTag = MutableLiveData<Boolean>()
-
     val filterTags: MutableList<String?> = mutableListOf()
 
     // Handle navigation to detail
@@ -100,4 +99,8 @@ class BoardItemViewModel(
             notedRepository.likeBoard(board)
         }
     }
+
+
+
+
 }

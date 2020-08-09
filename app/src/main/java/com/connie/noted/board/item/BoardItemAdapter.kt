@@ -5,22 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.connie.noted.board.item.BoardItemAdapter.Util.bindImages
+import com.connie.noted.board.item.BoardItemAdapter.Util.setUpChipGroup
 import com.connie.noted.data.Board
 import com.connie.noted.databinding.ItemBoardGridBinding
 import com.connie.noted.databinding.ItemBoardLinearBinding
 import com.connie.noted.util.Logger
 import com.connie.noted.util.Util.setUpThinTags
+import com.google.android.material.chip.ChipGroup
+import java.util.ArrayList
 
-/**
- * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
- * [Board], including computing diffs between lists.
- * @param onClickListener a lambda that takes the
- */
-class BoardItemAdapter(
-    private val onClickListener: OnClickListener,
-    val viewModel: BoardItemViewModel
-) :
+
+class BoardItemAdapter(private val onClickListener: OnClickListener, val viewModel: BoardItemViewModel) :
     ListAdapter<Board, RecyclerView.ViewHolder>(DiffCallback) {
+
 
     override fun getItemViewType(position: Int): Int {
         return viewModel.viewType.value ?: 0
@@ -32,84 +30,37 @@ class BoardItemAdapter(
         fun bind(board: Board, viewModel: BoardItemViewModel) {
 
             binding.board = board
-
-            val i = board.images
-
-            when (i.size) {
-                0 -> binding.imagesList = arrayListOf("", "", "", "", "")
-                1 -> binding.imagesList = arrayListOf(i[0], "", "", "", "")
-                2 -> binding.imagesList = arrayListOf(i[0], i[1], "", "", "")
-                3 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], "", "")
-                4 -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], "")
-                else -> binding.imagesList = arrayListOf(i[0], i[1], i[2], i[3], i[4])
-
-            }
+            binding.imagesList = bindImages(board)
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(board)
             }
 
-            // Binding chipGroup
+            setUpChipGroup(board.tags, binding.noteTagGroup, viewModel)
 
-            if (!board.tags.isNullOrEmpty()) {
-                val chipGroup = binding.noteTagGroup
-                setUpThinTags(board.tags, chipGroup, OnTagClickListener {
-                    viewModel.tagClicked(it)
-                    Logger.i("OnTagClickListener, it = $it")
-                })
-            }
-
-
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
-        }
 
-        class OnTagClickListener(val tagClickListener: (tag: String) -> Unit) {
-            fun onTagClick(tag: String) = tagClickListener(tag)
         }
-
     }
+
 
     class BoardGridViewHolder(private var binding: ItemBoardGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(board: Board, viewModel: BoardItemViewModel) {
 
             binding.board = board
-
-
-            // Binding imageList
-            val i = board.images
-
-            binding.imagesList = when (i.size) {
-                0 -> arrayListOf("", "", "", "", "")
-                1 -> arrayListOf(i[0], "", "", "", "")
-                2 -> arrayListOf(i[0], i[1], "", "", "")
-                3 -> arrayListOf(i[0], i[1], i[2], "", "")
-                4 -> arrayListOf(i[0], i[1], i[2], i[3], "")
-                else -> arrayListOf(i[0], i[1], i[2], i[3], i[4])
-            }
+            binding.imagesList = bindImages(board)
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(board)
             }
 
-            // Binding chipGroup
+            setUpChipGroup(board.tags, binding.noteTagGroup, viewModel)
 
-            if (!board.tags.isNullOrEmpty()) {
-                val chipGroup = binding.noteTagGroup
-                setUpThinTags(board.tags, chipGroup, BoardLinearViewHolder.OnTagClickListener {
-                    viewModel.tagClicked(it)
-                    Logger.i("OnTagClickListener, it = $it")
-                })
-            }
-
-
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
-        }
 
+        }
     }
 
 
@@ -117,6 +68,7 @@ class BoardItemAdapter(
      * Allows the RecyclerView to determine which items have changed when the [List] of [Board]
      * has been updated.
      */
+
     companion object DiffCallback : DiffUtil.ItemCallback<Board>() {
         override fun areItemsTheSame(oldItem: Board, newItem: Board): Boolean {
             return oldItem === newItem
@@ -127,9 +79,11 @@ class BoardItemAdapter(
         }
     }
 
+
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -159,10 +113,13 @@ class BoardItemAdapter(
         }
     }
 
+
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val board = getItem(position)
 
         when (holder) {
@@ -187,14 +144,49 @@ class BoardItemAdapter(
     }
 
 
-
     /**
      * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Board]
      * associated with the current item to the [onClick] function.
      * @param clickListener lambda that will be called with the current [Board]
      */
+
     class OnClickListener(val clickListener: (board: Board) -> Unit) {
         fun onClick(board: Board) = clickListener(board)
+    }
+
+
+    object Util {
+
+        class OnTagClickListener(val tagClickListener: (tag: String) -> Unit) {
+            fun onTagClick(tag: String) = tagClickListener(tag)
+        }
+
+        fun bindImages(board: Board): ArrayList<String> {
+
+            val i = board.images
+
+            return when (i.size) {
+                0 -> arrayListOf("", "", "", "", "")
+                1 -> arrayListOf(i[0], "", "", "", "")
+                2 -> arrayListOf(i[0], i[1], "", "", "")
+                3 -> arrayListOf(i[0], i[1], i[2], "", "")
+                4 -> arrayListOf(i[0], i[1], i[2], i[3], "")
+                else -> arrayListOf(i[0], i[1], i[2], i[3], i[4])
+            } as ArrayList<String>
+        }
+
+
+
+        fun setUpChipGroup(tags: MutableList<String?>, chipGroup: ChipGroup, viewModel: BoardItemViewModel){
+
+            if (!tags.isNullOrEmpty()) {
+                setUpThinTags(tags, chipGroup, OnTagClickListener {
+                    viewModel.tagClicked(it)
+                    Logger.i("OnTagClickListener, it = $it")
+                })
+            }
+
+        }
     }
 
 
