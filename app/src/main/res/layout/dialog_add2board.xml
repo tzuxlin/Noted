@@ -48,7 +48,7 @@
                 android:textColor="@color/black_3f3a3a"
                 android:textColorHint="@{viewModel.invalidInput != null ? (TextUtils.isEmpty(viewModel.board.title) ? @color/red_d0021b : @color/gray_646464) : @color/gray_646464}"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/button_add2cart_close"
+                app:layout_constraintEnd_toStartOf="@+id/button_add2board_close"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

@@ -48,7 +48,10 @@ class Add2boardDialog : DialogFragment() {
         binding.viewModel = viewModel
 
         binding.iconAdd2boardPublicHelp.setOnClickListener {
-            binding.textAdd2boardHelp.visibility = View.VISIBLE
+            binding.textAdd2boardHelp.visibility = when (binding.textAdd2boardHelp.visibility) {
+                View.GONE -> View.VISIBLE
+                else -> View.GONE
+            }
         }
 
 
