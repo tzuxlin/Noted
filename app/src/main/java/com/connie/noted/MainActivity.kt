@@ -243,11 +243,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                    note
 //                )
 //            )
-//            "Location" -> findNavController(R.id.myNavHostFragment).navigate(
-//                NaviDirections.actionGlobalLocationFragment(
-//                    note
-//                )
-//            )
+            "Location" -> findNavController(R.id.myNavHostFragment).navigate(
+                NaviDirections.actionGlobalLocationFragment(
+                    note
+                )
+            )
             else -> findNavController(R.id.myNavHostFragment).navigate(
                 NaviDirections.actionGlobalArticleFragment(
                     note
