@@ -1,89 +1,63 @@
 package com.connie.noted
 
 import android.content.Intent
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAssertion
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.connie.noted.TestUtils.ClickCloseIcon
+import org.hamcrest.Matchers
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
-class FragmentNavTest {
+@RunWith(AndroidJUnit4::class)
+class TagDialogTest {
+
+    companion object {
+        const val NEW_TAG_NAME = "Kotlin"
+    }
 
     @Rule
     @JvmField
     var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
-
-    @Test
-    fun navigate2NoteFragmentAndVerifyUI() {
-
-        // Note Fragment is default Fragment, verify toolbar text when launch Activity
-
+    @Before
+    fun launchActivity() {
         activityRule.launchActivity(Intent())
-
-        Espresso.onView(ViewMatchers.withId(R.id.text_toolbar_title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.note)))
-
-        // Click bottom navigation button and verify toolbar text
-
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_noteFragment))
-            .perform(ViewActions.click())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        Espresso.onView(ViewMatchers.withId(R.id.text_toolbar_title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.note)))
-
-
     }
 
 
-    @Test
-    fun navigate2BoardFragmentAndVerifyUI() {
-
-        activityRule.launchActivity(Intent())
-
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_boardFragment))
-            .perform(ViewActions.click())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        Espresso.onView(ViewMatchers.withId(R.id.text_toolbar_title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.board)))
-
-    }
 
     @Test
-    fun navigate2ExploreFragmentAndVerifyUI() {
+    fun launchTagDialogFragmentAndVerifyUI() {
 
-        activityRule.launchActivity(Intent())
+        /* Navigate to Tag Dialog */
+        onView(withId(R.id.navigation_profileFragment)).perform(click())
+        onView(withId(R.id.button_profile_add_tag)).perform(click())
 
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_exploreFragment))
-            .perform(ViewActions.click())
+
+        /* To add new tag from edit text view */
+        val tagEditText = onView(withId(R.id.edit_tag_add2tag))
+        tagEditText.perform(replaceText(NEW_TAG_NAME))
+
+        onView(withId(R.id.button_tag_add2tag)).perform(click())
 
 
-        Espresso.onView(ViewMatchers.withId(R.id.button_bottom_cancel))
-            .inRoot(isDialog())
-            .perform(ViewActions.click())
+        /* Check if new tag exists */
+        val chip = onView(Matchers.allOf(withText(NEW_TAG_NAME), withParent(withId(R.id.group_profile_tag))))
+        chip.check(matches(isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.text_toolbar_title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.explore)))
 
-    }
-
-    @Test
-    fun navigate2ProfileFragmentAndVerifyUI() {
-
-        activityRule.launchActivity(Intent())
-
-        Espresso.onView(ViewMatchers.withId(R.id.navigation_profileFragment))
-            .perform(ViewActions.click())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        Espresso.onView(ViewMatchers.withId(R.id.text_toolbar_title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.profile)))
+        /* Remove new tag and check it does not exist */
+        chip.perform(click())
+        chip.perform(ClickCloseIcon())
+        chip.check(doesNotExist())
 
     }
 

@@ -1,38 +1,94 @@
 package com.connie.noted
 
 import android.content.Intent
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class EspressoTest {
+
+class FragmentNavTest {
 
     @Rule
-    @JvmField var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    @JvmField
+    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
-
-    @Test
-    fun testNavDrawerIsDisplayed() {
-
+    @Before
+    fun launchActivity() {
         activityRule.launchActivity(Intent())
-
-        Espresso.onView(ViewMatchers.withId(R.id.icon_nav_drawer))
-            .perform(ViewActions.click())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
-    fun testChangeLayoutIcon() {
+    fun navigate2NoteFragmentAndVerifyUI() {
 
-        // launch desired activity
-        activityRule.launchActivity(Intent())
+        /* Click bottom navigation view: Note button */
+        onView(withId(R.id.navigation_noteFragment)).perform(click()).check(matches(isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.icon_2change_view_type))
-            .perform(ViewActions.click())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        /* Check toolbar title */
+        checkToolbarTitle(R.string.note)
+
     }
+
+
+    @Test
+    fun navigate2BoardFragmentAndVerifyUI() {
+
+        /* Click bottom navigation view: Board button */
+        onView(withId(R.id.navigation_boardFragment)).perform(click()).check(matches(isDisplayed()))
+
+        /* Check toolbar title */
+        checkToolbarTitle(R.string.board)
+
+    }
+
+    @Test
+    fun navigate2ExploreFragmentAndVerifyUI() {
+
+        /* Click bottom navigation view: Explore button */
+        onView(withId(R.id.navigation_exploreFragment)).perform(click())
+
+        try {
+
+            /* Close dialog and check toolbar title*/
+            onView(withId(R.id.button_bottom_cancel)).inRoot(isDialog()).perform(click())
+            checkToolbarTitle(R.string.explore)
+
+        } catch (e: NoMatchingViewException) {
+
+            /* No dialog, check toolbar title */
+            checkToolbarTitle(R.string.explore)
+
+        }
+
+
+    }
+
+    @Test
+    fun navigate2ProfileFragmentAndVerifyUI() {
+
+        /* Click bottom navigation view: Profile button */
+        onView(withId(R.id.navigation_profileFragment)).perform(click())
+            .check(matches(isDisplayed()))
+
+        /* Check toolbar title */
+        checkToolbarTitle(R.string.profile)
+
+    }
+
+    private fun checkToolbarTitle(resource: Int) {
+        onView(withId(R.id.text_toolbar_title)).check(matches(withText(resource)))
+    }
+
+
 }
+
+
+
+
+
