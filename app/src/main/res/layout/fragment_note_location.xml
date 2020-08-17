@@ -23,10 +23,10 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/layout_bottom">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_note"
@@ -38,33 +38,29 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <!--            <ImageView-->
-                <!--                android:id="@+id/image_note"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@drawable/shape_top_radius"-->
-                <!--                android:scaleType="centerCrop"-->
-                <!--                app:imageUrl="@{viewModel.note.images.get(0)}"-->
-                <!--                app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                app:layout_constraintStart_toStartOf="parent"-->
-                <!--                app:layout_constraintTop_toTopOf="parent"-->
-                <!--                tools:layout_height="100dp"-->
-                <!--                tools:src="@drawable/ic_placeholder" />-->
-
-
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/note_map_view"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="500dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_height="500dp" />
 
-
-                <!--            <include-->
-                <!--                android:id="@id/image_note"-->
-                <!--                layout="@layout/fragment_maps"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="300dp" />-->
+                <ImageView
+                    android:id="@+id/note_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/shape_top_radius"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:imageUrl="@{viewModel.note.images.get(0)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_height="100dp"
+                    tools:layout_width="100dp"
+                    tools:src="@drawable/ic_placeholder"
+                    tools:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/icon_bg_note_liked"

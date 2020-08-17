@@ -32,6 +32,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var latLng: LatLng
+    private lateinit var binding: FragmentNoteLocationBinding
 
     private val viewModel by viewModels<LocationViewModel> {
         getVmFactory(
@@ -47,7 +48,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
     ): View? {
 
 
-        val binding = FragmentNoteLocationBinding.inflate(inflater, container, false)
+        binding = FragmentNoteLocationBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -105,6 +106,8 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         googleMap = map
         setUpMap()
 
+        showNoteImage()
+
     }
 
     private fun setUpMap(){
@@ -129,7 +132,9 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
+    private fun showNoteImage(){
+        binding.noteImage.visibility = View.VISIBLE
+    }
 
 
 
