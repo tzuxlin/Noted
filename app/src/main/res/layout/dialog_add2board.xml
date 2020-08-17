@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_top_radius"
             android:onClick="@{() -> viewModel.nothing()}"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_constraintBottom_toTopOf="@id/layout_edit_note_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +148,9 @@
             android:onClick="@{() -> viewModel.nothing()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <View
                 android:id="@+id/view_add2cart_bottom_separation"

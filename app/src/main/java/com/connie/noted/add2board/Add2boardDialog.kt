@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.connie.noted.MainActivity
 import com.connie.noted.NaviDirections
 import com.connie.noted.R
 import com.connie.noted.data.network.LoadApiStatus
@@ -51,6 +52,16 @@ class Add2boardDialog : DialogFragment() {
             binding.textAdd2boardHelp.visibility = when (binding.textAdd2boardHelp.visibility) {
                 View.GONE -> View.VISIBLE
                 else -> View.GONE
+            }
+        }
+
+        /**
+         * Call [MainActivity]: [hideSoftInput] method to hide SoftInput when edit view is not on focus.
+         */
+
+        binding.editAdd2boardTitle.setOnFocusChangeListener { view: View, isFocus: Boolean ->
+            if (!isFocus) {
+                (activity as MainActivity).hideSoftInput(view)
             }
         }
 
