@@ -1,10 +1,9 @@
 # 使用 Noted! 一鍵筆記網路資源
- 
+
 - **Noted!** 是一套簡便的筆記管理工具。
 - 看到任何你感興趣的 **文章** 、 **影片** 或 **地標** ，只要點擊分享，就可以將它存入 **Noted!** 以便查看與整理。
-- 再也不用害怕找不到看過一眼卻散落四處的網路資源！ <br>
-
-⭐️ 你可能想知道： [將網路資源存成筆記](#part1) ｜ [將筆記整理成主題性分類板](#part2)｜[探索公開的主題性分類板](#part3) ｜ [開發資訊](#develop)
+- 再也不用害怕找不到看過一眼卻散落四處的網路資源。 <br><br>
+<a href="https://play.google.com/store/apps/details?id=com.connie.noted"><img src="https://camo.githubusercontent.com/9b43e9e7bdf73be90eaee8bf94cf61440638567e/68747470733a2f2f692e696d6775722e636f6d2f49353862574c642e706e67" width="150"></a>
 
 <br><br>
 
@@ -38,7 +37,7 @@
 
 <br>
 
-<h3 id="part2">  2. 下一步，將筆記整理成主題性分類板吧！ </h3>
+<h3 id="part2">  2. 下一步，將筆記整理成主題性分類板 </h3>
 
 <img src="https://github.com/tzuxlin/Week-4/blob/master/add2board.gif" height=350/>
 
@@ -63,7 +62,7 @@
 
 <br>
 
-<h3 id="part3">  3. 除了建立自己的內容，還可以進行個人化的探索！ </h3>
+<h3 id="part3">  3. 除了建立自己的內容，還可以進行個人化的探索 </h3>
 
 <img src="https://github.com/tzuxlin/Week-4/blob/master/explore.gif" height=350/> <img src="https://github.com/tzuxlin/Week-4/blob/master/profile.gif" height=350/>
 
@@ -103,7 +102,7 @@
 - Android Studio 4.0
 
 ### 最新版本
-- 1.1.00
+- 1.1.1
 
 ### 聯絡方式
 Tzu Hsuan Lin, tzuxlin@gmail.com 
