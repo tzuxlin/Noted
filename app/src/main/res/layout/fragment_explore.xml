@@ -51,9 +51,11 @@
             android:backgroundTint="@{ viewModel.enableSearch == true &amp; viewModel.keywords.length() == 0 ? @color/cccccc : @color/greyish_brown}"
             android:clickable="@{ viewModel.enableSearch == true &amp; viewModel.keywords.length() == 0 ? false : true}"
             android:onClick="@{()-> viewModel.enableSearch ? viewModel.search() : viewModel.toEnableSearch()}"
-            android:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+<!--        tools:visibility="@{viewModel.status == LoadApiStatus.DONE ? View.VISIBLE : View.GONE}"-->
+
 
 
         <ImageView
@@ -107,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal"
-                    android:padding="16dp"
+                    android:padding="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
