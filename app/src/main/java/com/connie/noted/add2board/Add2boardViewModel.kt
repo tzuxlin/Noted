@@ -24,6 +24,9 @@ class Add2boardViewModel(
         value = Board()
     }
 
+    val newTag = MutableLiveData<String>()
+    val tags = mutableListOf<String?>()
+
 
     var liveNotes = MutableLiveData<List<Note>>()
     var title = MutableLiveData<String>()
@@ -99,7 +102,9 @@ class Add2boardViewModel(
             title = title.value ?: "",
             images = noteImages ?: mutableListOf(),
             isPublic = isPublic.value ?: false,
-            notes = noteIds ?: mutableListOf()
+            notes = noteIds ?: mutableListOf(),
+            tags = tags
+
         )
 
         toUploadBoard(board)

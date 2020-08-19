@@ -66,7 +66,8 @@
                 android:text="公開分類版"
                 android:checked="@={viewModel.isPublic}"
                 android:textColor="@color/brownish_grey"
-                android:textSize="13sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:theme="@style/Switch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_add2board_title" />
@@ -100,6 +101,73 @@
                 app:layout_constraintTop_toBottomOf="@+id/switch_add2board_public"
                 tools:visibility="visible" />
 
+            <TextView
+                android:id="@+id/text_add2board_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.15"
+                android:switchPadding="8dp"
+                android:text="主題標籤"
+                android:textColor="@color/brownish_grey"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_add2board_help" />
+
+            <EditText
+                android:id="@+id/edit_tag_add2board"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="標籤"
+                android:letterSpacing="0.15"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:nextFocusDown="@id/button_tag_add2tag"
+                android:text="@={viewModel.newTag}"
+                android:textAlignment="center"
+                android:textColor="@color/black_3f3a3a"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/button_tag_add2board"
+                app:layout_constraintEnd_toStartOf="@id/button_tag_add2board"
+                app:layout_constraintBottom_toTopOf="@id/button_tag_add2board"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_tag_add2board"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="28dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/olive_green"
+                android:letterSpacing="0.15"
+                android:text="新增"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:clickable="@{viewModel.newTag == null || viewModel.newTag.isEmpty() ? false : true}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_add2board_tags"
+                app:layout_constraintBottom_toBottomOf="@+id/text_add2board_tags"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/group_add2board_tag"
+                style="@style/Widget.MaterialComponents.ChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center_horizontal"
+                android:theme="@style/Theme.MaterialComponents.Light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_tag_add2board"/>
+
             <View
                 android:id="@+id/view_add2board_top_separation"
                 android:layout_width="0dp"
@@ -110,7 +178,7 @@
                 app:layout_constraintBottom_toTopOf="@id/note_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_add2board_help" />
+                app:layout_constraintTop_toBottomOf="@+id/group_add2board_tag" />
 
 
             <androidx.recyclerview.widget.RecyclerView

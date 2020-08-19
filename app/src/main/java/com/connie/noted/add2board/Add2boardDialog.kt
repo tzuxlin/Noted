@@ -1,7 +1,10 @@
 package com.connie.noted.add2board
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +18,12 @@ import com.connie.noted.NaviDirections
 import com.connie.noted.R
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.databinding.DialogAdd2boardBinding
+import com.connie.noted.databinding.DialogTagBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.util.DialogBoxMessageType
 import com.connie.noted.util.Logger
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 
 class Add2boardDialog : DialogFragment() {
@@ -25,7 +31,7 @@ class Add2boardDialog : DialogFragment() {
 
     private val viewModel by viewModels<Add2boardViewModel> { getVmFactory() }
     private lateinit var binding: DialogAdd2boardBinding
-
+    private lateinit var chipGroup: ChipGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +127,18 @@ class Add2boardDialog : DialogFragment() {
             }
         })
 
+        chipGroup = binding.groupAdd2boardTag
+        setUpTags()
+
+        binding.buttonTagAdd2board.setOnClickListener {
+            viewModel.newTag.value?.let{
+                viewModel.tags.add(it)
+                setUpTags()
+                viewModel.newTag.value = null
+            }
+        }
+
+
         return binding.root
     }
 
@@ -138,6 +156,58 @@ class Add2boardDialog : DialogFragment() {
 
     fun leave() {
         dismiss()
+    }
+
+    private fun setUpTags() {
+
+        chipGroup.removeAllViews()
+
+        val tags = viewModel.tags
+
+        for (index in tags.indices) {
+            val tagName = tags[index]
+            val chip = Chip(chipGroup.context)
+            val paddingDp = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                10f,
+                resources.displayMetrics
+            ).toInt()
+            chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
+            chip.text = tagName
+            chip.textSize = 12f
+
+
+
+            chip.setTextColor(Color.WHITE)
+
+            val states = arrayOf(intArrayOf(-android.R.attr.state_checked))
+
+            val chipColors = intArrayOf(Color.parseColor("#657153"))
+            val chipColorsStateList = ColorStateList(states, chipColors)
+
+            chip.chipBackgroundColor = chipColorsStateList
+            chip.closeIconTint = ColorStateList(states, intArrayOf(Color.WHITE))
+
+
+            chip.setOnClickListener {
+
+                chip.isCloseIconEnabled = !chip.isCloseIconEnabled
+
+                //Added click listener on close icon to remove tag from ChipGroup
+                chip.setOnCloseIconClickListener {
+                    tags.remove(tagName)
+                    chipGroup.removeView(chip)
+                    viewModel.tags.remove(tagName)
+                }
+
+
+            }
+            chipGroup.addView(chip)
+
+
+        }
+
+
     }
 
 
