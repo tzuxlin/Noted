@@ -1,20 +1,41 @@
-package com.connie.noted.notepage.video
-
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.connie.noted.R
+import com.connie.noted.BuildConfig
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
+
 
 class YoutubePlayerFragment : YouTubePlayerFragment() {
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_youtube_player, container, false)
+    private val googleKey = BuildConfig.GOOGLE_KEY
+    var videoId: String? = null
+
+    init {
+
+        initialize(googleKey, object : YouTubePlayer.OnInitializedListener {
+
+            override fun onInitializationFailure(
+                arg0: YouTubePlayer.Provider?,
+                arg1: YouTubeInitializationResult?
+            ) {
+
+
+            }
+
+            override fun onInitializationSuccess(
+                provider: YouTubePlayer.Provider?,
+                player: YouTubePlayer,
+                wasRestored: Boolean
+            ) {
+                if (!wasRestored) {
+
+                        player.setFullscreen(false)
+                        player.loadVideo(videoId)
+                        player.play()
+
+                }
+            }
+        })
     }
 
 }

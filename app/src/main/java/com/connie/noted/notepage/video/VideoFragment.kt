@@ -6,18 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.connie.noted.BuildConfig
 import com.connie.noted.databinding.FragmentNoteVideoBinding
 import com.connie.noted.ext.getVmFactory
 import com.connie.noted.notepage.article.ArticleFragmentArgs
-import com.connie.noted.util.Logger
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener
 import com.google.android.youtube.player.YouTubePlayerFragment
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
 
 class VideoFragment : Fragment() {
-
-    private val youtubePlayerFragment: YoutubePlayerFragment = YoutubePlayerFragment()
 
     private val viewModel by viewModels<VideoViewModel> {
         getVmFactory(
@@ -27,106 +28,37 @@ class VideoFragment : Fragment() {
         )
     }
 
+    lateinit var binding: FragmentNoteVideoBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
-
-
-        Logger.i("Video Fragment")
-        val binding = FragmentNoteVideoBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        binding = FragmentNoteVideoBinding.inflate(inflater, container, false)
 
         viewModel.note.value = viewModel.noteKey
 
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
+        val youtubeView = binding.noteYoutubeSupportFragment
 
-
-        youtubePlayerFragment.initialize("AIzaSyCI_y44jt8O0d9kgYzzv922sWAufrnh3vo", object : YouTubePlayer.OnInitializedListener{
-            override fun onInitializationSuccess(
-                provider: YouTubePlayer.Provider?,
-                player: YouTubePlayer?,
-                wasRestored: Boolean
-            ) {
-                Logger.e("YouTube Player onInitializationSuccess")
-
-
+        youtubeView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer) {
+                super.onReady(youTubePlayer)
+                youTubePlayer.cueVideo(viewModel.getYoutubeId(), 0f)
             }
+        }
 
-            override fun onInitializationFailure(
-                p0: YouTubePlayer.Provider?,
-                p1: YouTubeInitializationResult?
-            ) {
-                TODO("Not yet implemented")
-            }
-
-            //            override fun onInitializationFailure(
-//                provider: YouTubePlayer.Provider,
-//                youTubeInitializationResult: YouTubeInitializationResult
-//            ) {
-//                Log.i("Detail", "Failed: $youTubeInitializationResult")
-//                if (youTubeInitializationResult.isUserRecoverableError) {
-//                    youTubeInitializationResult.getErrorDialog(
-//                        getMainActivity(),
-//                        RECOVERY_DIALOG_REQUEST
-//                    ).show()
-//                } else {
-//                    callToast(youTubeInitializationResult.toString(), true)
-//                }
+        )
 
 
-        })
-
-
-
-
-
-
+        lifecycle.addObserver(youtubeView)
 
 
         return binding.root
     }
 
 
-//    private fun initYouTube() {
-//        if (youTubePlayerFragment == null) {
-//            youTubePlayerFragment = getFragmentById(R.id.youtube_frag) as YouTubePlayerFragment
-//            youTubePlayerFragment.initialize(
-//                getString(R.string.api_key),
-//                object : YouTubePlayer.OnInitializedListener {
-//                    override fun onInitializationSuccess(
-//                        provider: YouTubePlayer.Provider,
-//                        player: YouTubePlayer,
-//                        wasRestored: Boolean
-//                    ) {
-//                        Log.i("Detail", "YouTube Player onInitializationSuccess")
-//
-//                        // Don't do full screen
-//                        player.setFullscreen(false)
-//                        if (!wasRestored) {
-//                            youTubePlayer = player
-//                            cueVideoIfNeeded()
-//                        }
-//                    }
-//
-//                    override fun onInitializationFailure(
-//                        provider: YouTubePlayer.Provider,
-//                        youTubeInitializationResult: YouTubeInitializationResult
-//                    ) {
-//                        Log.i("Detail", "Failed: $youTubeInitializationResult")
-//                        if (youTubeInitializationResult.isUserRecoverableError) {
-//                            youTubeInitializationResult.getErrorDialog(
-//                                getMainActivity(),
-//                                RECOVERY_DIALOG_REQUEST
-//                            ).show()
-//                        } else {
-//                            callToast(youTubeInitializationResult.toString(), true)
-//                        }
-//                    }
-//                })
-//        }
-//    }
 }

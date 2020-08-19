@@ -5,14 +5,9 @@
 
     <data>
 
-
         <variable
             name="viewModel"
             type="com.connie.noted.notepage.video.VideoViewModel" />
-
-        <variable
-            name="imageString"
-            type="String" />
 
     </data>
 
@@ -33,29 +28,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-
-
-<!--            <ImageView-->
-<!--                android:id="@+id/image_note"-->
+<!--            YouTube Player API: YouTube Support Fragment-->
+<!--            <fragment-->
+<!--                android:id="@+id/note_youtube_support_fragment"-->
+<!--                android:name="YoutubePlayerFragment"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/shape_top_radius"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                app:imageUrl="@{viewModel.note.images.get(0)}"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/icon_bg_note_liked"-->
 <!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                tools:layout_height="100dp"-->
-<!--                tools:src="@drawable/ic_placeholder" />-->
+<!--                app:layout_constraintEnd_toEndOf="parent"/>-->
 
-            <com.google.android.youtube.player.YouTubePlayerView
-                android:id="@+id/image_note"
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/note_youtube_support_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:autoPlay="false"
+                app:showFullScreenButton="false"
+                app:layout_constraintTop_toBottomOf="@id/icon_bg_note_liked"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
+
 
             <ImageView
                 android:id="@+id/icon_bg_note_liked"
@@ -79,7 +71,7 @@
                 android:letterSpacing="0.15"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_note"
+                app:layout_constraintTop_toBottomOf="@id/note_youtube_support_fragment"
                 tools:background="@drawable/icon_video" />
 
             <TextView

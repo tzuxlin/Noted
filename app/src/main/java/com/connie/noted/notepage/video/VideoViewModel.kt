@@ -4,10 +4,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.connie.noted.data.Note
 import com.connie.noted.data.source.NotedRepository
+import com.connie.noted.util.Logger
 
-class VideoViewModel(private val notedRepository: NotedRepository, val noteKey: Note) : ViewModel() {
+class VideoViewModel(private val notedRepository: NotedRepository, val noteKey: Note) :
+    ViewModel() {
 
     val note = MutableLiveData<Note>()
+
+    fun getYoutubeId(): String {
+
+        val url = note.value?.url?.split("/")
+
+        val result = url?.let { it ->
+            it[it.size - 1]
+        }?.replace(" ","")
+
+        Logger.e("url = $url, result = $result")
+
+        return result ?: ""
+    }
 
 
 }
