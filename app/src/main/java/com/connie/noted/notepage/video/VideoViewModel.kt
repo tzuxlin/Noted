@@ -1,5 +1,6 @@
 package com.connie.noted.notepage.video
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.connie.noted.data.Note
@@ -10,6 +11,20 @@ class VideoViewModel(private val notedRepository: NotedRepository, val noteKey: 
     ViewModel() {
 
     val note = MutableLiveData<Note>()
+
+    private val _navigateToUrl = MutableLiveData<Boolean>()
+    val navigateToUrl: LiveData<Boolean>
+        get() = _navigateToUrl
+
+    fun startUrlIntent() {
+
+        _navigateToUrl.value = true
+
+    }
+
+    fun onUrlIntentCompleted(){
+        _navigateToUrl.value = null
+    }
 
     fun getYoutubeId(): String {
 
