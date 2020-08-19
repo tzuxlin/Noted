@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
-    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
@@ -235,11 +234,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Logger.i("Main activity: Note is clicked, $note")
 
         when (note.type) {
-//            "Youtube" -> findNavController(R.id.myNavHostFragment).navigate(
-//                NaviDirections.actionGlobalVideoFragment(
-//                    note
-//                )
-//            )
+            "Video" -> {
+                findNavController(R.id.myNavHostFragment).navigate(
+                NaviDirections.actionGlobalVideoFragment(
+                    note
+                )
+            )}
             "Location" -> findNavController(R.id.myNavHostFragment).navigate(
                 NaviDirections.actionGlobalLocationFragment(
                     note
@@ -251,11 +251,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 )
             )
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
     }
 
@@ -290,5 +285,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 }
 
