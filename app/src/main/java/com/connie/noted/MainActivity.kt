@@ -195,7 +195,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 //        val noteFragment = supportFragmentManager.findFragmentById(R.id.noteFragment) as NoteFragment
 
-
         val receivedIntent = intent
         val receivedAction = receivedIntent.action
         val receivedType = receivedIntent.type
@@ -213,20 +212,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 }
 
-            } else if (receivedType.startsWith("image/")) {
-
-                val receiveUri: Uri = receivedIntent
-                    .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
-                Logger.d("Crawler, receiveUri = $receiveUri")
+                receivedIntent.removeExtra(Intent.EXTRA_TEXT)
 
             }
         } else if (receivedAction == Intent.ACTION_MAIN) {
-
             Logger.d("Crawler, onSharedIntent: nothing shared")
 
         } else {
             Logger.d("Crawler, onShareIntent: else situation")
         }
+
+
+
     }
 
 
