@@ -23,6 +23,8 @@ interface NotedDataSource {
 
     suspend fun saveBoard(board: Board): Boolean
 
+    suspend fun deleteNote(note: Note): Boolean
+
     fun getLiveUser(): MutableLiveData<User>
 
     fun getLiveNotes(): MutableLiveData<MutableList<Note>>

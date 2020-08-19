@@ -1,5 +1,6 @@
 package com.connie.noted.note
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 import com.connie.noted.data.Note
 import com.connie.noted.databinding.ItemNoteGridBinding
 import com.connie.noted.databinding.ItemNoteLinearBinding
@@ -16,11 +19,10 @@ import com.connie.noted.util.Logger
 
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * [Note], including computing diffs between lists.
  */
+
 class NoteAdapter(
     private val onClickListener: OnClickListener,
     private val viewModel: NoteViewModel
@@ -35,7 +37,11 @@ class NoteAdapter(
     class NoteLinearViewHolder(private var binding: ItemNoteLinearBinding) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-        fun bind(note: Note, viewModel: NoteViewModel) {
+
+        fun bind(
+            note: Note,
+            viewModel: NoteViewModel
+        ) {
 
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
@@ -49,6 +55,29 @@ class NoteAdapter(
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)
+            }
+
+            binding.textLongClickAdd.setOnClickListener {
+                viewModel.toAddNote(note)
+
+                binding.iconLongClickAdd.setBackgroundResource(if (note.isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
+                binding.textLongClickAdd.text = if (note.isSelected) "　已選擇　" else "加入分類板"
+                binding.layoutLongClick.backgroundTintList =
+                    if (note.isSelected) ColorStateList.valueOf(NotedApplication.instance.getColor(R.color.olive_green_transparent_90)) else ColorStateList.valueOf(
+                        NotedApplication.instance.getColor(R.color.olive_green_transparent_60)
+                    )
+            }
+
+
+            binding.iconLongClickAdd.setOnClickListener {
+                viewModel.toAddNote(note)
+
+                binding.iconLongClickAdd.setBackgroundResource(if (note.isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
+                binding.textLongClickAdd.text = if (note.isSelected) "　已選擇　" else "加入分類板"
+                binding.layoutLongClick.backgroundTintList =
+                    if (note.isSelected) ColorStateList.valueOf(NotedApplication.instance.getColor(R.color.olive_green_transparent_90)) else ColorStateList.valueOf(
+                        NotedApplication.instance.getColor(R.color.olive_green_transparent_60)
+                    )
             }
 
             binding.executePendingBindings()
@@ -78,7 +107,13 @@ class NoteAdapter(
     class NoteGridViewHolder(private var binding: ItemNoteGridBinding) :
         RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-        fun bind(note: Note, viewModel: NoteViewModel) {
+
+        fun bind(
+            note: Note,
+            viewModel: NoteViewModel
+        ) {
+
+
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
 
@@ -92,6 +127,29 @@ class NoteAdapter(
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)
+            }
+
+            binding.textLongClickAdd.setOnClickListener {
+                viewModel.toAddNote(note)
+
+                binding.iconLongClickAdd.setBackgroundResource(if (note.isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
+                binding.textLongClickAdd.text = if (note.isSelected) "　已選擇　" else "加入分類板"
+                binding.layoutLongClick.backgroundTintList
+                if (note.isSelected) ColorStateList.valueOf(NotedApplication.instance.getColor(R.color.olive_green_transparent_90)) else ColorStateList.valueOf(
+                    NotedApplication.instance.getColor(R.color.olive_green_transparent_60)
+                )
+            }
+
+
+            binding.iconLongClickAdd.setOnClickListener {
+                viewModel.toAddNote(note)
+
+                binding.iconLongClickAdd.setBackgroundResource(if (note.isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
+                binding.textLongClickAdd.text = if (note.isSelected) "　已選擇　" else "加入分類板"
+                binding.layoutLongClick.backgroundTintList =
+                    if (note.isSelected) ColorStateList.valueOf(NotedApplication.instance.getColor(R.color.olive_green_transparent_90)) else ColorStateList.valueOf(
+                        NotedApplication.instance.getColor(R.color.olive_green_transparent_60)
+                    )
             }
 
             binding.executePendingBindings()
@@ -168,6 +226,7 @@ class NoteAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val note = getItem(position)
+        val isSelected = note.isSelected
 
         when (holder) {
 
@@ -179,11 +238,9 @@ class NoteAdapter(
                     if (viewModel.isEditMode.value == false) {
                         Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
-                    } else {
-                        noteSelected(note)
-                        notifyItemChanged(position)
                     }
                 }
+
 
                 holder.itemView.setOnLongClickListener {
                     viewModel.isEditMode.value = viewModel.isEditMode.value != true
@@ -196,16 +253,18 @@ class NoteAdapter(
 
                 holder.bind(getItem(position), viewModel)
 
+//                holder.icon.setBackgroundResource(if (isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
 
                 holder.itemView.setOnClickListener {
 
                     if (viewModel.isEditMode.value == false) {
                         Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
-                    } else {
-                        noteSelected(note)
-                        notifyItemChanged(position)
                     }
+//                    else {
+//                        noteSelected(note)
+//                        notifyItemChanged(position)
+//                    }
                 }
 
                 holder.itemView.setOnLongClickListener {
@@ -221,37 +280,6 @@ class NoteAdapter(
     class OnClickListener(val clickListener: (note: Note) -> Unit) {
         fun onClick(note: Note) = clickListener(note)
     }
-
-
-//    private fun longClick(): Boolean {
-//        Toast.makeText(NotedApplication.instance, "Long Clicked", Toast.LENGTH_SHORT).show()
-//        viewModel.isEditMode.value = !viewModel.isEditMode.value!!
-//        return true
-//    }
-
-//    private fun setTag(tagList: MutableList<String>) {
-//        val chipGroup: ChipGroup = findViewById(R.id.tag_group)
-//        for (index in tagList.indices) {
-//            val tagName = tagList[index]
-//            val chip = Chip(this)
-//            val paddingDp = TypedValue.applyDimension(
-//                TypedValue.COMPLEX_UNIT_DIP, 10f,
-//                getResources().getDisplayMetrics()
-//            ).toInt()
-//            chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
-//            chip.text = tagName
-//            chip.setCloseIconResource(R.drawable.ic_action_navigation_close)
-//            chip.isCloseIconEnabled = true
-//            //Added click listener on close icon to remove tag from ChipGroup
-//            chip.setOnCloseIconClickListener(object : OnClickListener() {
-//                fun onClick(v: View?) {
-//                    tagList.remove(tagName)
-//                    chipGroup.removeView(chip)
-//                }
-//            })
-//            chipGroup.addView(chip)
-//        }
-//    }
 
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
@@ -272,27 +300,5 @@ class NoteAdapter(
         }
     }
 
-    private fun noteSelected(note: Note) {
-
-        viewModel.notes.value?.let { notes ->
-
-            val list = mutableListOf<Note>()
-            for (i in notes.indices) {
-
-                if (notes[i].id == note.id) {
-                    notes[i].isSelected = !notes[i].isSelected
-
-                    viewModel.notes.value = notes
-
-                    viewModel.noteToAdd.value = notes.filter { note ->
-                        note.isSelected
-                    }
-
-                    Logger.d("Note to add count: ${viewModel.noteToAdd.value?.size}")
-                }
-
-            }
-        }
-    }
 }
 

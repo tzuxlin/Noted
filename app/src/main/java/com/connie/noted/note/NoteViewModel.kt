@@ -223,4 +223,29 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         return noteCrawler.getMediumArticle(url)
     }
 
+    fun toAddNote(note: Note) {
+
+        notes.value?.let { liveNotes ->
+
+            liveNotes.map {
+                if (it.id == note.id) {
+                    it.isSelected = !it.isSelected
+                }
+            }
+
+            noteToAdd.value = liveNotes.filter {
+                it.isSelected
+            }
+        }
+    }
+
+    fun deleteNote(note: Note) {
+
+        Logger.e("ViewModel, delete ${note.title}")
+        coroutineScopeMain.launch {
+            notedRepository.deleteNote(note)
+        }
+    }
+
+
 }

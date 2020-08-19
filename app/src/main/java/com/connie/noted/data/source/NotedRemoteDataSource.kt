@@ -534,6 +534,36 @@ object NotedRemoteDataSource : NotedDataSource {
                 }
         }
 
+    override suspend fun deleteNote(note: Note): Boolean =
+
+        suspendCoroutine { continuation ->
+
+            Logger.d("to delete ${note.title}, ${note.id}")
+
+            FirebaseFirestore.getInstance().collection(PATH_NOTES)
+                .document(note.id)
+                .delete()
+                .addOnCompleteListener { task ->
+
+                    if (task.isSuccessful) {
+
+                        Logger.d("success delete ${note.title}, ${note.id}")
+                        continuation.resume(true)
+
+                    } else {
+                        task.exception?.let { e ->
+
+                            Logger.w("[${this::class.simpleName}] Error deleting documents. ${e.message}")
+
+                            continuation.resume(false)
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(false)
+
+                    }
+                }
+        }
+
 
     override fun getLiveUser(): MutableLiveData<User> {
         val liveData = MutableLiveData<User>()

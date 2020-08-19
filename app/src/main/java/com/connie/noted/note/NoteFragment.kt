@@ -35,7 +35,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
     ): View? {
         val binding = FragmentNoteBinding.inflate(inflater, container, false)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         val noteRecyclerView = binding.noteRecyclerView

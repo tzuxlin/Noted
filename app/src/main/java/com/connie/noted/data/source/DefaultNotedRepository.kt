@@ -39,6 +39,10 @@ class DefaultNotedRepository(
         return remoteDataSource.saveBoard(board)
     }
 
+    override suspend fun deleteNote(note: Note): Boolean {
+        return remoteDataSource.deleteNote(note)
+    }
+
     override fun getLiveUser(): MutableLiveData<User> {
         return remoteDataSource.getLiveUser()
     }

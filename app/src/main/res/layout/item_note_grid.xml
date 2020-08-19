@@ -174,56 +174,77 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="8dp"
             android:background="@drawable/shape_radius"
-            android:backgroundTint="@{note.isSelected ? @color/olive_green_transparent_90 : @color/olive_green_transparent_40}"
+            android:backgroundTint="@{note.isSelected ? @color/olive_green_transparent_90 : @color/olive_green_transparent_60}"
             android:elevation="5dp"
             android:visibility='@{viewModel.isEditMode ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="@id/layout_note"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/layout_note"
+            tools:backgroundTint="@color/olive_green_transparent_90"
             tools:layout_width="200dp"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/icon_long_click_delete"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/icon_delete"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/icon_trash"
                 android:backgroundTint="@color/white"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_long_click_delete"
+                app:layout_constraintEnd_toEndOf="@+id/text_long_click_delete"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <ImageView
                 android:id="@+id/icon_long_click_add"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="36dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="28dp"
                 android:background='@{note.isSelected ? @drawable/icon_add_to_board_active : @drawable/icon_add_to_board_inactive}'
                 android:backgroundTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/text_long_click_add"
+                app:layout_constraintStart_toStartOf="@+id/text_long_click_add"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:background="@drawable/icon_add_to_board_active" />
 
             <TextView
+                android:id="@+id/text_long_click_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="28dp"
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.1"
-                android:text='@{note.isSelected ? "已選擇" : "加入分類版"}'
+                android:text="刪除筆記"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/text_long_click_add"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_long_click_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/noto_sans"
+                android:letterSpacing="0.1"
+                android:text='@{note.isSelected ? "　已選擇　" : "加入分類板"}'
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_long_click_delete"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="已選擇" />
+                tools:text="加入分類板" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
