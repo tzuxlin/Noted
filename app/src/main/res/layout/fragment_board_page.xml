@@ -42,6 +42,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/icon_share"
             android:backgroundTint="@color/brownish_grey"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,14 +60,15 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/board_page_share"
-            tools:text="ＣＯＳＴＣＯ？ＣＯＳＴＣＯ！ＣＯＳＴＣＯ？ＣＯＳＴＣＯ！我都唸作ＣＯＳＴＣＯ" />
+            app:layout_constraintTop_toBottomOf="@+id/board_page_saved"
+            tools:text="ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄔㄕㄖㄗㄘㄙ" />
 
         <TextView
             android:id="@+id/board_page_creator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="12dp"
             android:fontFamily="@font/noto_sans"
             android:letterSpacing="0.1"
             android:textSize="13sp"
@@ -83,10 +85,23 @@
             android:layout_margin="8dp"
             android:background="@{viewModel.board.public ? @drawable/icon_public : @drawable/icon_private}"
             android:backgroundTint="@color/brownish_grey"
+            app:layout_constraintEnd_toStartOf="@+id/board_page_creator"
+            app:layout_constraintTop_toTopOf="@+id/board_page_creator"
+            app:layout_constraintBottom_toBottomOf="@+id/board_page_creator"
+            tools:background="@drawable/icon_public" />
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/group_board_page_tag"
+            style="@style/Widget.MaterialComponents.ChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="24dp"
+            android:theme="@style/Theme.MaterialComponents.Light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/board_page_creator"
-            tools:background="@drawable/icon_public" />
+            app:layout_constraintTop_toBottomOf="@+id/board_page_public"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -98,7 +113,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/board_page_public"
+            app:layout_constraintTop_toBottomOf="@id/group_board_page_tag"
             app:listNote="@{viewModel.liveNotes}"
             app:reverseLayout="false" />
 
