@@ -47,11 +47,9 @@ class NoteAdapter(
             binding.viewModel = viewModel
             binding.note = note
 
-            if (note.images.isNotEmpty()) {
-                binding.imageString = note.images[0]
-            } else {
-                binding.imageNote.visibility = View.GONE
-            }
+            binding.imageString =
+                if (note.images.isNotEmpty()) note.images[0]
+                else NotedApplication.instance.applicationContext.getString(R.string.url_place_holder)
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)
@@ -119,11 +117,10 @@ class NoteAdapter(
 
             binding.note = note
 
-            if (note.images.isNotEmpty()) {
-                binding.imageString = note.images[0]
-            } else {
-                binding.imageNote.visibility = View.GONE
-            }
+            binding.imageString =
+                if (note.images.isNotEmpty()) note.images[0]
+                else NotedApplication.instance.applicationContext.getString(R.string.url_place_holder)
+
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)

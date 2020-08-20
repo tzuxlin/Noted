@@ -1,18 +1,16 @@
-package app.appworks.school.stylish.component
+package com.connie.noted.util
 
 import android.graphics.Outline
+import android.graphics.Rect
 import android.view.View
 import android.view.ViewOutlineProvider
-import app.appworks.school.stylish.R
-import app.appworks.school.stylish.StylishApplication
+import com.connie.noted.NotedApplication
+import com.connie.noted.R
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
-class ProfileAvatarOutlineProvider : ViewOutlineProvider() {
+class ImageTopOutlineProvider : ViewOutlineProvider() {
     override fun getOutline(view: View, outline: Outline) {
         view.clipToOutline = true
-        val radius = StylishApplication.instance.resources.getDimensionPixelSize(R.dimen.radius_profile_avatar)
-        outline.setOval(0, 0, radius, radius)
+        val radius = NotedApplication.instance.resources.getDimensionPixelSize(R.dimen.radius_image)
+        outline.setRoundRect(view.left, 0, view.right, view.bottom + radius, radius.toFloat())
     }
 }

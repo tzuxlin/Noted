@@ -12,6 +12,8 @@ import com.connie.noted.data.crawler.NoteCrawlerClass
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.ImageLeftOutlineProvider
+import com.connie.noted.util.ImageTopOutlineProvider
 import com.connie.noted.util.Logger
 import com.connie.noted.util.ParseType
 import kotlinx.coroutines.CoroutineScope
@@ -66,6 +68,10 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val isEditMode = MutableLiveData<Boolean>().apply {
         value = false
     }
+
+    val topOutlineProvider = ImageTopOutlineProvider()
+    val leftOutlineProvider = ImageLeftOutlineProvider()
+
 
 
     init {

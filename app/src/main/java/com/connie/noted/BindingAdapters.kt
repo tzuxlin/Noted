@@ -43,6 +43,26 @@ fun bindNoRoundImage(imgView: ImageView, imgUrl: String?) {
 }
 
 
+
+@BindingAdapter("imageNoteItemUrl")
+fun bindNoteItemImage(imgView: ImageView, imgUrl: String?) {
+
+    imgUrl?.let{
+
+        val imgUrl = it.toUri().buildUpon().scheme("https").build()
+        with(imgView.context)
+            .load(imgUrl)
+            .apply(
+                RequestOptions()
+                    .transform(MultiTransformation(FitCenter()))
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_placeholder)
+            )
+            .into(imgView)
+}
+
+}
+
 //@BindingAdapter("imageNoRoundUrl")
 //fun bindImageNoRound(imgView: ImageView, imgUrl: String?) {
 //    imgUrl?.let {
