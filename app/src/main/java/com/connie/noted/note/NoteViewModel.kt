@@ -61,6 +61,12 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val error: LiveData<String>
         get() = _error
 
+    // status for the loading icon of swl
+    private val _refreshStatus = MutableLiveData<Boolean>()
+
+    val refreshStatus: LiveData<Boolean>
+        get() = _refreshStatus
+
     val viewType = MutableLiveData<Int>().apply {
         value = 1
     }
@@ -68,6 +74,11 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val isEditMode = MutableLiveData<Boolean>().apply {
         value = false
     }
+
+    val toObserveNote = MutableLiveData<Boolean>()
+
+
+
 
     val topOutlineProvider = ImageTopOutlineProvider()
     val leftOutlineProvider = ImageLeftOutlineProvider()
@@ -93,6 +104,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     fun getLiveNotes() {
         notes = notedRepository.getLiveNotes()
+        toObserveNote.value = true
     }
 
 
@@ -122,6 +134,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
                     _status.value = LoadApiStatus.ERROR
                 }
             }
+
         }
     }
 
@@ -260,5 +273,8 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         }
     }
 
+    fun onNoteObserved() {
+        toObserveNote.value = false
+    }
 
 }

@@ -224,6 +224,8 @@ class NoteAdapter(
 
         val note = getItem(position)
 
+        Logger.i("position: $position, title = ${note.title}")
+
         when (holder) {
 
             is NoteGridViewHolder -> {

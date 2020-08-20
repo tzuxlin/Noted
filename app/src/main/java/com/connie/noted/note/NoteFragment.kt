@@ -136,14 +136,30 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             }
         })
 
+        viewModel.toObserveNote.observe(viewLifecycleOwner, Observer { b ->
 
-        viewModel.notes.observe(viewLifecycleOwner, Observer {
+            b?.let {
 
-            it?.let {
+                if (it) {
 
-                (noteRecyclerView.adapter as NoteAdapter).submitList(it)
-                Logger.d("liveNotes = $it")
+                    viewModel.notes.observe(viewLifecycleOwner, Observer { note ->
 
+                        note?.let { notes ->
+
+                            (noteRecyclerView.adapter as NoteAdapter).submitList(notes)
+                            (noteRecyclerView.adapter as NoteAdapter).notifyItemRangeInserted(
+                                0,
+                                if (note.size < 10) note.size else 10
+                            )
+                            noteRecyclerView.layoutManager?.scrollToPosition(0)
+                            Logger.d("liveNotes, toObserveNote = $notes")
+
+
+                        }
+                    })
+
+                    viewModel.onNoteObserved()
+                }
             }
         })
 
@@ -166,9 +182,16 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                             DialogBoxMessageType.NEW_NOTE.message
                         )
                     )
+                    viewModel.getLiveNotes()
+//                    binding.layoutSwipeRefresh.isRefreshing = true
                 }
             }
         })
+
+
+//        binding.layoutSwipeRefresh.setOnRefreshListener {
+//            viewModel.refresh()
+//        }
 
 
         /**

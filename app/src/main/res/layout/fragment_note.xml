@@ -21,6 +21,15 @@
         android:paddingEnd="8dp"
         tools:context=".note.NoteFragment">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/layout_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/note_recycler_view"
@@ -31,8 +40,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:listNote="@{viewModel.notes}"
             app:reverseLayout="false" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
             android:layout_width="40dp"
