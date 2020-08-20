@@ -91,7 +91,7 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         _userIsSynced.value = null
     }
 
-    fun setUrl(url: String){
+    fun setRawUrl(url: String){
         _urlString.value = url
     }
 

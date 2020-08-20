@@ -167,9 +167,7 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                         )
                     )
                 }
-
             }
-
         })
 
 
