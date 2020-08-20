@@ -12,6 +12,8 @@ import com.connie.noted.data.crawler.NoteCrawlerClass
 import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import com.connie.noted.login.UserManager
+import com.connie.noted.util.ImageLeftOutlineProvider
+import com.connie.noted.util.ImageTopOutlineProvider
 import com.connie.noted.util.Logger
 import com.connie.noted.util.ParseType
 import kotlinx.coroutines.CoroutineScope
@@ -67,16 +69,23 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         value = false
     }
 
+    val toObserveNote = MutableLiveData<Boolean>()
+
+
+
+
+    val topOutlineProvider = ImageTopOutlineProvider()
+    val leftOutlineProvider = ImageLeftOutlineProvider()
+
 
     init {
         getLiveNotes()
-
-//        test
-//        determinedParseType("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
     }
 
 
-    fun determineParseType(url: String) {
+    fun determineParseType(rawUrl: String) {
+
+        val url = getExactUrl(rawUrl)
 
         when (parseType(url)) {
             ParseType.VIDEO -> parseYoutube(url)
@@ -89,6 +98,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
 
     fun getLiveNotes() {
         notes = notedRepository.getLiveNotes()
+        toObserveNote.value = true
     }
 
 
@@ -118,6 +128,7 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
                     _status.value = LoadApiStatus.ERROR
                 }
             }
+
         }
     }
 
@@ -207,6 +218,15 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         }
     }
 
+    private fun getExactUrl(url: String): String {
+
+        var result = url.lines().filter { it.contains("http") }[0]
+        if (result.contains("//maps.", true)) {
+            result += "?_imcp=1"
+        }
+
+        return result
+    }
 
     private suspend fun toGetGoogleLocation(url: String): Note {
         val noteCrawler = NoteCrawlerClass()
@@ -247,5 +267,8 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         }
     }
 
+    fun onNoteObserved() {
+        toObserveNote.value = false
+    }
 
 }

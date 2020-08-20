@@ -23,8 +23,19 @@ class LoginActivity : AppCompatActivity() {
     //    var googleSignInClient : GoogleSignInClient? = null
 //    var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager: CallbackManager? = null
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+    Logger.d("LoginActivity, onNewIntent ")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Logger.d("LoginActivity, onCreate ")
+
+
         setContentView(R.layout.activity_login)
 
 

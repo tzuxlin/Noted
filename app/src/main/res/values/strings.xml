@@ -26,5 +26,6 @@
 
     <string name="the_most_popular">熱門</string>
     <string name="recommend">推薦</string>
+    <string name="url_place_holder">https://i.imgur.com/DxmkmCA.png</string>
 
 </resources>

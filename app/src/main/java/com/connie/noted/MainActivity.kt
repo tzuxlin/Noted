@@ -2,15 +2,12 @@ package com.connie.noted
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat.*
 import androidx.databinding.DataBindingUtil
@@ -38,13 +35,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Logger.d("MainActivity, onNewIntent")
+        intent?.let {
+            onSharedIntent(it)
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Logger.d("MainActivity, onCreate")
+
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
 
 
         binding.icon2changeViewType.setOnClickListener {
@@ -108,8 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
 
-        onSharedIntent()
-
+        onSharedIntent(intent)
 
 
     }
@@ -190,39 +198,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun onSharedIntent() {
+    private fun onSharedIntent(receivedIntent: Intent) {
 
-//        val noteFragment = supportFragmentManager.findFragmentById(R.id.noteFragment) as NoteFragment
-
-        val receivedIntent = intent
+//        val receivedIntent = intent
         val receivedAction = receivedIntent.action
         val receivedType = receivedIntent.type
-        if (receivedAction == Intent.ACTION_SEND) {
 
-            // check mime type
-            if (receivedType!!.startsWith("text/")) {
-                val receivedText = receivedIntent
-                    .getStringExtra(Intent.EXTRA_TEXT)
+        when (receivedAction) {
 
-                receivedText?.let {
-                    Logger.d("Crawler, receivedText = $it")
+            Intent.ACTION_SEND -> {
 
-                    viewModel.setUrl(it)
+                receivedType?.let {
+                    if (it.startsWith("text/")) {
 
+                        val receivedText = receivedIntent.getStringExtra(Intent.EXTRA_TEXT)
+
+                        receivedText?.let { text ->
+                            Logger.d("Crawler, receivedText = $text")
+                            viewModel.setRawUrl(text)
+                        }
+
+                        receivedIntent.removeExtra(Intent.EXTRA_TEXT)
+
+                    }
                 }
-
-                receivedIntent.removeExtra(Intent.EXTRA_TEXT)
-
             }
-        } else if (receivedAction == Intent.ACTION_MAIN) {
-            Logger.d("Crawler, onSharedIntent: nothing shared")
 
-        } else {
-            Logger.d("Crawler, onShareIntent: else situation")
+            Intent.ACTION_MAIN -> {
+                Logger.d("Crawler, onSharedIntent: nothing shared")
+            }
+            else -> {
+                Logger.d("Crawler, onShareIntent: else situation")
+            }
         }
-
-
-
     }
 
 
@@ -236,10 +244,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (note.type) {
             "Video" -> {
                 findNavController(R.id.myNavHostFragment).navigate(
-                NaviDirections.actionGlobalVideoFragment(
-                    note
+                    NaviDirections.actionGlobalVideoFragment(
+                        note
+                    )
                 )
-            )}
+            }
             "Location" -> findNavController(R.id.myNavHostFragment).navigate(
                 NaviDirections.actionGlobalLocationFragment(
                     note

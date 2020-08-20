@@ -47,11 +47,9 @@ class NoteAdapter(
             binding.viewModel = viewModel
             binding.note = note
 
-            if (note.images.isNotEmpty()) {
-                binding.imageString = note.images[0]
-            } else {
-                binding.imageNote.visibility = View.GONE
-            }
+            binding.imageString =
+                if (note.images.isNotEmpty()) note.images[0]
+                else NotedApplication.instance.applicationContext.getString(R.string.url_place_holder)
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)
@@ -119,11 +117,10 @@ class NoteAdapter(
 
             binding.note = note
 
-            if (note.images.isNotEmpty()) {
-                binding.imageString = note.images[0]
-            } else {
-                binding.imageNote.visibility = View.GONE
-            }
+            binding.imageString =
+                if (note.images.isNotEmpty()) note.images[0]
+                else NotedApplication.instance.applicationContext.getString(R.string.url_place_holder)
+
 
             binding.iconNoteLiked.setOnClickListener {
                 viewModel.likeButtonClicked(note)
@@ -226,7 +223,8 @@ class NoteAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val note = getItem(position)
-        val isSelected = note.isSelected
+
+        Logger.i("position: $position, title = ${note.title}")
 
         when (holder) {
 
@@ -253,7 +251,6 @@ class NoteAdapter(
 
                 holder.bind(getItem(position), viewModel)
 
-//                holder.icon.setBackgroundResource(if (isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
 
                 holder.itemView.setOnClickListener {
 
@@ -261,10 +258,6 @@ class NoteAdapter(
                         Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     }
-//                    else {
-//                        noteSelected(note)
-//                        notifyItemChanged(position)
-//                    }
                 }
 
                 holder.itemView.setOnLongClickListener {

@@ -24,14 +24,9 @@ import kotlinx.coroutines.launch
 class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 
 
-    // According to current fragment to change different drawer toggle
-    val currentDrawerToggleType = MutableLiveData<DrawerToggleType>().apply {
-        value = DrawerToggleType.NORMAL
-    }
-
     private val _urlString = MutableLiveData<String>()
 
-    val urlString: LiveData<String>
+    val rawUrlString: LiveData<String>
         get() = _urlString
 
 
@@ -66,51 +61,11 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
     }
 
 
-//
-//    // According to current fragment to change different drawer toggle
-//    val currentDrawerToggleType: LiveData<DrawerToggleType> = Transformations.map(currentFragmentType) {
-//        when (it) {
-//            CurrentFragmentType.PAYMENT -> DrawerToggleType.BACK
-//            else -> DrawerToggleType.NORMAL
-//        }
-//    }
-//
-//    // Handle navigation to login success
-//    private val _navigateToLoginSuccess = MutableLiveData<User>()
-//
-//    val navigateToLoginSuccess: LiveData<User>
-//        get() = _navigateToLoginSuccess
-//
-//    // Handle navigation to profile by bottom nav directly which includes icon change
-//    private val _navigateToProfileByBottomNav = MutableLiveData<User>()
-//
-//    val navigateToProfileByBottomNav: LiveData<User>
-//        get() = _navigateToProfileByBottomNav
-//
-//    // Handle navigation to home by bottom nav directly which includes icon change
-//    private val _navigateToHomeByBottomNav = MutableLiveData<Boolean>()
-//
-//    val navigateToHomeByBottomNav: LiveData<Boolean>
-//        get() = _navigateToHomeByBottomNav
-//
-//    // it for set up the circle image of an avatar
-//    val outlineProvider = ProfileAvatarOutlineProvider()
-//
-//    // check user login status
-//    val isLoggedIn
-//        get() = UserManager.isLoggedIn
-
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
-//    // error: The internal MutableLiveData that stores the error of the most recent request
-//    private val _error = MutableLiveData<String>()
-//
-//    val error: LiveData<String>
-//        get() = _error
 
 
     /**
@@ -136,20 +91,13 @@ class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
         _userIsSynced.value = null
     }
 
-    fun setUrl(url: String){
+    fun setRawUrl(url: String){
         _urlString.value = url
     }
 
     fun clearUrl(){
         _urlString.value = null
     }
-//    fun checkUser() {
-//        if (user.value == null) {
-//            UserManager.userToken?.let {
-//                getUserProfile(it)
-//            }
-//        }
-//    }
 
 
 }

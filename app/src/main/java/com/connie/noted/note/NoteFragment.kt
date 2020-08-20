@@ -48,11 +48,11 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
          * it will call [viewModel]: [determineParseType] to launch the appropriate parse function.
          */
 
-        mainViewModel.urlString.observe(viewLifecycleOwner, Observer {
-            it?.let { url ->
+        mainViewModel.rawUrlString.observe(viewLifecycleOwner, Observer {
+            it?.let { rawUrl ->
 
-                Logger.d("Note Fragment, url observed from MainViewModel: $url")
-                viewModel.determineParseType(url)
+                Logger.d("Note Fragment, url observed from MainViewModel: $rawUrl")
+                viewModel.determineParseType(rawUrl)
                 mainViewModel.clearUrl()
 
             }
@@ -136,13 +136,40 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             }
         })
 
+        viewModel.toObserveNote.observe(viewLifecycleOwner, Observer { b ->
+
+            b?.let {
+
+                if (it) {
+
+                    viewModel.notes.observe(viewLifecycleOwner, Observer { note ->
+
+                        note?.let { notes ->
+
+                            (noteRecyclerView.adapter as NoteAdapter).submitList(notes)
+                            (noteRecyclerView.adapter as NoteAdapter).notifyItemRangeInserted(
+                                0,
+                                if (note.size < 10) note.size else 10
+                            )
+                            noteRecyclerView.layoutManager?.scrollToPosition(0)
+                            Logger.d("liveNotes, toObserveNote = $notes")
+
+
+                        }
+                    })
+
+                    viewModel.onNoteObserved()
+                }
+            }
+        })
+
 
         viewModel.notes.observe(viewLifecycleOwner, Observer {
 
             it?.let {
 
                 (noteRecyclerView.adapter as NoteAdapter).submitList(it)
-                Logger.d("liveNotes = $it")
+                Logger.e("liveNotes, origin = $it")
 
             }
         })
@@ -166,11 +193,12 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                             DialogBoxMessageType.NEW_NOTE.message
                         )
                     )
+                    viewModel.getLiveNotes()
                 }
-
             }
-
         })
+
+
 
 
         /**

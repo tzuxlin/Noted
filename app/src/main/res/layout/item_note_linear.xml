@@ -47,7 +47,8 @@
                 android:layout_height="110dp"
                 android:background="@drawable/shape_top_radius"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{imageString}"
+                android:outlineProvider="@{viewModel.leftOutlineProvider}"
+                app:imageNoteItemUrl="@{imageString}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -205,7 +206,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="110dp"
                 android:layout_marginBottom="28dp"
-                android:background="@drawable/icon_add_to_board_inactive"
+                android:background='@{note.isSelected ? @drawable/icon_add_to_board_active : @drawable/icon_add_to_board_inactive}'
                 android:backgroundTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

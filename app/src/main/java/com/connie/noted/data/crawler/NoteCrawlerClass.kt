@@ -1,5 +1,6 @@
 package com.connie.noted.data.crawler
 
+import android.util.Log
 import com.connie.noted.data.Note
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -60,9 +61,18 @@ class NoteCrawlerClass : NoteCrawler {
                 note.summary = content
             }
 
-            if (metaTag.attr("name").contains("image")) {
-                note.images.add(content)
+            when {
+                metaTag.attr("name").contains("image") && content.contains("http") -> {
+                    note.images.add(content)
+                }
+                metaTag.attr("property")
+                    .contains("image") && content.contains("http") -> {
+                    note.images.add(content)
+                }
+
             }
+
+
             note.type = "Article"
             note.url = url
 
