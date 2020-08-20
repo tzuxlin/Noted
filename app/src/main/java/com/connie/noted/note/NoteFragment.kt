@@ -163,6 +163,17 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
             }
         })
 
+
+        viewModel.notes.observe(viewLifecycleOwner, Observer {
+
+            it?.let {
+
+                (noteRecyclerView.adapter as NoteAdapter).submitList(it)
+                Logger.e("liveNotes, origin = $it")
+
+            }
+        })
+
         viewModel.status.observe(viewLifecycleOwner, Observer {
 
             when (it) {
@@ -183,15 +194,11 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
                         )
                     )
                     viewModel.getLiveNotes()
-//                    binding.layoutSwipeRefresh.isRefreshing = true
                 }
             }
         })
 
 
-//        binding.layoutSwipeRefresh.setOnRefreshListener {
-//            viewModel.refresh()
-//        }
 
 
         /**

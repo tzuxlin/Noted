@@ -61,12 +61,6 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val error: LiveData<String>
         get() = _error
 
-    // status for the loading icon of swl
-    private val _refreshStatus = MutableLiveData<Boolean>()
-
-    val refreshStatus: LiveData<Boolean>
-        get() = _refreshStatus
-
     val viewType = MutableLiveData<Int>().apply {
         value = 1
     }

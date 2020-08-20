@@ -21,16 +21,6 @@
         android:paddingEnd="8dp"
         tools:context=".note.NoteFragment">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/layout_swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/note_recycler_view"
             android:layout_width="match_parent"
@@ -42,18 +32,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:reverseLayout="false" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:visibility='@{viewModel.isEditMode == true ? View.VISIBLE : View.GONE}'
             android:background="@drawable/shape_round_solid"
             android:backgroundTint="#FFFFFF"
-            app:layout_constraintStart_toStartOf="@+id/note_add2board_button"
-            app:layout_constraintEnd_toEndOf="@+id/note_add2board_button"
+            android:visibility='@{viewModel.isEditMode == true ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="@+id/note_add2board_button"
-            app:layout_constraintTop_toTopOf="@+id/note_add2board_button"/>
+            app:layout_constraintEnd_toEndOf="@+id/note_add2board_button"
+            app:layout_constraintStart_toStartOf="@+id/note_add2board_button"
+            app:layout_constraintTop_toTopOf="@+id/note_add2board_button" />
 
         <ImageView
             android:id="@+id/note_add2board_button"
@@ -66,7 +54,7 @@
             android:visibility='@{viewModel.isEditMode == true ? View.VISIBLE : View.GONE}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:background="@drawable/icon_add_green"/>
+            tools:background="@drawable/icon_add_green" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
