@@ -43,6 +43,8 @@ class NoteCrawlerClass : NoteCrawler {
         val note = Note()
         val doc = Jsoup.connect(url).get()
 
+        note.title = url
+
         val metaTags: Elements = doc.getElementsByTag("meta")
 
         for (metaTag in metaTags) {
