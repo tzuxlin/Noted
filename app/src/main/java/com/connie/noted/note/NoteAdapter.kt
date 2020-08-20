@@ -223,7 +223,6 @@ class NoteAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val note = getItem(position)
-        val isSelected = note.isSelected
 
         when (holder) {
 
@@ -250,7 +249,6 @@ class NoteAdapter(
 
                 holder.bind(getItem(position), viewModel)
 
-//                holder.icon.setBackgroundResource(if (isSelected) R.drawable.icon_add_to_board_active else R.drawable.icon_add_to_board_inactive)
 
                 holder.itemView.setOnClickListener {
 
@@ -258,10 +256,6 @@ class NoteAdapter(
                         Logger.d("Note Adapter, onClick = $note")
                         onClickListener.onClick(note)
                     }
-//                    else {
-//                        noteSelected(note)
-//                        notifyItemChanged(position)
-//                    }
                 }
 
                 holder.itemView.setOnLongClickListener {
