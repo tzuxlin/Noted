@@ -73,16 +73,14 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
     val leftOutlineProvider = ImageLeftOutlineProvider()
 
 
-
     init {
         getLiveNotes()
-
-//        test
-//        determinedParseType("https://maps.app.goo.gl/cEtHRgreoCCEKfwL6")
     }
 
 
-    fun determineParseType(url: String) {
+    fun determineParseType(rawUrl: String) {
+
+        val url = getExactUrl(rawUrl)
 
         when (parseType(url)) {
             ParseType.VIDEO -> parseYoutube(url)
@@ -213,6 +211,15 @@ class NoteViewModel(private val notedRepository: NotedRepository, private val no
         }
     }
 
+    private fun getExactUrl(url: String): String {
+
+        var result = url.lines().filter { it.contains("http") }[0]
+        if (result.contains("//maps.", true)) {
+            result += "?_imcp=1"
+        }
+
+        return result
+    }
 
     private suspend fun toGetGoogleLocation(url: String): Note {
         val noteCrawler = NoteCrawlerClass()

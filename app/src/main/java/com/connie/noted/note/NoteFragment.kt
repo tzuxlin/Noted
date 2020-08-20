@@ -48,11 +48,11 @@ class NoteFragment(private val note: Note = Note()) : Fragment() {
          * it will call [viewModel]: [determineParseType] to launch the appropriate parse function.
          */
 
-        mainViewModel.urlString.observe(viewLifecycleOwner, Observer {
-            it?.let { url ->
+        mainViewModel.rawUrlString.observe(viewLifecycleOwner, Observer {
+            it?.let { rawUrl ->
 
-                Logger.d("Note Fragment, url observed from MainViewModel: $url")
-                viewModel.determineParseType(url)
+                Logger.d("Note Fragment, url observed from MainViewModel: $rawUrl")
+                viewModel.determineParseType(rawUrl)
                 mainViewModel.clearUrl()
 
             }
