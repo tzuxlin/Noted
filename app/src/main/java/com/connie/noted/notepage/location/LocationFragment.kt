@@ -27,8 +27,6 @@ private const val ZOOM_SCALE = 17F
 
 class LocationFragment : Fragment(), OnMapReadyCallback {
 
-    private val googleKey = BuildConfig.GOOGLE_KEY
-
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var latLng: LatLng

@@ -10,10 +10,9 @@ import com.connie.noted.notepage.location.LocationViewModel
 import com.connie.noted.notepage.video.VideoViewModel
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * Factory for all ViewModels.
  */
+
 @Suppress("UNCHECKED_CAST")
 class NoteViewModelFactory constructor(
     private val notedRepository: NotedRepository,

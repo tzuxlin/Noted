@@ -6,27 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import com.connie.noted.NotedApplication
 import com.connie.noted.data.User
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
+
 object UserManager {
 
     private const val USER_DATA = "user_data"
     private const val USER_TOKEN = "user_token"
     private const val USER_EMAIL = "user_email"
 
-//    private val _user = MutableLiveData<User>().apply {
-//        value = User()
-//    }
-
     var user = MutableLiveData<User>().apply{
         value = User()
     }
 
-//    val user: LiveData<User>
-//        get() = _user
 
-    var userToken: String? = null
+    private var userToken: String? = null
         get() = NotedApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
             .getString(USER_TOKEN, null)

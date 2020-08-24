@@ -28,12 +28,11 @@ import com.connie.noted.note.NoteAdapter
 fun bindNoRoundImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
-        Glide.with(imgView.context)
+       with(imgView.context)
             .load(imgUrl)
             .apply(
                 RequestOptions()
                     .transform(MultiTransformation(FitCenter()))
-//                    .fitCenter()
                     .placeholder(R.drawable.ic_placeholder)
                     .error(R.drawable.ic_placeholder)
             )
@@ -63,56 +62,6 @@ fun bindNoteItemImage(imgView: ImageView, imgUrl: String?) {
 
 }
 
-//@BindingAdapter("imageNoRoundUrl")
-//fun bindImageNoRound(imgView: ImageView, imgUrl: String?) {
-//    imgUrl?.let {
-//
-//        var height = 400
-//        val imgUrl = imgUrl.toUri().buildUpon().scheme("https").build()
-//        GlideApp.with(imgView.context)
-//            .load(imgUrl)
-//            .listener(object : RequestListener<Drawable> {
-//                override fun onLoadFailed(
-//                    e: GlideException?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//
-//
-//                    return true
-//                }
-//
-//                override fun onResourceReady(
-//                    resource: Drawable?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    dataSource: DataSource?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//
-//                    resource?.intrinsicHeight?.let{
-//                        if (it < height) {
-//                            height = it
-//                        }
-//                    }
-//
-//                    return true
-//                }
-//            })
-//            .apply(
-//                RequestOptions()
-//                    .transform(MultiTransformation(FitCenter()))
-//                    .override(getWindowWidth(), height)
-////                    .fitCenter()
-//                    .placeholder(R.drawable.ic_placeholder)
-//                    .error(R.drawable.ic_placeholder)
-//            )
-//            .into(imgView)
-//
-//    }
-//
-//}
 
 
 @BindingAdapter("imageUrl")

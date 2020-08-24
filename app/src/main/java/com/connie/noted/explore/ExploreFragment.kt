@@ -80,19 +80,6 @@ class ExploreFragment : Fragment() {
             }
         })
 
-//        viewModel.recommendBoards.observe(viewLifecycleOwner, Observer {
-//
-//
-//            it?.let {
-//                if (it.isEmpty()){
-//                    binding.exploreRecommendNoText.visibility = View.VISIBLE
-//                } else {
-//                    binding.exploreRecommendNoText.visibility = View.GONE
-//                }
-//            }
-//
-//        })
-
         checkTags()
 
         viewModel.doObserveSearch.observe(viewLifecycleOwner, Observer { b ->
@@ -146,11 +133,6 @@ class ExploreFragment : Fragment() {
                             boards
                         )
 
-//                        if (boards.isEmpty()) {
-//                            binding.exploreRecommendNoText.visibility = View.VISIBLE
-//                        } else {
-//                            binding.exploreRecommendNoText.visibility = View.GONE
-//                        }
                     })
 
 

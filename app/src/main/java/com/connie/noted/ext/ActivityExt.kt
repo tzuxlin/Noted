@@ -7,8 +7,6 @@ import com.connie.noted.NotedApplication
 import com.connie.noted.factory.ViewModelFactory
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * Extension functions for Activity.
  */
 fun Activity.getVmFactory(): ViewModelFactory {

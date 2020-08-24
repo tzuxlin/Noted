@@ -70,8 +70,6 @@ class TagDialog : DialogFragment() {
         switchButton = binding.switchTagEdit
 
 
-
-
         /**
          * Call [MainActivity]: [hideSoftInput] method to hide SoftInput when edit view is not on focus.
          */
@@ -91,14 +89,13 @@ class TagDialog : DialogFragment() {
                 }
                 viewModel.setEditMode(true)
 
-//                viewModel.inTagEditMode = true
-
             } else {
+
                 binding.buttonBottom.setOnClickListener {
                     viewModel.leave()
                 }
                 viewModel.setEditMode(false)
-//                viewModel.inTagEditMode = false
+
             }
         }
 

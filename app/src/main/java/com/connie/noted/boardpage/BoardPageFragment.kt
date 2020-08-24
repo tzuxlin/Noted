@@ -104,8 +104,6 @@ class BoardPageFragment : Fragment() {
             chip.text = tagName
             chip.textSize = 12f
 
-
-
             chip.setTextColor(Color.WHITE)
 
             val states = arrayOf(intArrayOf(-android.R.attr.state_checked))

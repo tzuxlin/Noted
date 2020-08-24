@@ -7,8 +7,6 @@ import com.connie.noted.data.Board
 import com.connie.noted.data.source.NotedRepository
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * Factory for all ViewModels.
  */
 @Suppress("UNCHECKED_CAST")

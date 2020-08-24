@@ -24,7 +24,6 @@ object NotedRemoteDataSource : NotedDataSource {
 
     private const val PATH_NOTES = "notes"
     private const val PATH_BOARDS = "boards"
-    private const val PATH_USERS = "users"
     private const val KEY_CREATED_TIME = "createdTime"
 
 
@@ -305,43 +304,6 @@ object NotedRemoteDataSource : NotedDataSource {
         return liveData
 
     }
-
-
-//    override fun getLiveNotesFromBoards(): MutableLiveData<List<Board>> {
-//        val liveData = MutableLiveData<List<Board>>()
-//
-//        UserManager.userEmail?.let { email ->
-//
-//            FirebaseFirestore.getInstance()
-//                .collection(PATH_BOARDS)
-//                .whereEqualTo("createdBy", email)
-//                .get()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//
-//                        task.result?.let { documents ->
-//                            for (document in documents) {
-//
-//                                val noteIdList = document["notes"] as List<String>
-//
-//                                for (noteId in noteIdList) {
-//
-//
-//
-//                                }
-//
-//
-//                            }
-//
-//
-//                        }
-//
-//                    }
-//                }
-//        }
-//
-//        return liveData
-//    }
 
 
     override suspend fun createNote(note: Note): Result<Boolean> =

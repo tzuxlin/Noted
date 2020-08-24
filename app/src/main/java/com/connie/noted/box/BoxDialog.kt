@@ -14,15 +14,12 @@ class BoxDialog : DialogFragment() {
 
     private lateinit var message: String
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
         val binding = DialogBoxBinding.inflate(inflater, container, false)
-
 
         message = BoxDialogArgs.fromBundle(requireArguments()).messageKey
 
@@ -41,18 +38,12 @@ class BoxDialog : DialogFragment() {
 
         }
 
-
-
-
-
         return binding.root
     }
 
 
     override fun onResume() {
         super.onResume()
-
-
 
         Timer("SettingUp", false).schedule(2000) {
             close()
@@ -65,7 +56,6 @@ class BoxDialog : DialogFragment() {
         when (message) {
 
             DialogBoxMessageType.LOADING.message -> {
-
             }
 
             else -> {

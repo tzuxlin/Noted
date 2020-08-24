@@ -97,14 +97,6 @@ class BoardItemFragment(private val boardType: BoardTypeFilter) : Fragment() {
         chipGroup = binding.groupBoardTag
 
 
-
-        // TODO: fix bug
-//        viewModel.hasNewTag.observe(viewLifecycleOwner, Observer {
-//
-//            setUpThinTags(viewModel.filterTags, chipGroup)
-//
-//        })
-
         viewModel.liveBoards.observe(viewLifecycleOwner, Observer {
             it?.let {
                 viewModel.loadApiStatusDone()
