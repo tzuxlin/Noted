@@ -9,10 +9,9 @@ import com.connie.noted.explore.ExploreViewModel
 import com.connie.noted.tag.TagViewModel
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * Factory for all ViewModels.
  */
+
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
     private val notedRepository: NotedRepository

@@ -1,6 +1,5 @@
 package com.connie.noted.data.crawler
 
-import android.util.Log
 import com.connie.noted.data.Note
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -42,6 +41,8 @@ class NoteCrawlerClass : NoteCrawler {
 
         val note = Note()
         val doc = Jsoup.connect(url).get()
+
+        note.title = url
 
         val metaTags: Elements = doc.getElementsByTag("meta")
 

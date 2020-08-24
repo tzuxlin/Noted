@@ -9,11 +9,7 @@ import com.connie.noted.data.network.LoadApiStatus
 import com.connie.noted.data.source.NotedRepository
 import kotlinx.coroutines.*
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * The [ViewModel] that is attached to the [EditNoteDialog].
- */
+
 class EditNoteViewModel(
     private val notedRepository: NotedRepository
 ) : ViewModel() {

@@ -14,9 +14,6 @@ import com.connie.noted.databinding.DialogEditNoteBinding
 import com.connie.noted.ext.getVmFactory
 
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- */
 class EditNoteDialog : DialogFragment() {
 
     /**
@@ -50,11 +47,6 @@ class EditNoteDialog : DialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-//        binding.iconAdd2boardPublicHelp.setOnClickListener {
-//            binding.textAdd2boardHelp.visibility = View.VISIBLE
-//        }
-
-
         viewModel.toUpdateNote.observe(viewLifecycleOwner, Observer {
             viewModel.updateNote()
         })
@@ -65,7 +57,6 @@ class EditNoteDialog : DialogFragment() {
                 viewModel.onLeaveCompleted()
             }
         })
-
 
 
         return binding.root
@@ -84,9 +75,6 @@ class EditNoteDialog : DialogFragment() {
     fun leave() {
         dismiss()
     }
-
-
-
 
 
 }

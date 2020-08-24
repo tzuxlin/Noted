@@ -10,12 +10,10 @@ import com.google.android.material.tabs.TabLayout
 
 class BoardFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         FragmentBoardBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner

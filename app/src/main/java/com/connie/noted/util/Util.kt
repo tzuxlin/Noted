@@ -15,9 +15,6 @@ import com.connie.noted.login.UserManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
-/**
- * Updated by Wayne Chen in Mar. 2019.
- */
 object Util {
 
     /**

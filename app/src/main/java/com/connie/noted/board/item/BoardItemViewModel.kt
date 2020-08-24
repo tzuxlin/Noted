@@ -13,19 +13,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * The [ViewModel] that is attached to the [CatalogItemFragment].
- */
 class BoardItemViewModel(
     private val notedRepository: NotedRepository,
     private val boardType: BoardTypeFilter // Handle the type for each catalog item
 ) : ViewModel() {
 
 
-    val hasNewTag = MutableLiveData<Boolean>()
-    val filterTags: MutableList<String?> = mutableListOf()
+    private val hasNewTag = MutableLiveData<Boolean>()
+    private val filterTags: MutableList<String?> = mutableListOf()
 
     // Handle navigation to detail
     private val _navigateToDetail = MutableLiveData<Board>()

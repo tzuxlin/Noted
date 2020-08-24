@@ -11,10 +11,9 @@ import com.connie.noted.factory.NoteViewModelFactory
 import com.connie.noted.factory.ViewModelFactory
 
 /**
- * Created by Wayne Chen in Jul. 2019.
- *
  * Extension functions for Fragment.
  */
+
 fun Fragment.getVmFactory(): ViewModelFactory {
     val repository = (requireContext().applicationContext as NotedApplication).notedRepository
     return ViewModelFactory(repository)

@@ -16,11 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * Created by Wayne Chen in Jul. 2019.
- *
- * The [ViewModel] that is attached to the [MainActivity].
- */
 class MainViewModel(val notedRepository: NotedRepository) : ViewModel() {
 
 
